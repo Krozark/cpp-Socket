@@ -16,6 +16,7 @@ All class are in ntw namespace.
 
 * Socket
     * use C socket, and put them in a class to use them more  easily
+
 * SocketSerialized
     * Extand Socket and Serializer.
     * Simply add that you want in this soket (using \<\< operator) send it, and get data (with \>\> operator)
