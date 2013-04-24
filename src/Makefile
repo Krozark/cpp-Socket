@@ -1,6 +1,6 @@
 CC = g++
 INCPATH = 
-LIBS = 
+LIBS = -lpthread 
 DEFINES = 
 FLAGS = -g -std=c++0x -o3 $(INCPATH) $(LIBS) $(DEFINES)
 
@@ -13,10 +13,10 @@ all: serveur.exe client.exe
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 
 
-client.exe: client-main.cpp Socket.o Serializer.o SocketSerialized.o
+client.exe: client-main.cpp Socket.o Serializer.o SocketSerialized.o SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
-serveur.exe: serveur-main.cpp Socket.o Serializer.o SocketSerialized.o
+serveur.exe: serveur-main.cpp Socket.o Serializer.o SocketSerialized.o SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
 Serializer.o : Serializer.cpp Serializer.hpp

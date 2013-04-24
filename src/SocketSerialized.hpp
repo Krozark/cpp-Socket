@@ -6,7 +6,7 @@
 
 namespace ntw {
 
-class SocketSerialized : public Serializer, private Socket
+class SocketSerialized : public Serializer, public Socket
 {
     public:
         SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole=0);
@@ -14,9 +14,9 @@ class SocketSerialized : public Serializer, private Socket
         ~SocketSerialized();
 
         /// SOCKET
-        inline void Connect(std::string host,int port=PORT){Socket::Connect(host,port);};
-        inline Socket Wait(std::string host="",int port=PORT){return Socket::Wait(host,port);};
-        inline void Shutdown(Socket::Down mode=Socket::Down::BOTH){Socket::Shutdown(mode);};
+        //inline void Connect(std::string host,int port=PORT){Socket::Connect(host,port);};
+        //inline Socket Wait(std::string host="",int port=PORT){return Socket::Wait(host,port);};
+        //inline void Shutdown(Socket::Down mode=Socket::Down::BOTH){Socket::Shutdown(mode);};
 
         void Send();
         void Receive();

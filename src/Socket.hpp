@@ -43,6 +43,8 @@ class SocketSerialized;
 class Socket
 {
     public:
+        static int max_id;
+
         enum Dommaine {IP=AF_INET, LOCAL=AF_UNIX};
         enum Type {TCP=SOCK_STREAM, UDP=SOCK_DGRAM};
         enum Down {SEND=0,RECIVE=1,BOTH=2};
@@ -52,10 +54,16 @@ class Socket
 
         Socket& operator=(const Socket&) = delete;
 
-        const SOCKET id(){return sock;}
+        const SOCKET Id(){return sock;}
 
         void Connect(std::string host,int port=PORT);
-        Socket Wait(std::string host="",int port=PORT);
+        void Bind();
+        void Listen(const int max_connexion);
+        void ServeurMode(const int max_connexion=5,std::string host="",int port=PORT);//init sock_cfg + bind + listen
+
+        Socket Accept();
+        void Accept(Socket& client);
+
         void Shutdown(Down mode=Down::BOTH);
 
         template<typename T>
@@ -76,9 +84,6 @@ class Socket
 
 
 
-        static int Max_clients;
-        static int Buffer_size;
-
     protected:
         friend class SocketSerialized;
         Socket(){}// intern use only;
@@ -87,6 +92,7 @@ class Socket
         SOCKET sock;
         //configuration
         SOCKADDR_IN sock_cfg;
+
 
 };
 
