@@ -28,7 +28,7 @@ class Serializer
         explicit Serializer(unsigned int buffer_size=255);
         ~Serializer();
 
-        void clear();
+        void Clear();
         
         Serializer(const Serializer&) = delete;
         Serializer& operator=(const Serializer&) = delete;

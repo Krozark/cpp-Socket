@@ -1,8 +1,9 @@
 #ifndef SELECTMANAGER_HPP
 #define SELECTMANAGER_HPP
 
-#include <unordered_map>
+#include <vector>
 #include <thread>
+#include <mutex>
 
 #include "Socket.hpp"
 
@@ -14,13 +15,9 @@ class SelectManager
         explicit SelectManager();
         ~SelectManager();
         
-        inline void Add(Socket* s){
-            int id = s->Id();
-            datas[id]=s;
-            max_id=(id>max_id)?id+1:max_id;
-        };
+        void Add(Socket* s);
         void Remove(Socket* s);
-        inline void Clear(){datas.clear();max_id=0;};
+        void Clear();
 
         void(*OnSelect)(SelectManager& self,Socket& s);
         void SetArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
@@ -30,21 +27,30 @@ class SelectManager
         void SetTimout(float timout_sec=0);
 
         void Start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        inline void Stop(){run=false;thread.join();};
-        void Run();
+        inline void Stop(){
+            mutex.lock();
+            run=false;
+            mutex.unlock();
+        };
+        inline void Wait(){thread.join();};
+        inline void Detach(){thread.detach();};
 
         SelectManager(const SelectManager& other) = delete;
         SelectManager& operator=(const SelectManager& other) = delete;
+
     private:
+        void Run(); //Use Start to run it
+        void Reset();
 
         fd_set* readfds;
         fd_set* writefds;
         fd_set* exceptfds;
-        timeval* timeout;
-        std::unordered_map<int,Socket*> datas;
-        int max_id;
-        bool run;
+        timeval timeout;
+        std::vector<Socket*> datas;
+        volatile int max_id;
+        volatile bool run;
         std::thread thread;
+        std::mutex mutex;
 };
 
 };
