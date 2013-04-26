@@ -3,7 +3,7 @@ cpp-Socket
 
 Some class to help to construct client/server with soket and serilized datas.
 
-Test on Ubuntu 12.10 x64, but work everywhere.
+Test on Ubuntu 12+ x64, but based on multiplatforme code.
 
 Class
 -----
