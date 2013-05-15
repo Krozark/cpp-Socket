@@ -27,8 +27,8 @@ Exemples
 
 
 You can find exemples of use in:
-* src/server-main.cpp
-* src/client-main.cpp
+* Socket/server-main.cpp
+* Socket/client-main.cpp
 
 
 You can build the exemple with "make".
