@@ -1,5 +1,5 @@
-#ifndef SELECTMANAGER_HPP
-#define SELECTMANAGER_HPP
+#ifndef NTW_SELECTMANAGER_HPP
+#define NTW_SELECTMANAGER_HPP
 
 #include <vector>
 #include <thread>

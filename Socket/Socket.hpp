@@ -1,5 +1,5 @@
-#ifndef SOCKET_HPP
-#define SOCKET_HPP
+#ifndef NTW_SOCKET_HPP
+#define NTW_SOCKET_HPP
 
 #ifdef _WIN32 //_WIN64
 
@@ -36,6 +36,9 @@
 #define NTW_CRLF		"\r\n"
 #define NTW_BUF_SIZE	1024
 #define NTW_PORT 3987
+
+#define NTW_CLIENT  1
+#define NTW_SERVEUR  2
 
 namespace ntw {
 

@@ -24,7 +24,7 @@ void SocketSerialized::send()
 {
     //écrire la taille dans les 2 premier oct
     uint16_t size = _cursor_end - _cursor_begin;
-    std::cerr<<"<id:"<<sock<<">Send datas (size: "<<size<<")"<<std::endl;
+    std::cerr<<"<id:"<<sock<<">Send datas (size: "<<size+2<<")"<<std::endl;
     uint8_t *d = (uint8_t *)&size;
     #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
     _buffer[_cursor_begin - 2] = d[0];

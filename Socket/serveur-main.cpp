@@ -1,22 +1,11 @@
 #include "SocketSerialized.hpp"
 #include "SelectManager.hpp"
 
+#define NTW_MODE NTW_SERVEUR
+#include "FuncWrapper.hpp"
+
 #include <iostream>
 #include <chrono>
-
-class Test
-{
-    public:
-        int i1;
-        int i2;
-        double d1;
-        
-        friend ntw::Serializer& operator<<(ntw::Serializer& output,const Test& self)
-        {
-            output<<self.i1<<self.i2<<self.d1;
-            return output;
-        };
-};
 
 ntw::SelectManager clientSelector;
 
@@ -37,12 +26,13 @@ void reply(ntw::SelectManager& selector,ntw::Socket& sock)
     std::cout<<"Répond à "<<clientSock.id()<<std::endl;
     if(clientSock.receive() >0)
     {
-        char* c=0;
+        /*char* c=0;
         clientSock>>c;
         std::cout<<"[serveur] recu char*: <"<<c<<">"<<std::endl;
         clientSock.clear();
         clientSock<<"message du serveur";
-        clientSock.send();
+        clientSock.send();*/
+        ntw::FuncWrapper::dispatch(clientSock);
     }
     else
     {

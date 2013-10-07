@@ -1,5 +1,5 @@
-#ifndef SOCKETSERIALIZED_HPP
-#define SOCKETSERIALIZED_HPP
+#ifndef NTW_SOCKETSERIALIZED_HPP
+#define NTW_SOCKETSERIALIZED_HPP
 
 #include "Socket.hpp"
 #include "Serializer.hpp"
