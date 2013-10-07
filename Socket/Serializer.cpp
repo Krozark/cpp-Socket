@@ -15,7 +15,7 @@ Serializer::~Serializer()
     _buffer_size = 0;*/
 };
 
-void Serializer::Clear()
+void Serializer::clear()
 {
    _cursor_end = _cursor_begin = 0; 
 };

@@ -32,38 +32,38 @@ Socket::~Socket()
     _close();
 };
 
-void Socket::Connect(std::string host,int port)
+void Socket::connect(std::string host,int port)
 {
     //sin_addr.s_addr =  adresse IP
     sock_cfg.sin_addr.s_addr = inet_addr(host.c_str());
     //sin_port = port à utiliser
     sock_cfg.sin_port = htons(port);
 
-    if(connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
+    if(::connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
         std::cerr<<"<id:"<<sock<<">Connect to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
     else
         std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;;
 };
 
-void Socket::Bind()
+void Socket::bind()
 {
-    if(bind(sock,(SOCKADDR*)&sock_cfg,sizeof(sock_cfg)) == SOCKET_ERROR)
+    if(::bind(sock,(SOCKADDR*)&sock_cfg,sizeof(sock_cfg)) == SOCKET_ERROR)
     {
         perror("bind()");
         throw SocketExeption("Ennable to bind soket");
     }
 }
 
-void Socket::Listen(const int max_connexion)
+void Socket::listen(const int max_connexion)
 {
-    if(listen(sock,max_connexion) == SOCKET_ERROR)
+    if(::listen(sock,max_connexion) == SOCKET_ERROR)
     {
         perror("listen()");
         throw SocketExeption("Ennable to listen");
     }
 }
 
-void Socket::ServeurMode(const int max_connexion,std::string host,int port)
+void Socket::serveurMode(const int max_connexion,std::string host,int port)
 {
     //sin_addr.s_addr = adresse IP à utiliser
     //IP automatiquement chopée
@@ -75,23 +75,23 @@ void Socket::ServeurMode(const int max_connexion,std::string host,int port)
     //sin_port = port à utiliser
     sock_cfg.sin_port = htons(port);
 
-    Bind();
-    Listen(max_connexion);
+    bind();
+    listen(max_connexion);
 
 };
 
-Socket Socket::Accept()
+Socket Socket::accept()
 {
     Socket client;
-    Accept(client);
+    accept(client);
     return client;
 };
 
-void Socket::Accept(Socket& client)
+void Socket::accept(Socket& client)
 {
     socklen_t size = sizeof(sockaddr_in);
     std::cerr<<"<id:"<<sock<<">Waiting a new connection to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
-    client.sock = accept(sock,(sockaddr*) &(client.sock_cfg), &size);
+    client.sock = ::accept(sock,(sockaddr*) &(client.sock_cfg), &size);
     if (client.sock == INVALID_SOCKET)
     {
         perror("accept()");
@@ -100,9 +100,9 @@ void Socket::Accept(Socket& client)
     std::cerr<<"<id:"<<sock<<">New connection accept <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
 };
 
-void Socket::Shutdown(Socket::Down mode)
+void Socket::shutdown(Socket::Down mode)
 {
-    if (shutdown(sock,mode) == -1)
+    if (::shutdown(sock,mode) == -1)
     {
         perror("shutdown()");
         throw SocketExeption("Can't shutdown socket");

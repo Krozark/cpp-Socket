@@ -20,7 +20,7 @@ SocketSerialized::~SocketSerialized()
 {
 };
 
-void SocketSerialized::Send()
+void SocketSerialized::send()
 {
     //écrire la taille dans les 2 premier oct
     uint16_t size = _cursor_end - _cursor_begin;
@@ -36,15 +36,15 @@ void SocketSerialized::Send()
     #error "byte orden not suported (PDP endian)"
     #endif
     //envoyer
-    Socket::Send(_buffer+_cursor_begin-2, 2+size);
+    Socket::send(_buffer+_cursor_begin-2, 2+size);
     //reset
     //clear();
 };
 
-int SocketSerialized::Receive()
+int SocketSerialized::receive()
 {
     //recuperer la taille dans les 2 premier oct
-    int res = Socket::Receive(_buffer,2);
+    int res = Socket::receive(_buffer,2);
     if (res > 0)
     {
         uint8_t d[2];
@@ -65,14 +65,14 @@ int SocketSerialized::Receive()
         _cursor_begin = 2;
         _cursor_end = 2+size;
         //remplacer le buffer
-        res += Socket::Receive(_buffer+2,size);
+        res += Socket::receive(_buffer+2,size);
     }
     std::cerr<<"<id:"<<sock<<">receive datas (size: "<<res<<")"<<std::endl;
     return res;
 
 };
 
-void SocketSerialized::Clear()
+void SocketSerialized::clear()
 {
     _cursor_begin = _cursor_end = 2;
 }

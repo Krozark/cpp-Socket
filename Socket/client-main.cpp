@@ -7,23 +7,23 @@
 void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
-    if (clientSock.Receive() > 0)
+    if (clientSock.receive() > 0)
     {
         char* c=0;
         clientSock>>c;
         std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;
     
-        clientSock.Clear();
+        clientSock.clear();
         clientSock<<"message du client";
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        clientSock.Send();
+        clientSock.send();
     }
     else
     {
         std::cerr<<"Server connection lost"<<std::endl; 
-        selector.Remove(&sock);
-        selector.Stop();
+        selector.remove(&sock);
+        selector.stop();
     }
 };
 
@@ -64,17 +64,17 @@ int main(int argc, char* argv[])
     */
     
     ntw::SocketSerialized clientSock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    clientSock.Connect("127.0.0.1");
+    clientSock.connect("127.0.0.1");
 
     ntw::SelectManager clientSelector;
-    clientSelector.SetRead(true);
-    clientSelector.OnSelect = reply;
-    clientSelector.Add(&clientSock);
+    clientSelector.setRead(true);
+    clientSelector.onSelect = reply;
+    clientSelector.add(&clientSock);
 
-    clientSelector.Start();
+    clientSelector.start();
     //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     //clientSelector.Stop();
-    clientSelector.Wait();
+    clientSelector.wait();
 
     return 0;
 };

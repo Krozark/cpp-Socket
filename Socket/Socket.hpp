@@ -33,8 +33,8 @@
 #include <string>
 #include <exception>
 
-#define CRLF		"\r\n"
-#define BUF_SIZE	1024
+#define NTW_CRLF		"\r\n"
+#define NTW_BUF_SIZE	1024
 #define NTW_PORT 3987
 
 namespace ntw {
@@ -68,22 +68,22 @@ class Socket
 
         Socket& operator=(const Socket&) = delete;
 
-        const SOCKET Id(){return sock;}
+        const SOCKET id(){return sock;}
 
-        void Connect(std::string host,int port=NTW_PORT);
-        void Bind();
-        void Listen(const int max_connexion);
-        void ServeurMode(const int max_connexion=5,std::string host="",int port=NTW_PORT);//init sock_cfg + bind + listen
+        void connect(std::string host,int port=NTW_PORT);
+        void bind();
+        void listen(const int max_connexion);
+        void serveurMode(const int max_connexion=5,std::string host="",int port=NTW_PORT);//init sock_cfg + bind + listen
 
-        Socket Accept();
-        void Accept(Socket& client);
+        Socket accept();
+        void accept(Socket& client);
 
-        void Shutdown(Down mode=Down::BOTH);
+        void shutdown(Down mode=Down::BOTH);
 
         template<typename T>
-        inline void Send(const T* data,const size_t size,const int flags=0) const
+        inline void send(const T* data,const size_t size,const int flags=0) const
         {
-            if(send(sock,data,size,flags) ==  SOCKET_ERROR)
+            if(::send(sock,data,size,flags) ==  SOCKET_ERROR)
             {
                 perror("Send()");
                 throw SocketExeption("Sending message fail");
@@ -91,9 +91,9 @@ class Socket
         }
 
         template<typename T>
-        inline int Receive(T* buffer,const size_t size,const int flags=0) const
+        inline int receive(T* buffer,const size_t size,const int flags=0) const
         {
-            return recv(sock,buffer,size,flags);
+            return ::recv(sock,buffer,size,flags);
         };
 
 
@@ -106,8 +106,6 @@ class Socket
         SOCKET sock;
         //configuration
         SOCKADDR_IN sock_cfg;
-
-
 };
 
 };

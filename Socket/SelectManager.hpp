@@ -15,32 +15,32 @@ class SelectManager
         explicit SelectManager();
         ~SelectManager();
         
-        void Add(Socket* s);
-        void Remove(Socket* s);
-        void Clear();
+        void add(Socket* s);
+        void remove(Socket* s);
+        void clear();
 
-        void(*OnSelect)(SelectManager& self,Socket& s);
-        void SetArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
-        void SetRead(bool read=false);
-        void SetWrite(bool write=false);
-        void SetExcept(bool except=false);
-        void SetTimout(float timout_sec=0);
+        void(*onSelect)(SelectManager& self,Socket& s);
+        void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
+        void setRead(bool read=false);
+        void setWrite(bool write=false);
+        void setExcept(bool except=false);
+        void setTimout(float timout_sec=0);
 
-        void Start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        inline void Stop(){
+        void start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
+        inline void stop(){
             mutex.lock();
-            run=false;
+            _run=false;
             mutex.unlock();
         };
-        inline void Wait(){thread.join();};
-        inline void Detach(){thread.detach();};
+        inline void wait(){thread.join();};
+        inline void detach(){thread.detach();};
 
         SelectManager(const SelectManager& other) = delete;
         SelectManager& operator=(const SelectManager& other) = delete;
 
     private:
-        void Run(); //Use Start to run it
-        void Reset();
+        void run(); //Use Start to run it
+        void reset();
 
         fd_set* readfds;
         fd_set* writefds;
@@ -48,7 +48,7 @@ class SelectManager
         timeval timeout;
         std::vector<Socket*> datas;
         volatile int max_id;
-        volatile bool run;
+        volatile bool _run;
         std::thread thread;
         std::mutex mutex;
 };

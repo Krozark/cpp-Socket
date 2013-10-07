@@ -18,11 +18,11 @@ class SocketSerialized : public Serializer, public Socket
         //inline Socket Wait(std::string host="",int port=PORT){return Socket::Wait(host,port);};
         //inline void Shutdown(Socket::Down mode=Socket::Down::BOTH){Socket::Shutdown(mode);};
 
-        void Send();
-        int Receive();
+        void send();
+        int receive();
 
         /// SERIALIZE
-        void Clear();
+        void clear();
 
         SocketSerialized(const SocketSerialized&) = delete;
         SocketSerialized& operator=(const SocketSerialized&) = delete;

@@ -22,32 +22,32 @@ ntw::SelectManager clientSelector;
 
 void newclient(ntw::SelectManager& selector,ntw::Socket& sock)
 {
-    ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.Accept());
-    std::cout<<"Envoi du message: <hello!> à la soket "<<clientSock->Id()<<std::endl;
+    ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.accept());
+    std::cout<<"Envoi du message: <hello!> à la soket "<<clientSock->id()<<std::endl;
     *clientSock<<"hello!";
-    clientSock->Send();
+    clientSock->send();
 
     //clientSock->Shutdown(ntw::Socket::Down::SEND);
-    clientSelector.Add(clientSock);
+    clientSelector.add(clientSock);
 };
 
 void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
-    std::cout<<"Répond à "<<clientSock.Id()<<std::endl;
-    if(clientSock.Receive() >0)
+    std::cout<<"Répond à "<<clientSock.id()<<std::endl;
+    if(clientSock.receive() >0)
     {
         char* c=0;
         clientSock>>c;
         std::cout<<"[serveur] recu char*: <"<<c<<">"<<std::endl;
-        clientSock.Clear();
+        clientSock.clear();
         clientSock<<"message du serveur";
-        clientSock.Send();
+        clientSock.send();
     }
     else
     {
-        std::cerr<<"Client connection lost <id:"<<clientSock.Id()<<">"<<std::endl; 
-        selector.Remove(&clientSock);
+        std::cerr<<"Client connection lost <id:"<<clientSock.id()<<">"<<std::endl; 
+        selector.remove(&clientSock);
         delete &clientSock;
     }
 };
@@ -65,23 +65,23 @@ int main(int argc, char* argv[])
     */
 
     ntw::SocketSerialized sockSer(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    sockSer.ServeurMode();
+    sockSer.serveurMode();
 
     ntw::SelectManager serverSelector;
-    serverSelector.SetRead(true);
-    serverSelector.OnSelect = newclient;
-    serverSelector.Add(&sockSer);
+    serverSelector.setRead(true);
+    serverSelector.onSelect = newclient;
+    serverSelector.add(&sockSer);
 
-    clientSelector.SetRead(true);
-    clientSelector.OnSelect = reply;
+    clientSelector.setRead(true);
+    clientSelector.onSelect = reply;
 
-    clientSelector.Start();
-    serverSelector.Start();
+    clientSelector.start();
+    serverSelector.start();
     //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     //serverSelector.Stop();
 
-    clientSelector.Wait();
-    serverSelector.Wait();
+    clientSelector.wait();
+    serverSelector.wait();
 
     return 0;
 };

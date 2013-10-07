@@ -9,9 +9,9 @@
 
 namespace ntw {
 
-SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), OnSelect(0), max_id(0), run(false)
+SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false)
 {
-    SetTimout(5);
+    setTimout(5);
 };
 
 SelectManager::~SelectManager()
@@ -24,9 +24,9 @@ SelectManager::~SelectManager()
         delete exceptfds;
 }
 
-void SelectManager::Add(Socket* s)
+void SelectManager::add(Socket* s)
 {
-    int id = s->Id();
+    int id = s->id();
     datas.emplace_back(s);
     max_id=(id>max_id)?id+1:max_id;
     if(readfds)
@@ -37,16 +37,16 @@ void SelectManager::Add(Socket* s)
         FD_SET(id,exceptfds);
 };
 
-void SelectManager::Remove(Socket* s)
+void SelectManager::remove(Socket* s)
 {
-    int id = s->Id();
+    int id = s->id();
     auto end = datas.end();
     auto it = std::find(datas.begin(),end,s);
     if(it != end)
         datas.erase(it);
-    Reset();
+    reset();
 };
-void SelectManager::Clear()
+void SelectManager::clear()
 {
     datas.clear();
     max_id=0;
@@ -58,7 +58,7 @@ void SelectManager::Clear()
         FD_ZERO(exceptfds);
 };
 
-void SelectManager::Reset()
+void SelectManager::reset()
 {
     //reset
     if(readfds)
@@ -73,7 +73,7 @@ void SelectManager::Reset()
     // add to the connection all socket
     for(auto it=datas.begin();it!=end;++it)
     {
-        int id = (*it)->Id();
+        int id = (*it)->id();
         max_id=(id>=max_id)?id+1:max_id;
         //add socket
         if(readfds)
@@ -85,15 +85,15 @@ void SelectManager::Reset()
     }
 };
 
-void SelectManager::SetArgs(bool read,bool write,bool except,float timeout_sec)
+void SelectManager::setArgs(bool read,bool write,bool except,float timeout_sec)
 {
-    SetRead(read);
-    SetWrite(write);
-    SetExcept(except);
-    SetTimout(timeout_sec);
+    setRead(read);
+    setWrite(write);
+    setExcept(except);
+    setTimout(timeout_sec);
 };
 
-void SelectManager::SetRead(bool read)
+void SelectManager::setRead(bool read)
 {
     mutex.lock();
     if(read)
@@ -112,7 +112,7 @@ void SelectManager::SetRead(bool read)
     mutex.unlock();
 };
 
-void SelectManager::SetWrite(bool write)
+void SelectManager::setWrite(bool write)
 {
     mutex.lock();
     if(write)
@@ -131,7 +131,7 @@ void SelectManager::SetWrite(bool write)
     mutex.unlock();
 };
 
-void SelectManager::SetExcept(bool except)
+void SelectManager::setExcept(bool except)
 {
     mutex.lock();
     if(except)
@@ -150,7 +150,7 @@ void SelectManager::SetExcept(bool except)
     mutex.unlock();
 };
 
-void SelectManager::SetTimout(float timeout_sec)
+void SelectManager::setTimout(float timeout_sec)
 {
     mutex.lock();
     timeout.tv_sec = (int)timeout_sec;
@@ -164,22 +164,22 @@ void thread_method(C* obj,void(C::*func)(Args ...),Args ... args)
     (obj->*func)(args ...);
 };
 
-void SelectManager::Start()
+void SelectManager::start()
 {
     mutex.lock();
-    run = true;
-    thread= std::thread(thread_method<SelectManager>,this,&SelectManager::Run);
+    _run = true;
+    thread= std::thread(thread_method<SelectManager>,this,&SelectManager::run);
     mutex.unlock();
 };
 
 // Signal handler to catch SIGTERM.
 
-void SelectManager::Run()
+void SelectManager::run()
 {
     int res;
-    while(run)
+    while(_run)
     {
-        Reset();//TODO
+        reset();//TODO
         
         auto time = timeout;//copy
         res = select(max_id,readfds,writefds,exceptfds,&time);
@@ -197,22 +197,22 @@ void SelectManager::Run()
         for(auto it=datas.begin();it!=end /*and res > 0*/;++it)
         {
             auto& iit = **it;
-            int id = iit.Id(); 
+            int id = iit.id(); 
             if(readfds and FD_ISSET(id,readfds))
             {
-                OnSelect(*this,iit);
+                onSelect(*this,iit);
                 --res;
                 continue;
             }
             if(writefds and FD_ISSET(id,writefds))
             {
-                OnSelect(*this,iit);
+                onSelect(*this,iit);
                 --res;
                 continue;
             }
             if(exceptfds and FD_ISSET(id,exceptfds))
             {
-                OnSelect(*this,iit);
+                onSelect(*this,iit);
                 --res;
                 continue;
             }
