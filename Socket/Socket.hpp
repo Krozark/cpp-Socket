@@ -35,7 +35,7 @@
 
 #define CRLF		"\r\n"
 #define BUF_SIZE	1024
-#define PORT 3987
+#define NTW_PORT 3987
 
 namespace ntw {
 
@@ -70,10 +70,10 @@ class Socket
 
         const SOCKET Id(){return sock;}
 
-        void Connect(std::string host,int port=PORT);
+        void Connect(std::string host,int port=NTW_PORT);
         void Bind();
         void Listen(const int max_connexion);
-        void ServeurMode(const int max_connexion=5,std::string host="",int port=PORT);//init sock_cfg + bind + listen
+        void ServeurMode(const int max_connexion=5,std::string host="",int port=NTW_PORT);//init sock_cfg + bind + listen
 
         Socket Accept();
         void Accept(Socket& client);
