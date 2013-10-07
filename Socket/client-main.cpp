@@ -7,12 +7,13 @@
 #include <iostream>
 #include <chrono>
 
-/*void reply(ntw::SelectManager& selector,ntw::Socket& sock)
+void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
     if (clientSock.receive() > 0)
     {
-        char* c=0;
+        std::cout<<clientSock<<std::endl;
+        /*char* c=0;
         clientSock>>c;
         std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;
     
@@ -20,7 +21,7 @@
         clientSock<<"message du client";
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        clientSock.send();
+        clientSock.send();*/
     }
     else
     {
@@ -28,7 +29,7 @@
         selector.remove(&sock);
         selector.stop();
     }
-};*/
+};
 
 int main(int argc, char* argv[])
 {
@@ -66,19 +67,16 @@ int main(int argc, char* argv[])
     std::cout<<s<<std::endl;
     */
     
-    /*ntw::SocketSerialized clientSock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+    ntw::SocketSerialized clientSock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
     clientSock.connect("127.0.0.1");
 
-    ntw::SelectManager clientSelector;
+    /*ntw::SelectManager clientSelector;
     clientSelector.setRead(true);
     clientSelector.onSelect = reply;
     clientSelector.add(&clientSock);
 
     clientSelector.start();
     clientSelector.wait();*/
-
-    ntw::SocketSerialized clientSock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    clientSock.connect("127.0.0.1");
 
     if (clientSock.receive() > 0)
     {
