@@ -20,6 +20,9 @@ SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), on
 
 SelectManager::~SelectManager()
 {
+    ::close(pipe_fd[0]);
+    ::close(pipe_fd[1]);
+
     if(readfds)
         delete readfds;
     if(writefds)
@@ -209,21 +212,11 @@ void SelectManager::run()
             continue;
         else
         {
-            if(readfds and FD_ISSET(pipe_fd[0],readfds))
+            if( (readfds and FD_ISSET(pipe_fd[0],readfds))
+                or (writefds and FD_ISSET(pipe_fd[0],writefds))
+                or (exceptfds and FD_ISSET(pipe_fd[0],exceptfds)))
             {
-                char buffer[255];
-                read(pipe_fd[0], buffer, sizeof(buffer));
-                continue;
-            }
-            if(writefds and FD_ISSET(pipe_fd[0],writefds))
-            {
-                char buffer[255];
-                read(pipe_fd[0], buffer, sizeof(buffer));
-                continue;
-            }
-            if(exceptfds and FD_ISSET(pipe_fd[0],exceptfds))
-            {
-                char buffer[255];
+                char buffer[16];
                 read(pipe_fd[0], buffer, sizeof(buffer));
                 continue;
             }
