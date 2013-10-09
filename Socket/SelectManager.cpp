@@ -3,11 +3,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include <unistd.h>
-#include <fcntl.h>
-
 #include <errno.h>
-//#include <signal.h>
 #include <string.h>
 
 namespace ntw {
@@ -15,13 +11,17 @@ namespace ntw {
 SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false)
 {
     setTimout(t);
+    #if __linux //|| __unix //or __APPLE__ 
     ::pipe(pipe_fd);//pipe_fd[0] = read, [1] = write
+    #endif
 };
 
 SelectManager::~SelectManager()
 {
+    #if __linux //|| __unix //or __APPLE__ 
     ::close(pipe_fd[0]);
     ::close(pipe_fd[1]);
+    #endif
 
     if(readfds)
         delete readfds;
@@ -36,8 +36,10 @@ void SelectManager::add(Socket* s)
     int id = s->id();
     datas.emplace_back(s);
 
+    #if __linux //|| __unix //or __APPLE__ 
     char buffer = 1;
     ::write(pipe_fd[1],&buffer,1); //juste pour break le select
+    #endif
 };
 
 void SelectManager::remove(Socket* s)
@@ -67,6 +69,7 @@ void SelectManager::reset()
     if(exceptfds)
         FD_ZERO(exceptfds);
 
+    #if __linux //|| __unix //or __APPLE__ 
     max_id = pipe_fd[0]+1;
     //pipe add
     if(readfds)
@@ -75,6 +78,9 @@ void SelectManager::reset()
         FD_SET(pipe_fd[0],writefds);
     if(exceptfds)
         FD_SET(pipe_fd[0],exceptfds);
+    #else
+    max_id = 0;
+    #endif
 
     auto end = datas.end();
     // add to the connection all socket
@@ -199,6 +205,7 @@ void SelectManager::run()
         }
         else if (res == 0) //timout
             continue;
+        #if __linux //|| __unix //or __APPLE__ 
         else
         {
             if( (readfds and FD_ISSET(pipe_fd[0],readfds))
@@ -210,6 +217,7 @@ void SelectManager::run()
                 continue;
             }
         }
+        #endif
 
         //loop sur les Socket pour savoir si c'est elle
         auto end = datas.end();

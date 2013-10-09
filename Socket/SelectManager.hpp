@@ -47,7 +47,9 @@ class SelectManager
         fd_set* writefds;
         fd_set* exceptfds;
         timeval timeout;
+        #if __linux //|| __unix //or __APPLE__ 
         int pipe_fd[2];
+        #endif
         std::vector<Socket*> datas;
         volatile int max_id;
         volatile bool _run;

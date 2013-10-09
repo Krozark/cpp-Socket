@@ -5,6 +5,10 @@ Some class to help to construct client/server with soket and serilized datas.
 
 Test on Ubuntu 12+ x64, but based on multiplatforme code.
 
+SelectManager need pipe to work well.
+I don't find how to make them work with windows, so there a less efficient (windows only).
+I suggsess you to reduce the default timout of SelectManager (default is 5 sec), to be mor reactive with the ".add(socket)" function.
+
 Class
 -----
 
