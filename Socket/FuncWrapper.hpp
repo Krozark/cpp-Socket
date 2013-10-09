@@ -1,7 +1,8 @@
 #ifndef NTW_FUNCWRAPPER
 #define NTW_FUNCWRAPPER
 
-#include "SocketSerialized.hpp"
+#include <Socket/SocketSerialized.hpp>
+#include <Socket/define.hpp>
 
 
 //#define NTW_MODE NTW_CLIENT
@@ -15,12 +16,16 @@ namespace ntw
             FuncWrapper(const FuncWrapper&) = delete;
             FuncWrapper& operator=(const FuncWrapper&) = delete;
 
-            static int getVersion(SocketSerialized& sock);
-            //static void connect(SocketSerialized& sock);
+            static int getVersion(SocketSerialized& sock); ///< get serveur version
+            static bool verifyConnect(SocketSerialized& sock); ///< initialise the socket (client : verify the msg, serveur: send hello)
 
             enum FUNCTONS_ID {UNKNOW=0,GET_VERSION,MAX_FN_ID};
+
+            #if NTW_MODE == NTW_SERVEUR
+            static void dispatch(SocketSerialized& request);
+            #endif
             
-        //protected:
+        protected:
             #if NTW_MODE == NTW_CLIENT
             template<typename ... Args>
             static void addPackage(FUNCTONS_ID id,SocketSerialized& sock,Args& ... args);
@@ -29,11 +34,6 @@ namespace ntw
             static void addPackage(SocketSerialized& sock,T& a,Args& ... args);
 
             static void addPackage(SocketSerialized& sock);
-
-
-            #else
-            static void dispatch(SocketSerialized& request);
-
             #endif
 
 
@@ -41,9 +41,9 @@ namespace ntw
 };
 
 #if NTW_MODE == NTW_CLIENT
-#include "FuncWrapper-client.tpl"
+#include <Socket/FuncWrapper-client.tpl>
 #else
-#include "FuncWrapper-serveur.tpl"
+#include <Socket/FuncWrapper-serveur.tpl>
 #endif
 
 #endif

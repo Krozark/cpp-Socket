@@ -3,14 +3,23 @@ namespace ntw
     int FuncWrapper::getVersion(SocketSerialized& sock)
     {
         sock.clear();
-        sock<<42;
-        sock.send();
+        sock<<NTW_VERSION;
+        sock.sendCl();        
+    }
+
+    bool FuncWrapper::verifyConnect(SocketSerialized& sock)
+    {
+        std::cout<<"Envoi du message: <hello!> à la soket "<<sock.id()<<std::endl;
+        sock.clear();
+        sock<<NTW_WELCOM_MSG;
+        sock.sendCl();        
     }
 
     void FuncWrapper::dispatch(SocketSerialized& request)
     {
-        if(request.size()>0)
+        while(request.size()>0)
         {
+            std::cout<<request<<std::endl;
             int id = FUNCTONS_ID::UNKNOW;
             request>>id;
 

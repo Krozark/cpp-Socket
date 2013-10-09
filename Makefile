@@ -1,5 +1,5 @@
 CC = g++
-INCPATH = 
+INCPATH = -I$(CURDIR) 
 LIBS = -lpthread 
 DEFINES = 
 FLAGS = -g -std=c++0x -o3 $(INCPATH) $(LIBS) $(DEFINES)

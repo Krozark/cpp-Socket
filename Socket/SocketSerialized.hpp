@@ -1,8 +1,8 @@
 #ifndef NTW_SOCKETSERIALIZED_HPP
 #define NTW_SOCKETSERIALIZED_HPP
 
-#include "Socket.hpp"
-#include "Serializer.hpp"
+#include <Socket/Socket.hpp>
+#include <Socket/Serializer.hpp>
 
 namespace ntw {
 
@@ -23,6 +23,8 @@ class SocketSerialized : public Serializer, public Socket
 
         /// SERIALIZE
         void clear();
+
+        void inline sendCl(){send();clear();};
 
         SocketSerialized(const SocketSerialized&) = delete;
         SocketSerialized& operator=(const SocketSerialized&) = delete;

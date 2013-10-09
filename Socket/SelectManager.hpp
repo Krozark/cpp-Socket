@@ -5,14 +5,15 @@
 #include <thread>
 #include <mutex>
 
-#include "Socket.hpp"
+#include <Socket/define.hpp>
+#include <Socket/Socket.hpp>
 
 namespace ntw {
 
 class SelectManager
 {
     public:
-        explicit SelectManager();
+        explicit SelectManager(float timeout=NTW_DEFAULT_TIMEOUT);
         ~SelectManager();
         
         void add(Socket* s);
@@ -46,6 +47,7 @@ class SelectManager
         fd_set* writefds;
         fd_set* exceptfds;
         timeval timeout;
+        int pipe_fd[2];
         std::vector<Socket*> datas;
         volatile int max_id;
         volatile bool _run;

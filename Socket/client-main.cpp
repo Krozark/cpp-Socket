@@ -1,8 +1,8 @@
-#include "SocketSerialized.hpp"
-#include "SelectManager.hpp"
+#include <Socket/SocketSerialized.hpp>
+#include <Socket/SelectManager.hpp>
 
 #define NTW_MODE NTW_CLIENT
-#include "FuncWrapper.hpp"
+#include <Socket/FuncWrapper.hpp>
 
 #include <iostream>
 #include <chrono>
@@ -67,8 +67,8 @@ int main(int argc, char* argv[])
     std::cout<<s<<std::endl;
     */
     
-    ntw::SocketSerialized clientSock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    clientSock.connect("127.0.0.1");
+    ntw::SocketSerialized sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+    sock.connect("127.0.0.1");
 
     /*ntw::SelectManager clientSelector;
     clientSelector.setRead(true);
@@ -78,16 +78,11 @@ int main(int argc, char* argv[])
     clientSelector.start();
     clientSelector.wait();*/
 
-    if (clientSock.receive() > 0)
+    if (not ntw::FuncWrapper::verifyConnect(sock))
     {
-        char* c=0;
-        clientSock>>c;
-        std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;
+        return 1;
     }
-
-    ntw::FuncWrapper::getVersion(clientSock);
-    //ntw::FuncWrapper::getVersion(clientSock);
-
+    ntw::FuncWrapper::getVersion(sock);
 
     return 0;
 };

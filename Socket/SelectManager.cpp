@@ -1,17 +1,21 @@
-#include "SelectManager.hpp"
+#include <Socket/SelectManager.hpp>
 
 #include <iostream>
 #include <algorithm>
 
+#include <unistd.h>
+#include <fcntl.h>
+
 #include <errno.h>
-#include <signal.h>
+//#include <signal.h>
 #include <string.h>
 
 namespace ntw {
 
-SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false)
+SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false)
 {
-    setTimout(5);
+    setTimout(t);
+    ::pipe(pipe_fd);//pipe_fd[0] = read, [1] = write
 };
 
 SelectManager::~SelectManager()
@@ -28,13 +32,16 @@ void SelectManager::add(Socket* s)
 {
     int id = s->id();
     datas.emplace_back(s);
-    max_id=(id>max_id)?id+1:max_id;
-    if(readfds)
+    /*if(id>=max_id)
+        max_id=id+1;*/
+    char buffer = 1;
+    ::write(pipe_fd[1],&buffer,1); //juste pour break le select
+    /*if(readfds)
         FD_SET(id,readfds);
     if(writefds)
         FD_SET(id,writefds);
     if(exceptfds)
-        FD_SET(id,exceptfds);
+        FD_SET(id,exceptfds);*/
 };
 
 void SelectManager::remove(Socket* s)
@@ -49,7 +56,7 @@ void SelectManager::remove(Socket* s)
 void SelectManager::clear()
 {
     datas.clear();
-    max_id=0;
+    max_id=pipe_fd[0]+1;
     if(readfds)
         FD_ZERO(readfds);
     if(writefds)
@@ -68,13 +75,22 @@ void SelectManager::reset()
     if(exceptfds)
         FD_ZERO(exceptfds);
 
+    max_id = pipe_fd[0]+1;
+    //pipe add
+    if(readfds)
+        FD_SET(pipe_fd[0],readfds);
+    if(writefds)
+        FD_SET(pipe_fd[0],writefds);
+    if(exceptfds)
+        FD_SET(pipe_fd[0],exceptfds);
+
     auto end = datas.end();
-    max_id = 0;
     // add to the connection all socket
     for(auto it=datas.begin();it!=end;++it)
     {
         int id = (*it)->id();
-        max_id=(id>=max_id)?id+1:max_id;
+        if(id>=max_id)
+            max_id=id+1;
         //add socket
         if(readfds)
             FD_SET(id,readfds);
@@ -191,6 +207,27 @@ void SelectManager::run()
         }
         else if (res == 0) //timout
             continue;
+        else
+        {
+            if(readfds and FD_ISSET(pipe_fd[0],readfds))
+            {
+                char buffer[255];
+                read(pipe_fd[0], buffer, sizeof(buffer));
+                continue;
+            }
+            if(writefds and FD_ISSET(pipe_fd[0],writefds))
+            {
+                char buffer[255];
+                read(pipe_fd[0], buffer, sizeof(buffer));
+                continue;
+            }
+            if(exceptfds and FD_ISSET(pipe_fd[0],exceptfds))
+            {
+                char buffer[255];
+                read(pipe_fd[0], buffer, sizeof(buffer));
+                continue;
+            }
+        }
 
         //loop sur les Socket pour savoir si c'est elle
         auto end = datas.end();

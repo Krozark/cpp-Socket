@@ -1,8 +1,8 @@
-#include "SocketSerialized.hpp"
-#include "SelectManager.hpp"
+#include <Socket/SocketSerialized.hpp>
+#include <Socket/SelectManager.hpp>
 
 #define NTW_MODE NTW_SERVEUR
-#include "FuncWrapper.hpp"
+#include <Socket/FuncWrapper.hpp>
 
 #include <iostream>
 #include <chrono>
@@ -12,9 +12,7 @@ ntw::SelectManager clientSelector;
 void newclient(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.accept());
-    std::cout<<"Envoi du message: <hello!> à la soket "<<clientSock->id()<<std::endl;
-    *clientSock<<"hello!";
-    clientSock->send();
+    ntw::FuncWrapper::verifyConnect(*clientSock);
 
     //clientSock->Shutdown(ntw::Socket::Down::SEND);
     clientSelector.add(clientSock);

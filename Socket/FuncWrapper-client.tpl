@@ -13,6 +13,23 @@ namespace ntw
         return v;
     }
 
+    bool FuncWrapper::verifyConnect(SocketSerialized& sock)
+    {
+        bool res=false;
+        if(sock.receive() > 0)
+        {
+            char* msg = 0;
+            sock>>msg;
+            std::cout<<"[client] recu char*: <"<<msg<<">"<<std::endl;
+            if(std::string(msg) == std::string(NTW_WELCOM_MSG))
+            {
+                sock.clear();
+                res = true;
+            }
+        }
+        return res;
+    }
+
 
     template<typename ... Args>
     void FuncWrapper::addPackage(FUNCTONS_ID id,SocketSerialized& sock,Args& ... args)
