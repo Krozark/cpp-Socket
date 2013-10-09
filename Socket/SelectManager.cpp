@@ -35,16 +35,9 @@ void SelectManager::add(Socket* s)
 {
     int id = s->id();
     datas.emplace_back(s);
-    /*if(id>=max_id)
-        max_id=id+1;*/
+
     char buffer = 1;
     ::write(pipe_fd[1],&buffer,1); //juste pour break le select
-    /*if(readfds)
-        FD_SET(id,readfds);
-    if(writefds)
-        FD_SET(id,writefds);
-    if(exceptfds)
-        FD_SET(id,exceptfds);*/
 };
 
 void SelectManager::remove(Socket* s)
@@ -59,13 +52,9 @@ void SelectManager::remove(Socket* s)
 void SelectManager::clear()
 {
     datas.clear();
-    max_id=pipe_fd[0]+1;
-    if(readfds)
-        FD_ZERO(readfds);
-    if(writefds)
-        FD_ZERO(writefds);
-    if(exceptfds)
-        FD_ZERO(exceptfds);
+
+    reset();
+
 };
 
 void SelectManager::reset()
