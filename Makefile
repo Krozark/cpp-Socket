@@ -1,31 +1,49 @@
-CC = g++
-INCPATH = -I$(CURDIR) 
+export CC = g++
+INCPATH = -I$(CURDIR)
 LIBS = -lpthread 
-DEFINES = 
-FLAGS = -g -std=c++0x -o3 $(INCPATH) $(LIBS) $(DEFINES)
+export DEFINES = 
+export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
+export TOP = $(CURDIR)
+export OBJ_DIR = $(TOP)/obj
 
-all: serveur.exe client.exe
+SRC = $(wildcard *.c*)
+OBJ = $(SRC:.c=.o) $(SRC:*.cpp=.o)
+
+SUBDIRS = Socket obj
+
+export SERVER = server
+export CLIENT = client
+
+export EXEC = $(SERVER) $(CLIENT)
+
+
+export SERVER = server
+CLEANDIRS = $(SUBDIRS:%=clean-%)
+
+.PHONY: subdirs $(SUBDIRS)
+.PHONY: subdirs $(CLEANDIRS)
+
+all: $(OBJ) subdirs
+
+subdirs: $(SUBDIRS)
+     
+$(SUBDIRS):
+	$(MAKE) -C $@
+
 
 .cpp.o:
-	$(CC) $(FLAGS) -o "$@" -c "$<" 
+	$(CC) $(FLAGS) -o $@ -c $^;
+	@mv $@ "$(OBJ_DIR)"
 
-.c.o:
-	$(CC) $(FLAGS) -o "$@" -c "$<"
+.c.o :
+	$(CC) $(FLAGS) -o $@ -c $^;
+	@mv $@ "$(OBJ_DIR)"
 
 
-client.exe: Socket/client-main.cpp Socket/Socket.o Socket/Serializer.o Socket/SocketSerialized.o Socket/SelectManager.o
-	$(CC) $^ $(FLAGS) -o $@
+clean: $(CLEANDIRS)
 
-serveur.exe: Socket/serveur-main.cpp Socket/Socket.o Socket/Serializer.o Socket/SocketSerialized.o Socket/SelectManager.o
-	$(CC) $^ $(FLAGS) -o $@
-
-Socket/Serializer.o : Socket/Serializer.cpp Socket/Serializer.hpp
-	$(CC) $(FLAGS) -o "$@" -c "$<"
-
-Socket/Socket.o: Socket/Socket.cpp Socket/Socket.hpp
-	$(CC) $(FLAGS) -o "$@" -c "$<"
-
-clean:
+$(CLEANDIRS): 
+	$(MAKE) -C $(@:clean-%=%) clean
 	@rm -f *.o
-	@rm -f Socket/*.o
-	@rm -f *.exe
+	@rm -f $(EXEC)
+
