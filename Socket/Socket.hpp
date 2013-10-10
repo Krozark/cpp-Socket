@@ -37,8 +37,6 @@
 #define NTW_BUF_SIZE	1024
 #define NTW_PORT 3987
 
-#define NTW_CLIENT  1
-#define NTW_SERVEUR  2
 
 namespace ntw {
 

@@ -35,11 +35,7 @@ void SelectManager::add(Socket* s)
 {
     int id = s->id();
     datas.emplace_back(s);
-
-    #if __linux //|| __unix //or __APPLE__ 
-    char buffer = 1;
-    ::write(pipe_fd[1],&buffer,1); //juste pour break le select
-    #endif
+    breakSelect();
 };
 
 void SelectManager::remove(Socket* s)
@@ -48,55 +44,16 @@ void SelectManager::remove(Socket* s)
     auto end = datas.end();
     auto it = std::find(datas.begin(),end,s);
     if(it != end)
+    {
         datas.erase(it);
-    reset();
+        breakSelect();
+    }
 };
 void SelectManager::clear()
 {
     datas.clear();
+    breakSelect();
 
-    reset();
-
-};
-
-void SelectManager::reset()
-{
-    //reset
-    if(readfds)
-        FD_ZERO(readfds);
-    if(writefds)
-        FD_ZERO(writefds);
-    if(exceptfds)
-        FD_ZERO(exceptfds);
-
-    #if __linux //|| __unix //or __APPLE__ 
-    max_id = pipe_fd[0]+1;
-    //pipe add
-    if(readfds)
-        FD_SET(pipe_fd[0],readfds);
-    if(writefds)
-        FD_SET(pipe_fd[0],writefds);
-    if(exceptfds)
-        FD_SET(pipe_fd[0],exceptfds);
-    #else
-    max_id = 0;
-    #endif
-
-    auto end = datas.end();
-    // add to the connection all socket
-    for(auto it=datas.begin();it!=end;++it)
-    {
-        int id = (*it)->id();
-        if(id>=max_id)
-            max_id=id+1;
-        //add socket
-        if(readfds)
-            FD_SET(id,readfds);
-        if(writefds)
-            FD_SET(id,writefds);
-        if(exceptfds)
-            FD_SET(id,exceptfds);
-    }
 };
 
 void SelectManager::setArgs(bool read,bool write,bool except,float timeout_sec)
@@ -186,7 +143,13 @@ void SelectManager::start()
     mutex.unlock();
 };
 
-// Signal handler to catch SIGTERM.
+void SelectManager::stop()
+{
+    mutex.lock();
+    _run=false;
+    breakSelect();
+    mutex.unlock();
+}
 
 void SelectManager::run()
 {
@@ -246,5 +209,56 @@ void SelectManager::run()
         }
     }
 };
+
+void SelectManager::reset()
+{
+    //reset
+    if(readfds)
+        FD_ZERO(readfds);
+    if(writefds)
+        FD_ZERO(writefds);
+    if(exceptfds)
+        FD_ZERO(exceptfds);
+
+    #if __linux //|| __unix //or __APPLE__ 
+    max_id = pipe_fd[0]+1;
+    //pipe add
+    if(readfds)
+        FD_SET(pipe_fd[0],readfds);
+    if(writefds)
+        FD_SET(pipe_fd[0],writefds);
+    if(exceptfds)
+        FD_SET(pipe_fd[0],exceptfds);
+    #else
+    max_id = 0;
+    #endif
+
+    auto end = datas.end();
+    // add to the connection all socket
+    for(auto it=datas.begin();it!=end;++it)
+    {
+        int id = (*it)->id();
+        if(id>=max_id)
+            max_id=id+1;
+        //add socket
+        if(readfds)
+            FD_SET(id,readfds);
+        if(writefds)
+            FD_SET(id,writefds);
+        if(exceptfds)
+            FD_SET(id,exceptfds);
+    }
+};
+
+void SelectManager::breakSelect()
+{
+    #if __linux //|| __unix //or __APPLE__ 
+    char buffer = 1;
+    ::write(pipe_fd[1],&buffer,1); //juste pour break le select
+    #endif
+}
+
+
+
 
 };

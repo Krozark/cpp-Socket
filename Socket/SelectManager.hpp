@@ -28,11 +28,7 @@ class SelectManager
         void setTimout(float timout_sec=0);
 
         void start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        inline void stop(){
-            mutex.lock();
-            _run=false;
-            mutex.unlock();
-        };
+        void stop();
         inline void wait(){thread.join();};
         inline void detach(){thread.detach();};
 
@@ -42,19 +38,21 @@ class SelectManager
     private:
         void run(); //Use Start to run it
         void reset();
+        void breakSelect();
 
         fd_set* readfds;
         fd_set* writefds;
         fd_set* exceptfds;
         timeval timeout;
-        #if __linux //|| __unix //or __APPLE__ 
-        int pipe_fd[2];
-        #endif
         std::vector<Socket*> datas;
         volatile int max_id;
         volatile bool _run;
         std::thread thread;
         std::mutex mutex;
+
+        #if __linux //|| __unix //or __APPLE__ 
+        int pipe_fd[2];
+        #endif
 };
 
 };

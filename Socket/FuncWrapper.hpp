@@ -5,8 +5,6 @@
 #include <Socket/define.hpp>
 
 
-//#define NTW_MODE NTW_CLIENT
-
 namespace ntw
 {
     class FuncWrapper
@@ -21,7 +19,7 @@ namespace ntw
 
             enum FUNCTONS_ID {UNKNOW=0,GET_VERSION,MAX_FN_ID};
 
-            #if NTW_MODE == NTW_SERVEUR
+            #if NTW_MODE == NTW_SERVER
             static void dispatch(SocketSerialized& request);
             #endif
             
@@ -41,9 +39,9 @@ namespace ntw
 };
 
 #if NTW_MODE == NTW_CLIENT
-#include <Socket/FuncWrapper-client.tpl>
+#include <Socket/client/FuncWrapper-client.tpl>
 #else
-#include <Socket/FuncWrapper-serveur.tpl>
+#include <Socket/server/FuncWrapper-serveur.tpl>
 #endif
 
 #endif

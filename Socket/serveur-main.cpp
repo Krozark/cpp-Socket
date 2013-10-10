@@ -1,7 +1,7 @@
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/SelectManager.hpp>
 
-#define NTW_MODE NTW_SERVEUR
+#define NTW_MODE NTW_SERVER
 #include <Socket/FuncWrapper.hpp>
 
 #include <iostream>
