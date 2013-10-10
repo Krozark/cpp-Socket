@@ -5,22 +5,36 @@
 
 #include <errno.h>
 #include <string.h>
+ 	
+#ifdef _WIN32 //_WIN64
+#include <fcntl.h>
+#include <io.h>
+#endif
 
 namespace ntw {
 
 SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false)
 {
     setTimout(t);
-    #if __linux //|| __unix //or __APPLE__ 
+    #ifdef _WIN32 //_WIN64
+    ::_pipe(pipe_fd,16,O_BINARY);
+    #elif __linux
     ::pipe(pipe_fd);//pipe_fd[0] = read, [1] = write
+    #else
+    #error pipe not defined for this platform
     #endif
 };
 
 SelectManager::~SelectManager()
 {
-    #if __linux //|| __unix //or __APPLE__ 
+    #ifdef _WIN32 //_WIN64
+    ::_close(pipe_fd[0]);
+    ::_close(pipe_fd[1]);
+    #elif __linux
     ::close(pipe_fd[0]);
     ::close(pipe_fd[1]);
+    #else
+    #error pipe not defined for this platform
     #endif
 
     if(readfds)
@@ -38,7 +52,7 @@ void SelectManager::add(Socket* s)
     breakSelect();
 };
 
-void SelectManager::remove(Socket* s)
+bool SelectManager::remove(Socket* s)
 {
     int id = s->id();
     auto end = datas.end();
@@ -47,7 +61,9 @@ void SelectManager::remove(Socket* s)
     {
         datas.erase(it);
         breakSelect();
+        return true;
     }
+    return false;
 };
 void SelectManager::clear()
 {
@@ -168,7 +184,6 @@ void SelectManager::run()
         }
         else if (res == 0) //timout
             continue;
-        #if __linux //|| __unix //or __APPLE__ 
         else
         {
             if( (readfds and FD_ISSET(pipe_fd[0],readfds))
@@ -176,11 +191,16 @@ void SelectManager::run()
                 or (exceptfds and FD_ISSET(pipe_fd[0],exceptfds)))
             {
                 char buffer[16];
-                read(pipe_fd[0], buffer, sizeof(buffer));
+                #ifdef _WIN32 //_WIN64
+                ::_read(pipe_fd[0], buffer, sizeof(buffer));
+                #elif __linux
+                ::read(pipe_fd[0], buffer, sizeof(buffer));
+                #else
+                #error pipe not defined for this platform
+                #endif
                 continue;
             }
         }
-        #endif
 
         //loop sur les Socket pour savoir si c'est elle
         auto end = datas.end();
@@ -220,7 +240,6 @@ void SelectManager::reset()
     if(exceptfds)
         FD_ZERO(exceptfds);
 
-    #if __linux //|| __unix //or __APPLE__ 
     max_id = pipe_fd[0]+1;
     //pipe add
     if(readfds)
@@ -229,9 +248,6 @@ void SelectManager::reset()
         FD_SET(pipe_fd[0],writefds);
     if(exceptfds)
         FD_SET(pipe_fd[0],exceptfds);
-    #else
-    max_id = 0;
-    #endif
 
     auto end = datas.end();
     // add to the connection all socket
@@ -252,9 +268,13 @@ void SelectManager::reset()
 
 void SelectManager::breakSelect()
 {
-    #if __linux //|| __unix //or __APPLE__ 
     char buffer = 1;
+    #ifdef _WIN32 //_WIN64
+    ::_write(pipe_fd[1],&buffer,1); //juste pour break le select
+    #elif __linux
     ::write(pipe_fd[1],&buffer,1); //juste pour break le select
+    #else
+    #error pipe not defined for this platform
     #endif
 }
 

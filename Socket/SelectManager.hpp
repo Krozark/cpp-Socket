@@ -10,50 +10,54 @@
 
 namespace ntw {
 
-class SelectManager
-{
-    public:
-        explicit SelectManager(float timeout=NTW_DEFAULT_TIMEOUT);
-        ~SelectManager();
-        
-        void add(Socket* s);
-        void remove(Socket* s);
-        void clear();
+    class BalancingSelector;
 
-        void(*onSelect)(SelectManager& self,Socket& s);
-        void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
-        void setRead(bool read=false);
-        void setWrite(bool write=false);
-        void setExcept(bool except=false);
-        void setTimout(float timout_sec=0);
+    class SelectManager
+    {
 
-        void start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        void stop();
-        inline void wait(){thread.join();};
-        inline void detach(){thread.detach();};
+        public:
+            explicit SelectManager(float timeout=NTW_DEFAULT_TIMEOUT);
+            ~SelectManager();
+            
+            void add(Socket* s);
+            bool remove(Socket* s);
+            void clear();
 
-        SelectManager(const SelectManager& other) = delete;
-        SelectManager& operator=(const SelectManager& other) = delete;
+            void(*onSelect)(SelectManager& self,Socket& s);
+            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
+            void setRead(bool read=false);
+            void setWrite(bool write=false);
+            void setExcept(bool except=false);
+            void setTimout(float timout_sec=0);
 
-    private:
-        void run(); //Use Start to run it
-        void reset();
-        void breakSelect();
+            void start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
+            void stop();
+            inline void wait(){thread.join();};
+            inline void detach(){thread.detach();};
 
-        fd_set* readfds;
-        fd_set* writefds;
-        fd_set* exceptfds;
-        timeval timeout;
-        std::vector<Socket*> datas;
-        volatile int max_id;
-        volatile bool _run;
-        std::thread thread;
-        std::mutex mutex;
+            inline unsigned int size()const{return datas.size();};
 
-        #if __linux //|| __unix //or __APPLE__ 
-        int pipe_fd[2];
-        #endif
-};
+            SelectManager(const SelectManager& other) = delete;
+            SelectManager& operator=(const SelectManager& other) = delete;
+
+        private:
+            friend class BalancingSelector;
+            void run(); //Use Start to run it
+            void reset();
+            void breakSelect();
+
+            fd_set* readfds;
+            fd_set* writefds;
+            fd_set* exceptfds;
+            timeval timeout;
+            std::vector<Socket*> datas;
+            volatile int max_id;
+            volatile bool _run;
+            std::thread thread;
+            std::mutex mutex;
+
+            int pipe_fd[2];
+    };
 
 };
 
