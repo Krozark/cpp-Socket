@@ -39,9 +39,9 @@ namespace ntw
 };
 
 #if NTW_MODE == NTW_CLIENT
-#include <Socket/client/FuncWrapper-client.tpl>
+#include <Socket/client/FuncWrapper.tpl>
 #else
-#include <Socket/server/FuncWrapper-serveur.tpl>
+#include <Socket/server/FuncWrapper.tpl>
 #endif
 
 #endif
