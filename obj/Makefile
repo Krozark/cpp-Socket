@@ -1,10 +1,11 @@
 OBJ = $(wildcard *.o)
 OBJ := $(filter-out $(SERVER).o, $(OBJ))
 OBJ := $(filter-out $(CLIENT).o, $(OBJ))
+OBJ := $(filter-out Srv-Server.o, $(OBJ))
 
 all: $(SERVER) $(CLIENT)
 	
-$(SERVER): $(OBJ) $(SERVER).o
+$(SERVER): $(OBJ) $(SERVER).o Srv-Server.o
 	$(CC) $^ $(FLAGS) -o "$(TOP)/$(SERVER)"
 
 $(CLIENT): $(OBJ) $(CLIENT).o

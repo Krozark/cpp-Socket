@@ -113,30 +113,38 @@ namespace ntw
 
     void BalancingSelector::setArgs(bool read,bool write,bool except,float timeout_sec)
     {
+        writefds = write;
+        readfds = read;
+        exceptfds = except;
+        timeout = timeout_sec;
         for(SelectManager& selector : selectors)
             selector.setArgs(read,write,except,timeout_sec);
     }
 
     void BalancingSelector::setRead(bool read)
     {
+        readfds = read;
         for(SelectManager& selector : selectors)
             selector.setRead(read);
     }
 
     void BalancingSelector::setWrite(bool write)
     {
+        writefds = write;
         for(SelectManager& selector : selectors)
             selector.setWrite(write);
     }
 
     void BalancingSelector::setExcept(bool except)
     {
+        exceptfds = except;
         for(SelectManager& selector : selectors)
             selector.setExcept(except);
     }
 
     void BalancingSelector::setTimout(float timeout_sec)
     {
+        timeout = timeout_sec;
         for(SelectManager& selector : selectors)
             selector.setTimout(timeout_sec);
     }
@@ -151,7 +159,8 @@ namespace ntw
 
         if(_run)
             s.start();
-        if(selectors.size()>0)
+        /*if(selectors.size()>1)
             s.detach(); ///< todo
+        */
     }
 }
