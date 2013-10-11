@@ -21,12 +21,13 @@ namespace ntw
         void stop();
         unsigned int size()const;
         
-        void(*onSelect)(SelectManager& self,Socket& s);
-        void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
+        void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=NTW_DEFAULT_TIMEOUT);
         void setRead(bool read=false);
         void setWrite(bool write=false);
         void setExcept(bool except=false);
-        void setTimout(float timout_sec=0);
+        void setTimout(float timeout_sec=NTW_DEFAULT_TIMEOUT);
+        
+        void(*onSelect)(SelectManager& self,Socket& s);
 
 
         private:

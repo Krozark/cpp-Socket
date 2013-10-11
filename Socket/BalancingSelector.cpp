@@ -83,9 +83,38 @@ namespace ntw
         return size;
     }
 
+    void BalancingSelector::setArgs(bool read,bool write,bool except,float timeout_sec)
+    {
+        for(SelectManager& selector : selectors)
+            selector.setArgs(read,write,except,timeout_sec);
+    }
+
+    void BalancingSelector::setRead(bool read)
+    {
+        for(SelectManager& selector : selectors)
+            selector.setRead(read);
+    }
+
+    void BalancingSelector::setWrite(bool write)
+    {
+        for(SelectManager& selector : selectors)
+            selector.setWrite(write);
+    }
+
+    void BalancingSelector::setExcept(bool except)
+    {
+        for(SelectManager& selector : selectors)
+            selector.setExcept(except);
+    }
+
+    void BalancingSelector::setTimout(float timeout_sec)
+    {
+        for(SelectManager& selector : selectors)
+            selector.setTimout(timeout_sec);
+    }
+
     SelectManager& BalancingSelector::newSelector()
     {
-
         selectors.emplace_back();
 
         SelectManager& s = selectors.back();
