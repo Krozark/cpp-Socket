@@ -3,13 +3,22 @@
 
 namespace ntw 
 {
-    BalancingSelector::BalancingSelector(unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout): nb_selector_max(max_selector), max_per_selector(_max), min_per_selector(_min), _run(false)
+    BalancingSelector::BalancingSelector(bool read, bool write, bool except,void (*onSel)(SelectManager&,Socket&), unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout):  readfds(read),
+    writefds(write),
+    exceptfds(except),
+    onSelect(onSel),
+    nb_selector_max(max_selector),
+    max_per_selector(_max),
+    min_per_selector(_min),
+    _run(false),
+    timeout(timeout)
     {
-        newSelector().setTimout(timeout);
-
+        SelectManager& s = newSelector();
+        s.setArgs(readfds,writefds,exceptfds,timeout);
+        s.onSelect = onSelect;
     }
 
-    void BalancingSelector::add(Socket* s)
+    bool BalancingSelector::add(Socket* s)
     {
         unsigned int min_charge = -1;
         SelectManager* min_selector;
@@ -30,9 +39,14 @@ namespace ntw
         }
         else
         {
-            SelectManager& selector = newSelector();
-            selector.add(s);
+            if(nb_selector_max == 0 or selectors.size() < nb_selector_max)
+            {
+                SelectManager& selector = newSelector();
+                selector.add(s);
+            }
+            return false;
         }
+        return true;
     }
 
     void BalancingSelector::remove(Socket* s)
@@ -59,6 +73,7 @@ namespace ntw
         {
             selector.clear();
         }
+        selectors.clear();
     }
 
     void BalancingSelector::start()
@@ -74,6 +89,19 @@ namespace ntw
         for(SelectManager& selector : selectors)
             selector.stop();
     }
+
+    void BalancingSelector::wait()
+    {
+        for(SelectManager& selector : selectors)
+            selector.wait();
+    }
+
+    /*void BalancingSelector::detach()
+    {
+        for(SelectManager& selector : selectors)
+            selector.detach();
+    }*/
+
 
     unsigned int BalancingSelector::size()const
     {
@@ -119,20 +147,11 @@ namespace ntw
 
         SelectManager& s = selectors.back();
         s.onSelect = onSelect;
-
-        if(selectors.size()>0)
-        {
-            const SelectManager& front = selectors.front();
-            if(front.readfds)
-                s.setRead(true);
-            if(front.writefds)
-                s.setWrite(true);
-            if(front.exceptfds)
-                s.setExcept(false);
-            s.timeout = front.timeout;
-        }
+        s.setArgs(readfds,writefds,exceptfds,timeout);
 
         if(_run)
             s.start();
+        if(selectors.size()>0)
+            s.detach(); ///< todo
     }
 }

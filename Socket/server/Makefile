@@ -1,4 +1,5 @@
-all: main
+SRC = $(wildcard *.c*)
+OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
@@ -8,10 +9,7 @@ all: main
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ "$(OBJ_DIR)"
 
-
-main: 
-	#$(CC) $^ $(FLAGS) -o $@
-
+all: $(OBJ)
 
 clean:
 	@rm -f *.o

@@ -7,7 +7,7 @@ namespace ntw
         pk = tmp.pk;
     }
 
-    User::login(std::string username, std::string pass)
+    User User::login(std::string username, std::string pass)
     {
         return User(username,pass);
     }

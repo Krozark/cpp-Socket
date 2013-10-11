@@ -34,6 +34,7 @@ namespace ntw {
             void stop();
             inline void wait(){thread.join();};
             inline void detach(){thread.detach();};
+            //inline bool joinable(){return thread.joinable();};
 
             inline unsigned int size()const{return datas.size();};
 

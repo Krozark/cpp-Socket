@@ -20,7 +20,7 @@ namespace ntw
             int pk;
 
             explicit User(std::string username,std::string pass);
-    }
+    };
 }
 
 #endif
