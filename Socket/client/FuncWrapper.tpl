@@ -29,7 +29,7 @@ namespace ntw
             }
             else
             {
-                cerr<<"[client] recu char*: <"<<msg<<">"<<std::endl;
+                std::cerr<<"[client] rcv <"<<code<<":"<<msg<<">"<<std::endl;
             }
         }
         return res;

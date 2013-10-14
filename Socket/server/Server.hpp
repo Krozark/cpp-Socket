@@ -26,9 +26,9 @@ namespace srv
             ntw::BalancingSelector request_recv;
             ntw::BalancingSelector broadcast_sender;
 
-            static void onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::Socket& sock);
-            static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::Socket& sock);
-            static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::Socket& sock);
+            static void onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+            static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+            static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
     };
 }
 }

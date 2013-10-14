@@ -16,10 +16,6 @@ SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255)
     _cursor_end =_cursor_begin = 2;
 };
 
-SocketSerialized::~SocketSerialized()
-{
-};
-
 void SocketSerialized::send()
 {
     //écrire la taille dans les 2 premier oct

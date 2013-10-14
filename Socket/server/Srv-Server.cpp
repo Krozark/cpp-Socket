@@ -40,34 +40,51 @@ namespace srv
         request_recv.stop();
         broadcast_sender.stop();
     }
-    void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::Socket& sock)
+    void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock)
     {
         ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.accept());
-        ntw::FuncWrapper::verifyConnect(*clientSock);
-
-        Server* self = ((ntw::srv::Server*)((long int)(&new_connexion_recv) - (long int)(&((ntw::srv::Server*)NULL)->new_connexion_recv)));
-        if(not self->request_recv.add(clientSock))
+        Server& self = *((ntw::srv::Server*)((long int)(&new_connexion_recv) - (long int)(&((ntw::srv::Server*)NULL)->new_connexion_recv)));
+        bool ok = true;
+        if(not (self.request_recv.add(clientSock)))
         {
+            ok = false;
+            ntw::FuncWrapper::verifyConnect(*clientSock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
-            
-    }
 
-    void Server::onRequestRecv(ntw::SelectManager& request_recv, ntw::Socket& sock)
-    {
-        ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
-        if(clientSock.receive() >0)
+        if(ok and not (self.broadcast_sender.add(Socket::Dommaine::IP,Socket::Type::TCP,clientSock->getIp(),clientSock->getPort())))
         {
-            ntw::FuncWrapper::dispatch(clientSock);
+            std::cout<<"pwet"<<std::endl;
+            ok = false;
+            self.request_recv.remove(clientSock);
+            ntw::FuncWrapper::verifyConnect(*clientSock,NTW_ERROR_DISPATCH_ADD_MSG,NTW_ERROR_DISPATCH_ADD);
+        }
+
+        if(not ok)
+        {
+            clientSock->shutdown();
+            delete clientSock;
         }
         else
         {
-            std::cerr<<"Client connection lost <id:"<<clientSock.id()<<">"<<std::endl; 
-            request_recv.remove(&clientSock);
-            delete &clientSock;
+            ntw::FuncWrapper::verifyConnect(*clientSock,NTW_WELCOM_MSG,NTW_ERROR_NO);
+        }            
+    }
+
+    void Server::onRequestRecv(ntw::SelectManager& request_recv, ntw::SocketSerialized& sock)
+    {
+        if(sock.receive() >0)
+        {
+            ntw::FuncWrapper::dispatch(sock);
+        }
+        else
+        {
+            std::cerr<<"Client connection lost <id:"<<sock.id()<<">"<<std::endl; 
+            request_recv.remove(&sock);
+            delete &sock;
         }
     }
 
-    void Server::onBroadCastRecv(ntw::SelectManager& broadcast_sender, ntw::Socket& sock)
+    void Server::onBroadCastRecv(ntw::SelectManager& broadcast_sender, ntw::SocketSerialized& sock)
     {
     }
 }

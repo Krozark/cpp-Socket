@@ -7,12 +7,11 @@
 #include <iostream>
 #include <chrono>
 
-void reply(ntw::SelectManager& selector,ntw::Socket& sock)
+void reply(ntw::SelectManager& selector,ntw::SocketSerialized& sock)
 {
-    ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
-    if (clientSock.receive() > 0)
+    if (sock.receive() > 0)
     {
-        std::cout<<clientSock<<std::endl;
+        std::cout<<sock<<std::endl;
         /*char* c=0;
         clientSock>>c;
         std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;

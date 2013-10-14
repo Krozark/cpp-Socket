@@ -13,6 +13,7 @@ namespace ntw
         sock<<message;
         sock<<code;
         sock.sendCl();
+        return true;
     }
 
     void FuncWrapper::dispatch(SocketSerialized& request)

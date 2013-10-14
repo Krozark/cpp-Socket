@@ -11,7 +11,7 @@ class SocketSerialized : public Serializer, public Socket
     public:
         SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole=0);
         explicit SocketSerialized(Socket&& s);
-        ~SocketSerialized();
+        //~SocketSerialized();
 
         /// SOCKET
         //inline void Connect(std::string host,int port=PORT){Socket::Connect(host,port);};

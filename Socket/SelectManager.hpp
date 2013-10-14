@@ -6,7 +6,7 @@
 #include <mutex>
 
 #include <Socket/define.hpp>
-#include <Socket/Socket.hpp>
+#include <Socket/SocketSerialized.hpp>
 
 namespace ntw {
 
@@ -19,11 +19,11 @@ namespace ntw {
             explicit SelectManager(float timeout=NTW_DEFAULT_TIMEOUT);
             ~SelectManager();
             
-            void add(Socket* s);
-            bool remove(Socket* s);
+            void add(SocketSerialized* s);
+            bool remove(SocketSerialized* s);
             void clear();
 
-            void(*onSelect)(SelectManager& self,Socket& s);
+            void(*onSelect)(SelectManager& self,SocketSerialized& s);
             void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=NTW_DEFAULT_TIMEOUT);
             void setRead(bool read=false);
             void setWrite(bool write=false);
@@ -51,7 +51,7 @@ namespace ntw {
             fd_set* writefds;
             fd_set* exceptfds;
             timeval timeout;
-            std::vector<Socket*> datas;
+            std::vector<SocketSerialized*> datas;
             volatile int max_id;
             volatile bool _run;
             std::thread thread;

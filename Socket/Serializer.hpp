@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <iostream>
 
-
 #include <stdio.h>
 
 /*
@@ -34,61 +33,42 @@ class Serializer
         Serializer& operator=(const Serializer&) = delete;
 
 
-        inline const unsigned int size()const{return _cursor_end - _cursor_begin;};
+        const unsigned int size()const;
 
         /********* SERIALIZE *************/
         //1 oct | 8 bit
-        inline Serializer& operator<<(char c){push(*reinterpret_cast<uint8_t*>(&c));return *this;};         
+        Serializer& operator<<(char c);
         //2 oct | 16 bit
-        inline Serializer& operator<<(short int s){push(*reinterpret_cast<uint16_t*>(&s));return *this;};
+        Serializer& operator<<(short int s);
         //4 oct | 32 bit
-        inline Serializer& operator<<(int i){push(*reinterpret_cast<uint32_t*>(&i));return *this;};
-        inline Serializer& operator<<(float f){push(*reinterpret_cast<uint32_t*>(&f));return *this;};
+        Serializer& operator<<(int i);
+        Serializer& operator<<(unsigned int i);
+        Serializer& operator<<(float f);
         //8 oct | 64 bit
-        inline Serializer& operator<<(double d){push(*reinterpret_cast<uint64_t*>(&d));return *this;};
-        inline Serializer& operator<<(long int l){push(*reinterpret_cast<uint64_t*>(&l));return *this;};
+        Serializer& operator<<(double d);
+        Serializer& operator<<(long int l);
         //16 oct | 124 bit
-        //inline Serializer& operator<<(long double ld){push(*reinterpret_cast<uint128_t*>(&ld);};
+        //Serializer& operator<<(long double ld){push(*reinterpret_cast<uint128_t*>(&ld);};
         //1 oct | 8 bit []
-        inline Serializer& operator<<(const char* const c){
-            uint8_t* data = (uint8_t*)c;
-            for(int i=0;c[i];++i) //exit when \0
-                push(data[i]);
-            uint8_t end = '\0';
-            push(end);
-            return *this;
-        };
+        Serializer& operator<<(const char* const c);
+        //string
+        Serializer& operator<<(const std::string& str);
 
         /********** UNSERIALIZE ***********/
         //1 oct | 8 bit
-        inline Serializer& operator>>(char& c){pop(*reinterpret_cast<uint8_t*>(&c));return *this;};         
+        Serializer& operator>>(char& c);
         //2 oct | 16 bit
-        inline Serializer& operator>>(short int s){pop(*reinterpret_cast<uint16_t*>(&s));return *this;};
+        Serializer& operator>>(short int s);
         //4 oct | 32 bit
-        inline Serializer& operator>>(int& i){pop(*reinterpret_cast<uint32_t*>(&i));return *this;};
-        inline Serializer& operator>>(float& f){pop(*reinterpret_cast<uint32_t*>(&f));return *this;};
+        Serializer& operator>>(int& i);
+        Serializer& operator>>(unsigned int& i);
+        Serializer& operator>>(float& f);
         //8 oct | 64 bit
-        inline Serializer& operator>>(double& d){pop(*reinterpret_cast<uint64_t*>(&d));return *this;};
-        inline Serializer& operator>>(long int& l){pop(*reinterpret_cast<uint64_t*>(&l));return *this;};
+        Serializer& operator>>(double& d);
+        Serializer& operator>>(long int& l);
         //1 oct | 8 bit []
-        inline Serializer& operator>>(char*& c){
-            unsigned int size = _cursor_begin;
-            for(;size<_cursor_end && _buffer[size] != '\0';++size){}
-            size -= _cursor_begin-1;
-
-            char* data = new char[size];
-
-            for(unsigned int i=0;i<size;++i)
-                data[i] = _buffer[_cursor_begin + i];
-
-            _cursor_begin += size;
-
-            if (c)
-                delete c;
-            c=data;
-
-            return *this;
-        };
+        Serializer& operator>>(char*& c);
+        Serializer& operator>>(std::string& str);
 
 
         friend std::ostream& operator<<(std::ostream& output,const Serializer& self);

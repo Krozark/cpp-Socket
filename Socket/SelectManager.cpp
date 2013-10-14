@@ -47,14 +47,14 @@ SelectManager::~SelectManager()
         delete exceptfds;
 }
 
-void SelectManager::add(Socket* s)
+void SelectManager::add(SocketSerialized* s)
 {
     int id = s->id();
     datas.emplace_back(s);
     breakSelect();
 };
 
-bool SelectManager::remove(Socket* s)
+bool SelectManager::remove(SocketSerialized* s)
 {
     int id = s->id();
     auto end = datas.end();

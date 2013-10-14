@@ -47,7 +47,7 @@ bool Socket::connect(std::string host,int port)
     else
     {
         std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;
-        return true;
+        return false;
     }
 };
 

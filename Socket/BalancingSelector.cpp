@@ -4,7 +4,7 @@
 
 namespace ntw 
 {
-    BalancingSelector::BalancingSelector(bool read, bool write, bool except,void (*onSel)(SelectManager&,Socket&), unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout):  readfds(read),
+    BalancingSelector::BalancingSelector(bool read, bool write, bool except,void (*onSel)(SelectManager&,SocketSerialized&), unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout):  readfds(read),
     writefds(write),
     exceptfds(except),
     onSelect(onSel),
@@ -19,7 +19,7 @@ namespace ntw
         s.onSelect = onSelect;
     }
 
-    bool BalancingSelector::add(Socket* s)
+    bool BalancingSelector::add(SocketSerialized* s)
     {
         unsigned int min_charge = -1;
         SelectManager* min_selector;
@@ -53,11 +53,14 @@ namespace ntw
 
     bool BalancingSelector::add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port)
     {
-        Socket* sock = new SocketSerialized(dommaine,type);
+        SocketSerialized* sock = new SocketSerialized(dommaine,type);
         bool res = add(sock);
         if(res)
         {
             res = sock->connect(host,port);
+            std::cout<<"BalancingSelector::add"<<std::endl;
+            if(not res)
+                remove(sock);
         }
         if(not res)
         {
@@ -67,7 +70,7 @@ namespace ntw
         return res;
     }
 
-    void BalancingSelector::remove(Socket* s)
+    void BalancingSelector::remove(SocketSerialized* s)
     {
         int i = 0; //pour garder au moins 1 selector
         for(SelectManager& selector : selectors)
