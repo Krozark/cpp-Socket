@@ -21,8 +21,8 @@ namespace srv
             void stop();
 
         private:
-            //ntw::SocketSerialized new_connexion_sock;
-            //ntw::SelectManager new_connexion_recv;
+            ntw::SocketSerialized new_connexion_sock;
+            ntw::SelectManager new_connexion_recv;
             ntw::BalancingSelector request_recv;
             //ntw::BalancingSelector broadcast_sender;
 

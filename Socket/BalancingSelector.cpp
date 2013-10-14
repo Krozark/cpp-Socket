@@ -162,5 +162,6 @@ namespace ntw
         /*if(selectors.size()>1)
             s.detach(); ///< todo
         */
+        return s;
     }
 }
