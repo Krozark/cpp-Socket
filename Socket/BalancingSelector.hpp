@@ -16,6 +16,7 @@ namespace ntw
             BalancingSelector& operator=(const BalancingSelector&) = delete;
 
             bool add(Socket* s);
+            bool add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port=NTW_PORT);
             void remove(Socket* s);
             void clear();
             void start();

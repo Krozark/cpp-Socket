@@ -15,7 +15,7 @@ namespace ntw
             FuncWrapper& operator=(const FuncWrapper&) = delete;
 
             static int getVersion(SocketSerialized& sock); ///< get serveur version
-            static bool verifyConnect(SocketSerialized& sock); ///< initialise the socket (client : verify the msg, serveur: send hello)
+            static bool verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code); ///< initialise the socket (client : verify the msg, serveur: send hello)
 
             enum FUNCTONS_ID {UNKNOW=0,GET_VERSION,MAX_FN_ID};
 

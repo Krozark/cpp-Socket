@@ -13,18 +13,23 @@ namespace ntw
         return v;
     }
 
-    bool FuncWrapper::verifyConnect(SocketSerialized& sock)
+    bool FuncWrapper::verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code)
     {
         bool res=false;
         if(sock.receive() > 0)
         {
             char* msg = 0;
             sock>>msg;
-            std::cout<<"[client] recu char*: <"<<msg<<">"<<std::endl;
-            if(std::string(msg) == std::string(NTW_WELCOM_MSG))
+            sock>>code;
+
+            if(std::string(msg) == std::string(message) and code == NTW_ERROR_NO)
             {
                 sock.clear();
                 res = true;
+            }
+            else
+            {
+                cerr<<"[client] recu char*: <"<<msg<<">"<<std::endl;
             }
         }
         return res;

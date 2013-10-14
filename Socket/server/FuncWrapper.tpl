@@ -7,12 +7,12 @@ namespace ntw
         sock.sendCl();        
     }
 
-    bool FuncWrapper::verifyConnect(SocketSerialized& sock)
+    bool FuncWrapper::verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code)
     {
-        std::cout<<"Envoi du message: <hello!> à la soket "<<sock.id()<<std::endl;
         sock.clear();
-        sock<<NTW_WELCOM_MSG;
-        sock.sendCl();        
+        sock<<message;
+        sock<<code;
+        sock.sendCl();
     }
 
     void FuncWrapper::dispatch(SocketSerialized& request)

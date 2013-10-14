@@ -32,7 +32,7 @@ Socket::~Socket()
     _close();
 };
 
-void Socket::connect(std::string host,int port)
+bool Socket::connect(std::string host,int port)
 {
     //sin_addr.s_addr =  adresse IP
     sock_cfg.sin_addr.s_addr = inet_addr(host.c_str());
@@ -40,9 +40,15 @@ void Socket::connect(std::string host,int port)
     sock_cfg.sin_port = htons(port);
 
     if(::connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
+    {
         std::cerr<<"<id:"<<sock<<">Connect to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
+        return true;
+    }
     else
-        std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;;
+    {
+        std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;
+        return true;
+    }
 };
 
 void Socket::bind()
@@ -90,7 +96,7 @@ Socket Socket::accept()
 void Socket::accept(Socket& client)
 {
     socklen_t size = sizeof(sockaddr_in);
-    std::cerr<<"<id:"<<sock<<">Waiting a new connection to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
+    std::cerr<<"<id:"<<sock<<">Waiting a new connection to "<<getIp()<<":"<<getPort()<<std::endl;
     client.sock = ::accept(sock,(sockaddr*) &(client.sock_cfg), &size);
     if (client.sock == INVALID_SOCKET)
     {
@@ -108,6 +114,16 @@ void Socket::shutdown(Socket::Down mode)
         throw SocketExeption("Can't shutdown socket");
     }
 };
+
+std::string Socket::getIp() const
+{
+    return std::string(inet_ntoa(sock_cfg.sin_addr));
+}
+
+unsigned int Socket::getPort() const
+{
+    return htons(sock_cfg.sin_port);
+}
 
 };
 

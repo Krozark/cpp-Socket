@@ -34,23 +34,6 @@ void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 int main(int argc, char* argv[])
 {
 
-    /*ntw::SocketSerialized sockSer(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    sockSer.serveurMode();
-
-    ntw::SelectManager serverSelector;
-    serverSelector.setRead(true);
-    serverSelector.onSelect = newclient;
-    serverSelector.add(&sockSer);
-
-    clientSelector.setRead(true);
-    clientSelector.onSelect = reply;
-
-    clientSelector.start();
-    serverSelector.start();
-
-    clientSelector.wait();
-    serverSelector.wait();*/
-
     const unsigned int max_client = 100;
     ntw::srv::Server server(max_client);
     server.start();

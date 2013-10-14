@@ -9,8 +9,8 @@ namespace srv
     Server::Server(unsigned int max_client,unsigned int min_client,float timeout) :
         new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
-        request_recv(true,false,false,onRequestRecv,min_client,max_client,0,timeout)
-        //broadcast_sender(true,false,false,onBroadCastRecv,min_client,max_client,0,timeout)
+        request_recv(true,false,false,onRequestRecv,min_client,max_client,0,timeout),
+        broadcast_sender(true,false,false,onBroadCastRecv,min_client,max_client,0,timeout)
     {
         //init sock
         new_connexion_sock.serveurMode();
@@ -26,26 +26,30 @@ namespace srv
         //start
         new_connexion_recv.start();
         request_recv.start();
-        //broadcast_sender.start();
+        broadcast_sender.start();
 
         //join
         new_connexion_recv.wait();
         request_recv.wait();
-        //broadcast_sender.wait();
+        broadcast_sender.wait();
     }
 
     void Server::stop()
     {
         new_connexion_recv.stop();
         request_recv.stop();
-        //broadcast_sender.stop();
+        broadcast_sender.stop();
     }
     void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::Socket& sock)
     {
         ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.accept());
         ntw::FuncWrapper::verifyConnect(*clientSock);
 
-        ((ntw::srv::Server*)((long int)(&new_connexion_recv) - (long int)(&((ntw::srv::Server*)NULL)->new_connexion_recv)))->request_recv.add(clientSock);
+        Server* self = ((ntw::srv::Server*)((long int)(&new_connexion_recv) - (long int)(&((ntw::srv::Server*)NULL)->new_connexion_recv)));
+        if(not self->request_recv.add(clientSock))
+        {
+        }
+            
     }
 
     void Server::onRequestRecv(ntw::SelectManager& request_recv, ntw::Socket& sock)

@@ -1,4 +1,5 @@
 #include <Socket/BalancingSelector.hpp>
+#include <Socket/SocketSerialized.hpp>
 #include <iostream>
 
 namespace ntw 
@@ -49,6 +50,23 @@ namespace ntw
         return true;
     }
 
+
+    bool BalancingSelector::add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port)
+    {
+        Socket* sock = new SocketSerialized(dommaine,type);
+        bool res = add(sock);
+        if(res)
+        {
+            res = sock->connect(host,port);
+        }
+        if(not res)
+        {
+            delete sock;
+        }
+
+        return res;
+    }
+
     void BalancingSelector::remove(Socket* s)
     {
         int i = 0; //pour garder au moins 1 selector
@@ -61,7 +79,6 @@ namespace ntw
                     //\todo
                     std::cerr<<"[TODO] killer le selector, et redistribuer les sockets"<<std::endl;
                 }
-
             }
             ++i;
         }

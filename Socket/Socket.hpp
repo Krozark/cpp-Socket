@@ -71,7 +71,7 @@ class Socket
 
         const SOCKET id(){return sock;}
 
-        void connect(std::string host,int port=NTW_PORT);
+        bool connect(std::string host,int port=NTW_PORT);
         void bind();
         void listen(const int max_connexion);
         void serveurMode(const int max_connexion=5,std::string host="",int port=NTW_PORT);//init sock_cfg + bind + listen
@@ -96,6 +96,9 @@ class Socket
         {
             return ::recv(sock,buffer,size,flags);
         };
+
+        std::string getIp()const;
+        unsigned int getPort() const;
 
 
 

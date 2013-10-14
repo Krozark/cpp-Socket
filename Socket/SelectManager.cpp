@@ -37,6 +37,8 @@ SelectManager::~SelectManager()
     #error pipe not defined for this platform
     #endif
 
+    clear();
+
     if(readfds)
         delete readfds;
     if(writefds)
@@ -67,6 +69,9 @@ bool SelectManager::remove(Socket* s)
 };
 void SelectManager::clear()
 {
+    for(Socket* s : datas)
+        delete s;
+
     datas.clear();
     breakSelect();
 
