@@ -8,6 +8,10 @@
 #define NTW_MODE NTW_CLIENT
 #endif
 
+#define NTW_MAX_CONNEXION 5
+#define NTW_PORT_SERVER 3987
+#define NTW_PORT_CLIENT 3988
+
 #define NTW_VERSION 42
 
 #define NTW_DEFAULT_TIMEOUT 5.f
@@ -16,6 +20,9 @@
 /**************************
  * ERRORS MESSAGE / code
  * ***********************/
+
+#define NTW_ERROR_UNKNOW_MSG "Unknow error"
+#define NTW_ERROR_UNKNOW 404
 
 #define NTW_WELCOM_MSG "hello!"
 #define NTW_ERROR_NO 0

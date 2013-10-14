@@ -7,6 +7,10 @@
 #include <iostream>
 #include <chrono>
 
+void broadcast(ntw::SelectManager& selector,ntw::SocketSerialized& sock)
+{
+}
+
 void reply(ntw::SelectManager& selector,ntw::SocketSerialized& sock)
 {
     if (sock.receive() > 0)
@@ -24,7 +28,7 @@ void reply(ntw::SelectManager& selector,ntw::SocketSerialized& sock)
     }
     else
     {
-        std::cerr<<"Server connection lost"<<std::endl; 
+        std::cerr<<"Server connexion lost"<<std::endl; 
         selector.remove(&sock);
         selector.stop();
     }
@@ -32,56 +36,39 @@ void reply(ntw::SelectManager& selector,ntw::SocketSerialized& sock)
 
 int main(int argc, char* argv[])
 {
-    /*
-    ntw::Socket sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    sock.Connect("127.0.0.1");
-    char msg[32] = {0};
-    sock.Receive(msg,32);
-    std::cout<<"Recu : "<<msg<<std::endl;
-    */
-
-    /*
-    ntw::Serializer ser(0);
-    char a[]="test de la mort";
-    ser<<'t'
-        <<65
-        <<67
-        <<a
-        <<68;
-
-    char c;
-    ser>>c;
-    std::cout<<c<<std::endl;
-
-    int i;
-    ser>>i;
-    std::cout<<i<<std::endl;
-
-    ser>>i;
-    std::cout<<i<<std::endl;
-
-    char* s = NULL;
-
-    ser>>s;
-    std::cout<<s<<std::endl;
-    */
     
-    ntw::SocketSerialized sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    sock.connect("127.0.0.1");
-
-    /*ntw::SelectManager clientSelector;
-    clientSelector.setRead(true);
-    clientSelector.onSelect = reply;
-    clientSelector.add(&clientSock);
-
-    clientSelector.start();
-    clientSelector.wait();*/
-
-    if (not ntw::FuncWrapper::verifyConnect(sock))
+    //init broadcast sock
+    ntw::SocketSerialized* broadcast_sock = new ntw::SocketSerialized(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+    broadcast_sock->serverMode(NTW_PORT_CLIENT);
+    //init broadcast thread
+    ntw::SelectManager broadcast_recv;
+    broadcast_recv.setRead(true);
+    broadcast_recv.onSelect = broadcast;
+    broadcast_recv.add(broadcast_sock);
+    
+    //init request sock
+    ntw::SocketSerialized request_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+    request_sock.connect("127.0.0.1",NTW_PORT_SERVER);
+    
+    //start listener
+    broadcast_recv.start();
+    
+    /**********************
+     ******* CLIENT *******
+     *********************/
+    if (ntw::FuncWrapper::verifyConnect(request_sock) != NTW_ERROR_NO)
     {
+        broadcast_recv.stop();
+        broadcast_recv.wait();
         return 1;
     }
-    ntw::FuncWrapper::getVersion(sock);
+    ntw::FuncWrapper::getVersion(request_sock);
+    std::cout<<ntw::FuncWrapper::getVersion(request_sock)<<std::endl;
+
+
+    //wait broadcast closure
+    broadcast_recv.stop();
+    broadcast_recv.wait();
 
     return 0;
 };

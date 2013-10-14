@@ -16,7 +16,7 @@ namespace ntw
             BalancingSelector& operator=(const BalancingSelector&) = delete;
 
             bool add(SocketSerialized* s);
-            bool add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port=NTW_PORT);
+            bool add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port);
             void remove(SocketSerialized* s);
             void clear();
             void start();

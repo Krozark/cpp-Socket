@@ -8,14 +8,13 @@ namespace ntw
         if (sock.receive() > 0)
         {
             sock>>v;
-            std::cout<<v<<std::endl;
         }
         return v;
     }
 
-    bool FuncWrapper::verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code)
+    int FuncWrapper::verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code)
     {
-        bool res=false;
+        code = NTW_ERROR_UNKNOW; 
         if(sock.receive() > 0)
         {
             char* msg = 0;
@@ -24,15 +23,15 @@ namespace ntw
 
             if(std::string(msg) == std::string(message) and code == NTW_ERROR_NO)
             {
-                sock.clear();
-                res = true;
+                std::cerr<<"[client] rcv <"<<code<<":"<<msg<<">"<<std::endl;
             }
             else
             {
                 std::cerr<<"[client] rcv <"<<code<<":"<<msg<<">"<<std::endl;
             }
+            sock.clear();
         }
-        return res;
+        return code;
     }
 
 

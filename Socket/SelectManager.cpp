@@ -69,7 +69,7 @@ bool SelectManager::remove(SocketSerialized* s)
 };
 void SelectManager::clear()
 {
-    for(Socket* s : datas)
+    for(SocketSerialized* s : datas)
         delete s;
 
     datas.clear();

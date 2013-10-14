@@ -14,8 +14,9 @@ namespace ntw
             FuncWrapper(const FuncWrapper&) = delete;
             FuncWrapper& operator=(const FuncWrapper&) = delete;
 
+            static int verifyConnect(SocketSerialized& sock,const std::string message=NTW_WELCOM_MSG,unsigned int code=NTW_ERROR_NO); ///< initialise the socket (client : verify the msg, serveur: send hello)
+
             static int getVersion(SocketSerialized& sock); ///< get serveur version
-            static bool verifyConnect(SocketSerialized& sock,const std::string message=NTW_WELCOM_MSG,unsigned int code=NTW_ERROR_NO); ///< initialise the socket (client : verify the msg, serveur: send hello)
 
             enum FUNCTONS_ID {UNKNOW=0,GET_VERSION,MAX_FN_ID};
 

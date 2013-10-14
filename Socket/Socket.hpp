@@ -33,9 +33,8 @@
 #include <string>
 #include <exception>
 
-#define NTW_CRLF		"\r\n"
-#define NTW_BUF_SIZE	1024
-#define NTW_PORT 3987
+#include <Socket/define.hpp>
+
 
 
 namespace ntw {
@@ -71,10 +70,10 @@ class Socket
 
         const SOCKET id(){return sock;}
 
-        bool connect(std::string host,int port=NTW_PORT);
+        bool connect(std::string host,int port);
         void bind();
         void listen(const int max_connexion);
-        void serveurMode(const int max_connexion=5,std::string host="",int port=NTW_PORT);//init sock_cfg + bind + listen
+        void serverMode(int port,const int max_connexion=NTW_MAX_CONNEXION,std::string host="");//init sock_cfg + bind + listen
 
         Socket accept();
         void accept(Socket& client);

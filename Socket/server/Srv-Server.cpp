@@ -7,18 +7,18 @@ namespace ntw
 namespace srv
 {
     Server::Server(unsigned int max_client,unsigned int min_client,float timeout) :
-        new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
         request_recv(true,false,false,onRequestRecv,min_client,max_client,0,timeout),
         broadcast_sender(true,false,false,onBroadCastRecv,min_client,max_client,0,timeout)
     {
         //init sock
-        new_connexion_sock.serveurMode();
+        new_connexion_sock = new SocketSerialized(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+        new_connexion_sock->serverMode(NTW_PORT_SERVER);
         //init selector
         new_connexion_recv.setRead(true);
         new_connexion_recv.onSelect = onNewClientRecv;
         //add sock
-        new_connexion_recv.add(&new_connexion_sock);
+        new_connexion_recv.add(new_connexion_sock);
     }
 
     void Server::start()
@@ -51,9 +51,8 @@ namespace srv
             ntw::FuncWrapper::verifyConnect(*clientSock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
-        if(ok and not (self.broadcast_sender.add(Socket::Dommaine::IP,Socket::Type::TCP,clientSock->getIp(),clientSock->getPort())))
+        if(ok and not (self.broadcast_sender.add(Socket::Dommaine::IP,Socket::Type::TCP,clientSock->getIp(),NTW_PORT_CLIENT)))
         {
-            std::cout<<"pwet"<<std::endl;
             ok = false;
             self.request_recv.remove(clientSock);
             ntw::FuncWrapper::verifyConnect(*clientSock,NTW_ERROR_DISPATCH_ADD_MSG,NTW_ERROR_DISPATCH_ADD);
@@ -78,7 +77,7 @@ namespace srv
         }
         else
         {
-            std::cerr<<"Client connection lost <id:"<<sock.id()<<">"<<std::endl; 
+            std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl; 
             request_recv.remove(&sock);
             delete &sock;
         }
@@ -86,6 +85,18 @@ namespace srv
 
     void Server::onBroadCastRecv(ntw::SelectManager& broadcast_sender, ntw::SocketSerialized& sock)
     {
+        if(sock.receive() >0)
+        {
+            sock.clear();
+            sock<<NTW_ERROR_UNKNOW<<"WTF are you doing right now?";
+            sock.sendCl();
+        }
+        else
+        {
+            std::cerr<<"[SERVER] onBroadCastRecv connexion lost <id:"<<sock.id()<<">"<<std::endl; 
+            broadcast_sender.remove(&sock);
+            delete &sock;
+        }
     }
 }
 }

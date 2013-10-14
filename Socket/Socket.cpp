@@ -41,7 +41,7 @@ bool Socket::connect(std::string host,int port)
 
     if(::connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
     {
-        std::cerr<<"<id:"<<sock<<">Connect to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
+        std::cerr<<"<id:"<<sock<<">Connected to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
         return true;
     }
     else
@@ -69,7 +69,7 @@ void Socket::listen(const int max_connexion)
     }
 }
 
-void Socket::serveurMode(const int max_connexion,std::string host,int port)
+void Socket::serverMode(int port,const int max_connexion,std::string host)
 {
     //sin_addr.s_addr = adresse IP à utiliser
     //IP automatiquement chopée
@@ -96,14 +96,13 @@ Socket Socket::accept()
 void Socket::accept(Socket& client)
 {
     socklen_t size = sizeof(sockaddr_in);
-    std::cerr<<"<id:"<<sock<<">Waiting a new connection to "<<getIp()<<":"<<getPort()<<std::endl;
     client.sock = ::accept(sock,(sockaddr*) &(client.sock_cfg), &size);
     if (client.sock == INVALID_SOCKET)
     {
         perror("accept()");
         throw SocketExeption("Invalid socket get");
     }
-    std::cerr<<"<id:"<<sock<<">New connection accept <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
+    std::cerr<<"<id:"<<sock<<">New connexion accepted <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
 };
 
 void Socket::shutdown(Socket::Down mode)

@@ -7,20 +7,19 @@ namespace ntw
         sock.sendCl();        
     }
 
-    bool FuncWrapper::verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code)
+    int FuncWrapper::verifyConnect(SocketSerialized& sock,const std::string message,unsigned int code)
     {
         sock.clear();
         sock<<message;
         sock<<code;
         sock.sendCl();
-        return true;
+        return NTW_ERROR_NO;
     }
 
     void FuncWrapper::dispatch(SocketSerialized& request)
     {
         while(request.size()>0)
         {
-            std::cout<<request<<std::endl;
             int id = FUNCTONS_ID::UNKNOW;
             request>>id;
 

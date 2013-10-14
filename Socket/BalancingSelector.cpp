@@ -58,7 +58,6 @@ namespace ntw
         if(res)
         {
             res = sock->connect(host,port);
-            std::cout<<"BalancingSelector::add"<<std::endl;
             if(not res)
                 remove(sock);
         }
