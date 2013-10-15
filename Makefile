@@ -1,8 +1,11 @@
+export SERVER = server
+export CLIENT = client
+export EXEC = $(SERVER)
+
 export CC = g++
 INCPATH = -I$(CURDIR)
 LIBS = -lpthread 
-export DEFINES = 
-export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
+DEFINES = 
 export TOP = $(CURDIR)
 export OBJ_DIR = $(TOP)/obj
 
@@ -11,17 +14,18 @@ OBJ = $(SRC:.c=.o) $(SRC:*.cpp=.o)
 
 SUBDIRS = Socket obj
 
-export SERVER = server
-export CLIENT = client
+ifeq ($(EXEC),$(SERVER))
+export DEF = $(DEFINES) -DNTW_MODE=2
+else
+export DEF = $(DEFINES) -DNTW_MODE=1
+endif
+export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEF)
 
-export EXEC = $(SERVER) $(CLIENT)
-
-
-export SERVER = server
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 
 .PHONY: subdirs $(SUBDIRS)
 .PHONY: subdirs $(CLEANDIRS)
+
 
 all: $(OBJ) subdirs
 
@@ -45,5 +49,4 @@ clean: $(CLEANDIRS)
 $(CLEANDIRS): 
 	$(MAKE) -C $(@:clean-%=%) clean
 	@rm -f *.o
-	@rm -f $(EXEC)
 
