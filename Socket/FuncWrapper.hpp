@@ -39,6 +39,10 @@ namespace ntw
 
             template<typename Ret,typename ... Args>
             static Ret send(SocketSerialized& sock,FUNCTONS_ID id,Args&& ... args);
+            #else
+
+            template<typename Ret,typename ... Args>
+            static Ret send(Ret(*func)(SocketSerialized& sock,Args&& ...),SocketSerialized& sock);
             #endif
 
 

@@ -35,5 +35,9 @@ namespace ntw
     /***************************
      * ****** SERVER **********
      * ************************/
+    template<typename Ret,typename ... Args>
+    Ret send(Ret(*func)(SocketSerialized& sock,Args&& ...),SocketSerialized& sock)
+    {
+    }
 #endif
 }
