@@ -2,6 +2,7 @@
 #define NTW_BALANCINGSELECTOR_HPP
 
 #include <Socket/SelectManager.hpp>
+#include <Socket/FuncWrapper.hpp>
 
 #include <list>
 

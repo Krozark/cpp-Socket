@@ -49,14 +49,12 @@ SelectManager::~SelectManager()
 
 void SelectManager::add(SocketSerialized* s)
 {
-    int id = s->id();
     datas.emplace_back(s);
     breakSelect();
 };
 
 bool SelectManager::remove(SocketSerialized* s)
 {
-    int id = s->id();
     auto end = datas.end();
     auto it = std::find(datas.begin(),end,s);
     if(it != end)

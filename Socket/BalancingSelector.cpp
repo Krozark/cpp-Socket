@@ -2,6 +2,7 @@
 #include <Socket/SocketSerialized.hpp>
 #include <iostream>
 
+
 namespace ntw 
 {
     BalancingSelector::BalancingSelector(bool read, bool write, bool except,void (*onSel)(SelectManager&,SocketSerialized&), unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout):  readfds(read),
@@ -54,17 +55,18 @@ namespace ntw
     bool BalancingSelector::add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port)
     {
         SocketSerialized* sock = new SocketSerialized(dommaine,type);
-        bool res = add(sock);
+        bool res = true;
         if(res)
         {
             res = sock->connect(host,port);
-            if(not res)
+            if(not res or ntw::FuncWrapper::verifyIsConnected(*sock) != NTW_ERROR_NO);
                 remove(sock);
         }
         if(not res)
         {
             delete sock;
         }
+        res = add(sock);
 
         return res;
     }

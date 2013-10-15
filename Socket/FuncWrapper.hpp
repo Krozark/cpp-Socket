@@ -14,7 +14,8 @@ namespace ntw
             FuncWrapper(const FuncWrapper&) = delete;
             FuncWrapper& operator=(const FuncWrapper&) = delete;
 
-            static int verifyConnect(SocketSerialized& sock,const std::string message=NTW_WELCOM_MSG,unsigned int code=NTW_ERROR_NO); ///< initialise the socket (client : verify the msg, serveur: send hello)
+            static int msg(SocketSerialized& sock,const std::string message,unsigned int code); ///< initialise the socket (client : verify the msg, serveur: send hello)
+            static int verifyIsConnected(SocketSerialized& sock);
 
             static int getVersion(SocketSerialized& sock); ///< get serveur version
 
@@ -39,10 +40,6 @@ namespace ntw
     };
 };
 
-#if NTW_MODE == NTW_CLIENT
-#include <Socket/client/FuncWrapper.tpl>
-#else
-#include <Socket/server/FuncWrapper.tpl>
-#endif
+#include <Socket/FuncWrapper.tpl>
 
 #endif

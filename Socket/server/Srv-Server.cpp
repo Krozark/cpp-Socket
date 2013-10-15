@@ -1,7 +1,6 @@
-#define NTW_MODE NTW_SERVER
 #include <Socket/server/Server.hpp>
-#include <Socket/FuncWrapper.hpp>
 
+#if NTW_MODE == NTW_SERVER
 namespace ntw
 {
 namespace srv
@@ -48,14 +47,14 @@ namespace srv
         if(not (self.request_recv.add(clientSock)))
         {
             ok = false;
-            ntw::FuncWrapper::verifyConnect(*clientSock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
+            ntw::FuncWrapper::msg(*clientSock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
         if(ok and not (self.broadcast_sender.add(Socket::Dommaine::IP,Socket::Type::TCP,clientSock->getIp(),NTW_PORT_CLIENT)))
         {
             ok = false;
             self.request_recv.remove(clientSock);
-            ntw::FuncWrapper::verifyConnect(*clientSock,NTW_ERROR_DISPATCH_ADD_MSG,NTW_ERROR_DISPATCH_ADD);
+            ntw::FuncWrapper::msg(*clientSock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
         }
 
         if(not ok)
@@ -65,7 +64,7 @@ namespace srv
         }
         else
         {
-            ntw::FuncWrapper::verifyConnect(*clientSock,NTW_WELCOM_MSG,NTW_ERROR_NO);
+            ntw::FuncWrapper::msg(*clientSock,NTW_WELCOM_MSG,NTW_ERROR_NO);
         }            
     }
 
@@ -100,3 +99,4 @@ namespace srv
     }
 }
 }
+#endif

@@ -1,7 +1,6 @@
 #ifndef NTW_SRV_SERVEUR_HPP
 #define NTW_SRV_SERVEUR_HPP
 
-#define NTW_MODE NTW_SERVER
 
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/BalancingSelector.hpp>

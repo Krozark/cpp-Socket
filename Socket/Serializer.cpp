@@ -126,17 +126,6 @@ Serializer& Serializer::operator>>(long int& l)
     return *this;
 };
 //1 oct | 8 bit []
-Serializer& Serializer::operator>>(std::string& str)
-{
-    unsigned int size = _cursor_begin;
-    for(;size<_cursor_end && _buffer[size] != '\0';++size){}
-    size -= _cursor_begin-1;
-    _cursor_begin += size;
-
-    str = std::string(_buffer[_cursor_begin],size);
-
-    return *this;
-};
 Serializer& Serializer::operator>>(char*& c)
 {
     unsigned int size = _cursor_begin;
@@ -153,6 +142,19 @@ Serializer& Serializer::operator>>(char*& c)
     if (c)
         delete c;
     c=data;
+
+    return *this;
+};
+
+Serializer& Serializer::operator>>(std::string& str)
+{
+    unsigned int size = _cursor_begin;
+    for(;size<_cursor_end && _buffer[size] != '\0';++size){}
+    size -= _cursor_begin-1;
+
+    str = std::string((char *)(_buffer+_cursor_begin),size);
+
+    _cursor_begin += size;
 
     return *this;
 };
