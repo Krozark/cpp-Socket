@@ -97,6 +97,7 @@ int main(int argc, char* argv[])
     }
 
     std::cout<<ntw::FuncWrapper::getVersion(request_sock)<<std::endl;
+    std::cout<<ntw::FuncWrapper::testParamInt(request_sock,25)<<std::endl;
 
     delete broadcast_sock;
     if(clientSock)

@@ -18,6 +18,19 @@ namespace ntw
         sock<<a;
         addPackage(sock,args...);
     }
+
+    template<typename Ret,typename ... Args>
+    Ret FuncWrapper::send(SocketSerialized& sock,FUNCTONS_ID id,Args&& ... args)
+    {
+        Ret ret;
+        addPackage(id,sock,args ...);
+        sock.send();
+        if (sock.receive() > 0)
+        {
+            sock>>ret;
+        }
+        return ret;
+    }
 #else
     /***************************
      * ****** SERVER **********

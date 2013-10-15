@@ -35,31 +35,35 @@ namespace ntw
     /***************************
      ********** CLIENT**********
      **************************/
+    void FuncWrapper::addPackage(SocketSerialized& sock){}
+
     int FuncWrapper::getVersion(SocketSerialized& sock)
     {
-        int v=0;
-        addPackage(GET_VERSION,sock);
-        sock.send();
-        if (sock.receive() > 0)
-        {
-            sock>>v;
-        }
-        return v;
+        return send<int>(sock,GET_VERSION);
+    }
+    int FuncWrapper::testParamInt(SocketSerialized& sock,int p1)
+    {
+        return send<int>(sock,TESTPARAMINT,p1);
     }
 
-    void FuncWrapper::addPackage(SocketSerialized& sock)
-    {
-    }
+
 #else
     /***************************
      * ****** SERVER **********
      * ************************/
+
     int FuncWrapper::getVersion(SocketSerialized& sock)
     {
-        sock.clear();
         sock<<NTW_VERSION;
-        sock.sendCl();        
     }
+
+    int FuncWrapper::testParamInt(SocketSerialized& sock,int v)
+    {
+        std::cout<<"param:"<<v<<std::endl;
+        sock<<12;
+    }
+
+
 
     void FuncWrapper::dispatch(SocketSerialized& request)
     {
@@ -76,13 +80,25 @@ namespace ntw
                 }break;
                 case FUNCTONS_ID::GET_VERSION :
                 {
+                    request.clear();
                     getVersion(request);
+                    request.sendCl();        
                 }break;
+                case  FUNCTONS_ID::TESTPARAMINT :
+                {
+                    int a = 0;
+                    request>>a;
+                    request.clear();
+                    testParamInt(request,a);
+                    request.sendCl();        
+                }
                 default:
                     std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find"<<std::endl;
             }
         }
     }
+
+
 #endif
 
 }
