@@ -54,15 +54,13 @@ namespace ntw
 
     int FuncWrapper::getVersion(SocketSerialized& sock)
     {
-        sock<<NTW_VERSION;
+        return NTW_VERSION;
     }
 
     int FuncWrapper::testParamInt(SocketSerialized& sock,int v)
     {
-        std::cout<<"param:"<<v<<std::endl;
-        sock<<12;
+        return v+12;
     }
-
 
 
     void FuncWrapper::dispatch(SocketSerialized& request)
@@ -80,20 +78,14 @@ namespace ntw
                 }break;
                 case FUNCTONS_ID::GET_VERSION :
                 {
-                    request.clear();
-                    getVersion(request);
-                    request.sendCl();        
+                    exec(getVersion,request);
                 }break;
                 case  FUNCTONS_ID::TESTPARAMINT :
                 {
-                    int a = 0;
-                    request>>a;
-                    request.clear();
-                    testParamInt(request,a);
-                    request.sendCl();        
-                }
+                    exec(testParamInt,request);
+                }break;
                 default:
-                    std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find"<<std::endl;
+                    std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
             }
         }
     }

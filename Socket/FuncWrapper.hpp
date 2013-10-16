@@ -42,7 +42,7 @@ namespace ntw
             #else
 
             template<typename Ret,typename ... Args>
-            static Ret send(Ret(*func)(SocketSerialized& sock,Args&& ...),SocketSerialized& sock);
+            static Ret exec(Ret(*func)(SocketSerialized&,Args ...),SocketSerialized& sock);
             #endif
 
 
