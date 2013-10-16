@@ -57,27 +57,15 @@ namespace ntw
     };
 
     template<typename ... Types>
-    struct make_indexes : make_indexes_impl<0, index_tuple<>, Types...>
-    {};
+    struct make_indexes : make_indexes_impl<0, index_tuple<>, Types...>{};
 
     // ----------UNPACK TUPLE AND APPLY TO FUNCTION ---------
-    //
-    /*template<class... Args, int... Indexes>
-    void exec__( Ret (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
-    {
-        int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
-        (void)ctx;
-        sock.clear();
-        pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
-        sock.sendCl();
-        return res;
-    };*/
 
     template<class Ret, class... Args, int... Indexes>
     Ret exec__( Ret (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
     {
         int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
-        //(void)ctx;
+        (void)ctx;
         sock.clear();
         Ret res = pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
         sock<<res;

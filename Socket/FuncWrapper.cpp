@@ -65,7 +65,7 @@ namespace ntw
 
     void FuncWrapper::dispatch(SocketSerialized& request)
     {
-        while(request.size()>0)
+        if(request.size()>0)
         {
             int id = FUNCTONS_ID::UNKNOW;
             request>>id;
