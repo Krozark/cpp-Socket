@@ -14,8 +14,9 @@ Note:
     It's important to know witch type are the parameters and the order.
     It's the same for the result of the call.
     Some function are build to don't make mistake :
-        * Client::call(R (*fun)(SocketSerialized&,Args... ),Args ...)
-        * Server::exec(R (*fun)(SocketSerialized&,Args ...),Args...)
+
+* Client::call(R (\*fun)(SocketSerialized&,Args... ),Args ...)
+* Server::exec(R (\*fun)(SocketSerialized&,Args ...),Args...)
 
 Test on Ubuntu 12+ x64, but based on multiplatforme code.
 
