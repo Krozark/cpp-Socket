@@ -13,7 +13,8 @@ namespace ntw
     max_per_selector(_max),
     min_per_selector(_min),
     _run(false),
-    timeout(timeout)
+    timeout(timeout),
+    do_delete(true)
     {
         SelectManager& s = newSelector();
         s.setArgs(readfds,writefds,exceptfds,timeout);
@@ -51,23 +52,29 @@ namespace ntw
         return true;
     }
 
+    bool BalancingSelector::add(SocketSerialized* sock,std::string host,int port)
+    {
+        bool res = sock->connect(host,port);
+        if(not res or ntw::FuncWrapper::verifyIsConnected(*sock) != NTW_ERROR_NO);
+            remove(sock);
+
+        if(res)
+        {
+            res = add(sock);
+        }
+
+        return res;
+    }
+
 
     bool BalancingSelector::add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port)
     {
         SocketSerialized* sock = new SocketSerialized(dommaine,type);
-        bool res = true;
-        if(res)
-        {
-            res = sock->connect(host,port);
-            if(not res or ntw::FuncWrapper::verifyIsConnected(*sock) != NTW_ERROR_NO);
-                remove(sock);
-        }
+        bool res = add(sock,host,port);
         if(not res)
         {
             delete sock;
         }
-        res = add(sock);
-
         return res;
     }
 
@@ -170,6 +177,13 @@ namespace ntw
             selector.setTimout(timeout_sec);
     }
 
+    void BalancingSelector::setDelete(bool d)
+    {
+        do_delete = d;
+        for(SelectManager& selector : selectors)
+            selector.setTimout(d);
+    }
+
     SelectManager& BalancingSelector::newSelector()
     {
         selectors.emplace_back();
@@ -177,6 +191,7 @@ namespace ntw
         SelectManager& s = selectors.back();
         s.onSelect = onSelect;
         s.setArgs(readfds,writefds,exceptfds,timeout);
+        s.setDelete(do_delete);
 
         if(_run)
             s.start();

@@ -7,21 +7,27 @@
 namespace ntw
 {
 
-    class User
+    namespace srv
     {
-        public:
-            explicit User();
-            User(const User&) = delete;
-            User& operator=(const User&) = delete;
-            
-            bool isAnonymous();
-            bool isLogged();
-        private:
-            int pk;
-            union{SocketSerialized sock_recv;};
-            union{SocketSerialized sock_broadcast;};
+        class Server;
 
-    };
+        class User
+        {
+            public:
+                explicit User();
+                User(const User&) = delete;
+                User& operator=(const User&) = delete;
+                
+                bool isAnonymous();
+                bool isLogged();
+            private:
+                friend class Server;
+
+                int pk;
+                SocketSerialized request_sock;
+                SocketSerialized broadcast_sock;
+        };
+    }
 }
 
 #endif

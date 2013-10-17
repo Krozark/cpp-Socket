@@ -6,18 +6,21 @@ namespace ntw
 namespace srv
 {
     Server::Server(unsigned int max_client,unsigned int min_client,float timeout) :
+        new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
         request_recv(true,false,false,onRequestRecv,min_client,max_client,0,timeout),
         broadcast_sender(true,false,false,onBroadCastRecv,min_client,max_client,0,timeout)
     {
+        request_recv.setDelete(false);
+        broadcast_sender.setDelete(false);
+        new_connexion_recv.setDelete(false);
         //init sock
-        new_connexion_sock = new SocketSerialized(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-        new_connexion_sock->serverMode(NTW_PORT_SERVER);
+        new_connexion_sock.serverMode(NTW_PORT_SERVER);
         //init selector
         new_connexion_recv.setRead(true);
         new_connexion_recv.onSelect = onNewClientRecv;
         //add sock
-        new_connexion_recv.add(new_connexion_sock);
+        new_connexion_recv.add(&new_connexion_sock);
     }
 
     void Server::start()
@@ -41,30 +44,33 @@ namespace srv
     }
     void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock)
     {
-        ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.accept());
         Server& self = *((ntw::srv::Server*)((long int)(&new_connexion_recv) - (long int)(&((ntw::srv::Server*)NULL)->new_connexion_recv)));
+
+        self.users.emplace_back();
+        User& user = self.users.back();
+
+        sock.accept(user.request_sock);
         bool ok = true;
-        if(not (self.request_recv.add(clientSock)))
+        if(not (self.request_recv.add(&user.request_sock)))
         {
             ok = false;
-            ntw::FuncWrapper::msg(*clientSock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
+            ntw::FuncWrapper::msg(user.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
-        if(ok and not (self.broadcast_sender.add(Socket::Dommaine::IP,Socket::Type::TCP,clientSock->getIp(),NTW_PORT_CLIENT)))
+        if(ok and not (self.broadcast_sender.add(&user.broadcast_sock,user.request_sock.getIp(),NTW_PORT_CLIENT)))
         {
             ok = false;
-            self.request_recv.remove(clientSock);
-            ntw::FuncWrapper::msg(*clientSock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
+            self.request_recv.remove(&user.request_sock);
+            ntw::FuncWrapper::msg(user.request_sock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
         }
 
         if(not ok)
         {
-            clientSock->shutdown();
-            delete clientSock;
+            user.request_sock.shutdown();
         }
         else
         {
-            ntw::FuncWrapper::msg(*clientSock,NTW_WELCOM_MSG,NTW_ERROR_NO);
+            ntw::FuncWrapper::msg(user.request_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
         }            
     }
 
@@ -78,7 +84,9 @@ namespace srv
         {
             std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl; 
             request_recv.remove(&sock);
-            delete &sock;
+
+            /*if(do_delete)
+                delete &sock;*/
         }
     }
 
@@ -94,7 +102,9 @@ namespace srv
         {
             std::cerr<<"[SERVER] onBroadCastRecv connexion lost <id:"<<sock.id()<<">"<<std::endl; 
             broadcast_sender.remove(&sock);
-            delete &sock;
+
+            /*if(do_delete)
+                delete &sock;*/
         }
     }
 }

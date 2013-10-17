@@ -37,6 +37,7 @@ namespace ntw {
             //inline bool joinable(){return thread.joinable();};
 
             inline unsigned int size()const{return datas.size();};
+            inline void setDelete(bool d){do_delete = d;};
 
             SelectManager(const SelectManager& other) = delete;
             SelectManager& operator=(const SelectManager& other) = delete;
@@ -46,6 +47,7 @@ namespace ntw {
             void run(); //Use Start to run it
             void reset();
             void breakSelect();
+            bool do_delete;
 
             fd_set* readfds;
             fd_set* writefds;

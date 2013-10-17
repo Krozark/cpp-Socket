@@ -4,6 +4,9 @@
 
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/BalancingSelector.hpp>
+#include <Socket/server/User.hpp>
+
+#include <list>
 
 namespace ntw
 {
@@ -20,7 +23,7 @@ namespace ntw
                 void stop();
 
             private:
-                ntw::SocketSerialized* new_connexion_sock;
+                ntw::SocketSerialized new_connexion_sock;
                 ntw::SelectManager new_connexion_recv;
                 ntw::BalancingSelector request_recv;
                 ntw::BalancingSelector broadcast_sender;
@@ -28,6 +31,9 @@ namespace ntw
                 static void onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
                 static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
                 static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+
+                std::list<User> users;
+
         };
     }
 }
