@@ -46,11 +46,11 @@ All class are in ntw namespace.
 * ntw::FuncWrapper
     * This class define some (static) base functions for the communication
     * This is in this class that you have to add you own function (.hpp, .cpp or .tpl for template)
-    * Client side : the body of function are juste like that : return send<ReturnType>(sock,unique function id,params ...)
+    * Client side : the body of function are juste like that : return send\<ReturnType\>(sock,unique function id,params ...)
     * Server side : normal function, juste make your stuf, and return the result.
-    * Server also need to build FuncWrapper::dispatch(SocketSerialized& request) function. It's juste a big swith on the id function; Here is the default:
+    * Server also need to build FuncWrapper::dispatch(SocketSerialized& request) function. It's juste a big switch on the id function. Here is the default:
 
-     void FuncWrapper::dispatch(SocketSerialized& request)
+        void FuncWrapper::dispatch(SocketSerialized& request)
         {
             if(request.size()>0)
             {
