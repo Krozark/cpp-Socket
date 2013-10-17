@@ -50,32 +50,32 @@ All class are in ntw namespace.
     * Server side : normal function, juste make your stuf, and return the result.
     * Server also need to build FuncWrapper::dispatch(SocketSerialized& request) function. It's juste a big switch on the id function. Here is the default:
 
-        void FuncWrapper::dispatch(SocketSerialized& request)
-        {
-            if(request.size()>0)
+            void FuncWrapper::dispatch(SocketSerialized& request)
             {
-                int id = FUNCTONS_ID::UNKNOW;
-                request>>id;
-
-                switch(id)
+                if(request.size()>0)
                 {
-                    case FUNCTONS_ID::UNKNOW :
+                    int id = FUNCTONS_ID::UNKNOW;
+                    request>>id;
+
+                    switch(id)
                     {
-                        std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
-                    }break;
-                    case FUNCTONS_ID::GET_VERSION :
-                    {
-                        exec(getVersion,request);
-                    }break;
-                    case  FUNCTONS_ID::TESTPARAMINT :
-                    {
-                        exec(testParamInt,request);
-                    }break;
-                    default:
-                        std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
+                        case FUNCTONS_ID::UNKNOW :
+                        {
+                            std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
+                        }break;
+                        case FUNCTONS_ID::GET_VERSION :
+                        {
+                            exec(getVersion,request);
+                        }break;
+                        case  FUNCTONS_ID::TESTPARAMINT :
+                        {
+                            exec(testParamInt,request);
+                        }break;
+                        default:
+                            std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
+                    }
                 }
             }
-        }
 
 * ntw::srv::Server
     * this is the server implementation
