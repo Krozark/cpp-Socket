@@ -9,7 +9,7 @@ Serializer::Serializer(unsigned int buffer_size) : _cursor_end(0),_cursor_begin(
 
 Serializer::~Serializer()
 {
-    delete _buffer;
+    delete[] _buffer;
     /*_buffer = 0;
     _cursor_end = 0;
     _buffer_size = 0;*/
@@ -140,7 +140,7 @@ Serializer& Serializer::operator>>(char*& c)
     _cursor_begin += size;
 
     if (c)
-        delete c;
+        delete[] c;
     c=data;
 
     return *this;
