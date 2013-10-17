@@ -50,7 +50,7 @@ All class are in ntw namespace.
     * Server side : normal function, juste make your stuf, and return the result.
     * Server also need to build FuncWrapper::dispatch(SocketSerialized& request) function. It's juste a big switch on the id function. Here is the default:
 
-``c++
+```c++
 void FuncWrapper::dispatch(SocketSerialized& request)
 {
     if(request.size()>0)
@@ -95,7 +95,7 @@ Exemples
 You can find exemples of use in:
 * Socket/server/server.cpp
 
-``c++
+```c++
 #include <Socket/server/Server.hpp>
 
 int main(int argc, char* argv[])
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 
 * Socket/client/client.cpp
 
-``c++
+```c++
 #include <Socket/client/Client.hpp>
 #include <Socket/FuncWrapper.hpp>
 
