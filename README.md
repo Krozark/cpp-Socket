@@ -50,32 +50,34 @@ All class are in ntw namespace.
     * Server side : normal function, juste make your stuf, and return the result.
     * Server also need to build FuncWrapper::dispatch(SocketSerialized& request) function. It's juste a big switch on the id function. Here is the default:
 
-            void FuncWrapper::dispatch(SocketSerialized& request)
-            {
-                if(request.size()>0)
-                {
-                    int id = FUNCTONS_ID::UNKNOW;
-                    request>>id;
+``c++
+void FuncWrapper::dispatch(SocketSerialized& request)
+{
+    if(request.size()>0)
+    {
+        int id = FUNCTONS_ID::UNKNOW;
+        request>>id;
 
-                    switch(id)
-                    {
-                        case FUNCTONS_ID::UNKNOW :
-                        {
-                            std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
-                        }break;
-                        case FUNCTONS_ID::GET_VERSION :
-                        {
-                            exec(getVersion,request);
-                        }break;
-                        case  FUNCTONS_ID::TESTPARAMINT :
-                        {
-                            exec(testParamInt,request);
-                        }break;
-                        default:
-                            std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
-                    }
-                }
-            }
+        switch(id)
+        {
+            case FUNCTONS_ID::UNKNOW :
+            {
+                std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
+            }break;
+            case FUNCTONS_ID::GET_VERSION :
+            {
+                exec(getVersion,request);
+            }break;
+            case  FUNCTONS_ID::TESTPARAMINT :
+            {
+                exec(testParamInt,request);
+            }break;
+            default:
+            std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
+        }
+    }
+}
+```
 
 * ntw::srv::Server
     * this is the server implementation
@@ -93,45 +95,49 @@ Exemples
 You can find exemples of use in:
 * Socket/server/server.cpp
 
-        #include <Socket/server/Server.hpp>
+``c++
+#include <Socket/server/Server.hpp>
 
-        int main(int argc, char* argv[])
-        {
+int main(int argc, char* argv[])
+{
 
-            const unsigned int max_client = 100;
-            ntw::srv::Server server(max_client);
-            server.start();
+    const unsigned int max_client = 100;
+    ntw::srv::Server server(max_client);
+    server.start();
 
-            return 0;
-        };
+    return 0;
+};
+```
 
 * Socket/client/client.cpp
 
-        #include <Socket/client/Client.hpp>
-        #include <Socket/FuncWrapper.hpp>
+``c++
+#include <Socket/client/Client.hpp>
+#include <Socket/FuncWrapper.hpp>
 
-        #include <iostream>
+#include <iostream>
 
-        int main(int argc, char* argv[])
-        {
-            
-            ntw::cli::Client client;
-            int res = client.connect("127.0.0.1",NTW_PORT_SERVER);
+int main(int argc, char* argv[])
+{
+    
+    ntw::cli::Client client;
+    int res = client.connect("127.0.0.1",NTW_PORT_SERVER);
 
-            if(res != NTW_ERROR_NO)
-            {
-                std::cerr<<"An error occurred (code:"<<res<<")"<<std::endl;
-                return res;
-            }
+    if(res != NTW_ERROR_NO)
+    {
+        std::cerr<<"An error occurred (code:"<<res<<")"<<std::endl;
+        return res;
+    }
 
-            std::cout<<client.call(ntw::FuncWrapper::getVersion)<<std::endl;
-            std::cout<<client.call(ntw::FuncWrapper::testParamInt,25)<<std::endl;
+    std::cout<<client.call(ntw::FuncWrapper::getVersion)<<std::endl;
+    std::cout<<client.call(ntw::FuncWrapper::testParamInt,25)<<std::endl;
 
-            client.stop();
-            client.wait();
+    client.stop();
+    client.wait();
 
-            return 0;
-        };
+    return 0;
+};
+```
 
 
 
