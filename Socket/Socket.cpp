@@ -5,7 +5,7 @@
 #include <string.h>
 
 namespace ntw {
-int Socket::max_id = 0;
+//int Socket::max_id = 0;
 
 Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock(INVALID_SOCKET)
 {
@@ -16,7 +16,7 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock
         throw SocketExeption("Invalid socket");
     }
 
-     max_id = (sock>max_id)?sock:max_id;
+     //max_id = (sock>max_id)?sock:max_id;
 
     //sin_family = Dommaine
     sock_cfg.sin_family = dommaine;

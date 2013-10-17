@@ -2,24 +2,25 @@
 #define NTW_USER
 
 #include <string>
+#include <Socket/SocketSerialized.hpp>
 
 namespace ntw
 {
+
     class User
     {
         public:
-            User(User&& tmp);
+            explicit User();
             User(const User&) = delete;
             User& operator=(const User&) = delete;
             
-            static User login(std::string username,std::string pass);
-
             bool isAnonymous();
             bool isLogged();
         private:
             int pk;
+            union{SocketSerialized sock_recv;};
+            union{SocketSerialized sock_broadcast;};
 
-            explicit User(std::string username,std::string pass);
     };
 }
 

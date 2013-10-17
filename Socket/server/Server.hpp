@@ -7,29 +7,29 @@
 
 namespace ntw
 {
-namespace srv
-{
-    class Server
+    namespace srv
     {
-        public:
-            Server(unsigned int max_client,unsigned int min_client=1,float timeout=NTW_DEFAULT_TIMEOUT);
-            Server(const Server&) = delete;
-            Server& operator=(const Server&) = delete;
+        class Server
+        {
+            public:
+                Server(unsigned int max_client,unsigned int min_client=1,float timeout=NTW_DEFAULT_TIMEOUT);
+                Server(const Server&) = delete;
+                Server& operator=(const Server&) = delete;
 
-            void start();
-            void stop();
+                void start();
+                void stop();
 
-        private:
-            ntw::SocketSerialized* new_connexion_sock;
-            ntw::SelectManager new_connexion_recv;
-            ntw::BalancingSelector request_recv;
-            ntw::BalancingSelector broadcast_sender;
+            private:
+                ntw::SocketSerialized* new_connexion_sock;
+                ntw::SelectManager new_connexion_recv;
+                ntw::BalancingSelector request_recv;
+                ntw::BalancingSelector broadcast_sender;
 
-            static void onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
-            static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
-            static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
-    };
-}
+                static void onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+                static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+                static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+        };
+    }
 }
 
 #endif

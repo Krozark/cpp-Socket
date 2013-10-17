@@ -62,7 +62,7 @@ namespace ntw
     // ----------UNPACK TUPLE AND APPLY TO FUNCTION ---------
 
     template<class Ret, class... Args, int... Indexes>
-    Ret exec__( Ret (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
+    inline Ret exec__( Ret (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
     {
         int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
         (void)ctx;

@@ -35,4 +35,8 @@
 #define NTW_ERROR_BROADCAST_ADD_MSG "ERROR: connection to broadcast not etablish"
 #define NTW_ERROR_BROADCAST_ADD 2
 
+#define NTW_ERROR_TIMEOUT 3
+#define NTW_ERROR_SELECT 4
+#define NTW_ERROR_CONNEXION 5
+
 #endif

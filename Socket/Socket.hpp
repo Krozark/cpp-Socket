@@ -57,7 +57,7 @@ class SocketSerialized;
 class Socket
 {
     public:
-        static int max_id;
+        //static int max_id;
 
         enum Dommaine {IP=AF_INET, LOCAL=AF_UNIX};
         enum Type {TCP=SOCK_STREAM, UDP=SOCK_DGRAM};

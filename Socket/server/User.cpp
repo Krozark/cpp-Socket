@@ -1,16 +1,17 @@
 #include <Socket/server/User.hpp>
+#include <algorithm>
 
 namespace ntw
 {
-    User::User(User&& tmp)
+    User::User() /*: sock_recv(0), sock_broadcast(0)*/
     {
-        pk = tmp.pk;
+        pk = 42; ///<\todo TODO
     }
 
-    User User::login(std::string username, std::string pass)
+    /*bool User::login(std::string username, std::string pass) 
     {
-        return User(username,pass);
-    }
+        return true;
+    }*/
 
     bool User::isAnonymous()
     {
@@ -24,8 +25,4 @@ namespace ntw
 
     /// PRIVATE
 
-    User::User(std::string username, std::string pass)
-    {
-        pk = 42; ///<\todo TODO
-    }
 }
