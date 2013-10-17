@@ -93,7 +93,7 @@ Exemples
 You can find exemples of use in:
 * Socket/server/server.cpp
 
-        \#include <Socket/server/Server.hpp>
+        #include <Socket/server/Server.hpp>
 
         int main(int argc, char* argv[])
         {
@@ -107,10 +107,10 @@ You can find exemples of use in:
 
 * Socket/client/client.cpp
 
-        \#include <Socket/client/Client.hpp>
-        \#include <Socket/FuncWrapper.hpp>
+        #include <Socket/client/Client.hpp>
+        #include <Socket/FuncWrapper.hpp>
 
-        \#include <iostream>
+        #include <iostream>
 
         int main(int argc, char* argv[])
         {
