@@ -26,7 +26,7 @@ namespace ntw
                 void wait();
 
                 template<typename Ret,typename ... Args>
-                Ret exec(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args);
+                Ret call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args);
 
             private:
                 SocketSerialized request_sock;

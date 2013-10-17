@@ -6,7 +6,7 @@ namespace ntw
     {
 
         template<typename Ret,typename ... Args>
-        Ret Client::exec(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args)
+        Ret Client::call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args)
         {
             return pf(request_sock,std::forward<Args>(args)...);
         }
