@@ -1,8 +1,5 @@
 #include <Socket/server/Server.hpp>
 
-#include <iostream>
-#include <chrono>
-
 int main(int argc, char* argv[])
 {
 
