@@ -4,7 +4,7 @@
 
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/BalancingSelector.hpp>
-#include <Socket/server/User.hpp>
+#include <Socket/server/Client.hpp>
 
 #include <list>
 
@@ -32,7 +32,7 @@ namespace ntw
                 static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
                 static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
 
-                std::list<User> users;
+                std::list<Client> clients;
 
         };
     }

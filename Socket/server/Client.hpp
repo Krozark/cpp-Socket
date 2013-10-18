@@ -1,5 +1,5 @@
-#ifndef NTW_USER
-#define NTW_USER
+#ifndef NTW_SRV_CLIENT
+#define NTW_SRV_CLIENT
 
 #include <string>
 #include <Socket/SocketSerialized.hpp>
@@ -11,19 +11,20 @@ namespace ntw
     {
         class Server;
 
-        class User
+        class Client
         {
             public:
-                explicit User();
-                User(const User&) = delete;
-                User& operator=(const User&) = delete;
+                explicit Client();
+                Client(const Client&) = delete;
+                Client& operator=(const Client&) = delete;
                 
-                bool isAnonymous();
-                bool isLogged();
+                //bool isAnonymous();
+                //bool isLogged();
+
+                //bool operator==(const Client& other);
             private:
                 friend class Server;
 
-                int pk;
                 SocketSerialized request_sock;
                 SocketSerialized broadcast_sock;
         };

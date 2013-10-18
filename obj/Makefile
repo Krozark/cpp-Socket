@@ -1,14 +1,15 @@
+SRVOBJ = $(wildcard srv-*.o)
+CLIOBJ = $(wildcard cli-*.o)
 OBJ = $(wildcard *.o)
-OBJ := $(filter-out $(SERVER).o, $(OBJ))
-OBJ := $(filter-out $(CLIENT).o, $(OBJ))
-OBJ := $(filter-out Srv-Server.o, $(OBJ))
+OBJ := $(filter-out $(SRVOBJ), $(OBJ))
+OBJ := $(filter-out $(CLIOBJ), $(OBJ))
 
 all: $(EXEC)
 	
-$(SERVER): $(OBJ) $(SERVER).o Srv-Server.o
+$(SERVER): $(OBJ) $(SRVOBJ)
 	$(CC) $^ $(FLAGS) -o "$(TOP)/$(SERVER)"
 
-$(CLIENT): $(OBJ) $(CLIENT).o
+$(CLIENT): $(OBJ) $(CLIOBJ)
 	$(CC) $^ $(FLAGS) -o "$(TOP)/$(CLIENT)"
 
 clean:

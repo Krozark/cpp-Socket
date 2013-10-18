@@ -46,31 +46,31 @@ namespace srv
     {
         Server& self = *((ntw::srv::Server*)((long int)(&new_connexion_recv) - (long int)(&((ntw::srv::Server*)NULL)->new_connexion_recv)));
 
-        self.users.emplace_back();
-        User& user = self.users.back();
+        self.clients.emplace_back();
+        Client& client = self.clients.back();
 
-        sock.accept(user.request_sock);
+        sock.accept(client.request_sock);
         bool ok = true;
-        if(not (self.request_recv.add(&user.request_sock)))
+        if(not (self.request_recv.add(&client.request_sock)))
         {
             ok = false;
-            ntw::FuncWrapper::msg(user.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
+            ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
-        if(ok and not (self.broadcast_sender.add(&user.broadcast_sock,user.request_sock.getIp(),NTW_PORT_CLIENT)))
+        if(ok and not (self.broadcast_sender.add(&client.broadcast_sock,client.request_sock.getIp(),NTW_PORT_CLIENT)))
         {
             ok = false;
-            self.request_recv.remove(&user.request_sock);
-            ntw::FuncWrapper::msg(user.request_sock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
+            self.request_recv.remove(&client.request_sock);
+            ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
         }
 
         if(not ok)
         {
-            user.request_sock.shutdown();
+            client.request_sock.shutdown();
         }
         else
         {
-            ntw::FuncWrapper::msg(user.request_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
+            ntw::FuncWrapper::msg(client.request_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
         }            
     }
 
