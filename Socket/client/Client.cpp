@@ -5,22 +5,24 @@ namespace ntw
 {
     namespace cli
     {
-        Client::Client() : new_broadcast_sock(0), broadcast_recv_sock(0), request_sock(Socket::Dommaine::IP,Socket::Type::TCP)
+        Client::Client() :  request_sock(Socket::Dommaine::IP,Socket::Type::TCP),
+        new_broadcast_sock(Socket::Dommaine::IP,Socket::Type::TCP),
+        broadcast_recv_sock(Socket::Dommaine::IP,Socket::Type::TCP)
         {
             //init broadcast
-            new_broadcast_sock = new SocketSerialized(Socket::Dommaine::IP,Socket::Type::TCP);
-            new_broadcast_sock->serverMode(NTW_PORT_CLIENT);
+            new_broadcast_sock.serverMode(NTW_PORT_CLIENT);
 
             broadcast_recv.setRead(true);
+            broadcast_recv.setDelete(false);
             broadcast_recv.onSelect = onBroadcastRecv;
+            broadcast_recv.data = this;
         }
 
         Client::~Client()
         {
-            if(new_broadcast_sock)
-                delete new_broadcast_sock;
-            /*if(broadcast_recv_sock)
-                delete broadcast_recv_sock;*/
+            request_sock.shutdown();
+            new_broadcast_sock.shutdown();
+            broadcast_recv_sock.shutdown();
         }
 
         int Client::connect(const std::string& host,int port)
@@ -34,7 +36,7 @@ namespace ntw
             timeout.tv_sec = 5;
             timeout.tv_usec = 0;//10⁻⁶
 
-            int id = new_broadcast_sock->id();
+            int id = new_broadcast_sock.id();
             FD_ZERO(&readfds);
             FD_SET(id,&readfds);
 
@@ -53,9 +55,13 @@ namespace ntw
             if(FD_ISSET(id,&readfds))
             {
                 broadcast_recv.start();
-                broadcast_recv_sock = new ntw::SocketSerialized(new_broadcast_sock->accept());
-                ntw::FuncWrapper::msg(*broadcast_recv_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
-                broadcast_recv.add(broadcast_recv_sock);
+                new_broadcast_sock.accept(broadcast_recv_sock);
+                ntw::FuncWrapper::msg(broadcast_recv_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
+                broadcast_recv.add(&broadcast_recv_sock);
+            }
+            else
+            {
+                return NTW_ERROR_CONNEXION;
             }
             std::cout<<"Verify connexion"<<std::endl;
             if (ntw::FuncWrapper::verifyIsConnected(request_sock) != NTW_ERROR_NO)
@@ -76,10 +82,17 @@ namespace ntw
             broadcast_recv.wait();
         }
 
-        void Client::onBroadcastRecv(SelectManager& broadcast_recv,SocketSerialized& sock)
+        void Client::onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock)
         {
-            std::cout<<"RECV : "<<sock<<std::endl;
-            sock.clear();
+            if(sock.receive() >0)
+            {
+                std::cout<<"RECV : "<<sock<<std::endl;
+                sock.clear();
+            }
+            else
+            {
+                std::cerr<<"[SERVER] onBroadcastRecv connexion lost <id:"<<sock.id()<<">"<<std::endl;
+            }
         }
     }
 }

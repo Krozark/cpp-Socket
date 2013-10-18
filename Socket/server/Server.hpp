@@ -19,20 +19,26 @@ namespace ntw
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 
+                ~Server();
+
                 void start();
                 void stop();
+                void wait();
 
-            private:
+            protected:
                 ntw::SocketSerialized new_connexion_sock;
                 ntw::SelectManager new_connexion_recv;
                 ntw::BalancingSelector request_recv;
                 ntw::BalancingSelector broadcast_sender;
 
-                static void onNewClientRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
-                static void onRequestRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
-                static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, ntw::SocketSerialized& sock);
+                static void onNewClientRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock);
+                static void onRequestRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock);
+                static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, void* data,ntw::SocketSerialized& sock);
+
+                bool remove(Client* client);
 
                 std::list<Client> clients;
+                std::mutex client_mutex;
 
         };
     }

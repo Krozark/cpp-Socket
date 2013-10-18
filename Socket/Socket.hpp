@@ -78,7 +78,7 @@ class Socket
         Socket accept();
         void accept(Socket& client);
 
-        void shutdown(Down mode=Down::BOTH);
+        bool shutdown(Down mode=Down::BOTH);
 
         template<typename T>
         inline void send(const T* data,const size_t size,const int flags=0) const

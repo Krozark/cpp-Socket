@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
     std::cout<<client.call(ntw::FuncWrapper::getVersion)<<std::endl;
     std::cout<<client.call(ntw::FuncWrapper::testParamInt,25)<<std::endl;
 
+
     client.stop();
     client.wait();
 

@@ -5,10 +5,11 @@
 
 namespace ntw 
 {
-    BalancingSelector::BalancingSelector(bool read, bool write, bool except,void (*onSel)(SelectManager&,SocketSerialized&), unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout):  readfds(read),
+    BalancingSelector::BalancingSelector(bool read, bool write, bool except,void (*onSel)(SelectManager&,void*,SocketSerialized&),void* _data, unsigned int _min,unsigned int _max,unsigned int max_selector,float timeout):  readfds(read),
     writefds(write),
     exceptfds(except),
     onSelect(onSel),
+    data(data),
     nb_selector_max(max_selector),
     max_per_selector(_max),
     min_per_selector(_min),
@@ -19,6 +20,7 @@ namespace ntw
         SelectManager& s = newSelector();
         s.setArgs(readfds,writefds,exceptfds,timeout);
         s.onSelect = onSelect;
+        s.data = _data;
     }
 
     bool BalancingSelector::add(SocketSerialized* s)
@@ -190,6 +192,7 @@ namespace ntw
 
         SelectManager& s = selectors.back();
         s.onSelect = onSelect;
+        s.data = data;
         s.setArgs(readfds,writefds,exceptfds,timeout);
         s.setDelete(do_delete);
 

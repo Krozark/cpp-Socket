@@ -16,6 +16,7 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock
         throw SocketExeption("Invalid socket");
     }
 
+
      //max_id = (sock>max_id)?sock:max_id;
 
     //sin_family = Dommaine
@@ -105,13 +106,9 @@ void Socket::accept(Socket& client)
     std::cerr<<"<id:"<<sock<<">New connexion accepted <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
 };
 
-void Socket::shutdown(Socket::Down mode)
+bool Socket::shutdown(Socket::Down mode)
 {
-    if (::shutdown(sock,mode) == -1)
-    {
-        perror("shutdown()");
-        throw SocketExeption("Can't shutdown socket");
-    }
+    return ::shutdown(sock,mode) != -1;
 };
 
 std::string Socket::getIp() const

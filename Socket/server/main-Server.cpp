@@ -7,6 +7,7 @@ int main(int argc, char* argv[])
     ntw::srv::Server server(max_client);
     server.start();
 
+    server.wait();
     return 0;
 };
 

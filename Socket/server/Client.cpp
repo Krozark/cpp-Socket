@@ -15,11 +15,12 @@ namespace ntw
         {
             return true;
         }*/
-        /*bool operator==(const Client& other)
+        bool Client::operator==(const Client& other)
         {
+            return this == &other;
         }
 
-        bool Client::isAnonymous()
+        /*bool Client::isAnonymous()
         {
             return pk <=0;
         }

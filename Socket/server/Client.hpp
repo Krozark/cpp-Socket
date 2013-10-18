@@ -21,7 +21,7 @@ namespace ntw
                 //bool isAnonymous();
                 //bool isLogged();
 
-                //bool operator==(const Client& other);
+                bool operator==(const Client& other);
             private:
                 friend class Server;
 

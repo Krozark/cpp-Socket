@@ -11,7 +11,7 @@ namespace ntw
     class BalancingSelector
     {
         public:
-            BalancingSelector(bool read, bool write, bool except,void (*onSelect)(SelectManager&,SocketSerialized&),unsigned int min_per_selector=50,unsigned int max_per_selector=100,unsigned int nb_selector_max=0,float timeout=NTW_DEFAULT_TIMEOUT);
+            BalancingSelector(bool read, bool write, bool except,void (*onSelect)(SelectManager&,void*,SocketSerialized&),void* data,unsigned int min_per_selector=50,unsigned int max_per_selector=100,unsigned int nb_selector_max=0,float timeout=NTW_DEFAULT_TIMEOUT);
 
             BalancingSelector(const BalancingSelector&) = delete;
             BalancingSelector& operator=(const BalancingSelector&) = delete;
@@ -45,7 +45,8 @@ namespace ntw
             bool  readfds;
             bool  writefds;
             bool  exceptfds;
-            void(*onSelect)(SelectManager& self,SocketSerialized& s);
+            void(*onSelect)(SelectManager& self,void* data,SocketSerialized& s);
+            void* data;
 
             bool do_delete;
 

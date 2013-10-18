@@ -31,11 +31,11 @@ namespace ntw
             private:
                 SocketSerialized request_sock;
 
-                SocketSerialized* new_broadcast_sock;
-                SocketSerialized* broadcast_recv_sock;
+                SocketSerialized new_broadcast_sock;
+                SocketSerialized broadcast_recv_sock;
                 SelectManager broadcast_recv;
 
-                static void onBroadcastRecv(SelectManager& broadcast_recv,SocketSerialized& sock);
+                static void onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock);
         };
     }
 }

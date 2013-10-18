@@ -65,28 +65,25 @@ namespace ntw
 
     void FuncWrapper::dispatch(SocketSerialized& request)
     {
-        if(request.size()>0)
-        {
-            int id = FUNCTONS_ID::UNKNOW;
-            request>>id;
+        int id = FUNCTONS_ID::UNKNOW;
+        request>>id;
 
-            switch(id)
-            {
-                case FUNCTONS_ID::UNKNOW :
+        switch(id)
+        {
+            case FUNCTONS_ID::UNKNOW :
                 {
                     std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
                 }break;
-                case FUNCTONS_ID::GET_VERSION :
+            case FUNCTONS_ID::GET_VERSION :
                 {
                     exec(getVersion,request);
                 }break;
-                case  FUNCTONS_ID::TESTPARAMINT :
+            case  FUNCTONS_ID::TESTPARAMINT :
                 {
                     exec(testParamInt,request);
                 }break;
-                default:
-                    std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
-            }
+            default:
+                std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
         }
     }
 

@@ -23,7 +23,9 @@ namespace ntw {
             bool remove(SocketSerialized* s);
             void clear();
 
-            void(*onSelect)(SelectManager& self,SocketSerialized& s);
+            void(*onSelect)(SelectManager& self,void* data,SocketSerialized& s);
+            void* data;
+
             void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=NTW_DEFAULT_TIMEOUT);
             void setRead(bool read=false);
             void setWrite(bool write=false);

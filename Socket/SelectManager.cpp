@@ -13,7 +13,7 @@
 
 namespace ntw {
 
-SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false), do_delete(true)
+SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false), do_delete(true),data(0)
 {
     setTimout(t);
     #ifdef _WIN32 //_WIN64
@@ -216,19 +216,19 @@ void SelectManager::run()
             int id = iit.id(); 
             if(readfds and FD_ISSET(id,readfds))
             {
-                onSelect(*this,iit);
+                onSelect(*this,data,iit);
                 --res;
                 continue;
             }
             if(writefds and FD_ISSET(id,writefds))
             {
-                onSelect(*this,iit);
+                onSelect(*this,data,iit);
                 --res;
                 continue;
             }
             if(exceptfds and FD_ISSET(id,exceptfds))
             {
-                onSelect(*this,iit);
+                onSelect(*this,data,iit);
                 --res;
                 continue;
             }
