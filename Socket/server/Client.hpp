@@ -18,9 +18,6 @@ namespace ntw
                 Client(const Client&) = delete;
                 Client& operator=(const Client&) = delete;
                 
-                //bool isAnonymous();
-                //bool isLogged();
-
                 bool operator==(const Client& other);
             private:
                 friend class Server;
