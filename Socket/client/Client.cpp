@@ -13,7 +13,7 @@ namespace ntw
             new_broadcast_sock.serverMode(NTW_PORT_CLIENT);
 
             broadcast_recv.setRead(true);
-            broadcast_recv.setDelete(false);
+            //broadcast_recv.setDelete(false);
             broadcast_recv.onSelect = onBroadcastRecv;
             broadcast_recv.data = this;
         }

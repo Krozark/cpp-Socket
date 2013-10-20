@@ -15,7 +15,7 @@ namespace ntw
     min_per_selector(_min),
     _run(false),
     timeout(timeout),
-    do_delete(true)
+    do_delete(false)
     {
         SelectManager& s = newSelector();
         s.setArgs(readfds,writefds,exceptfds,timeout);

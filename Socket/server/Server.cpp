@@ -11,9 +11,9 @@ namespace srv
         request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout),
         broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
     {
-        request_recv.setDelete(false);
-        broadcast_sender.setDelete(false);
-        new_connexion_recv.setDelete(false);
+        //request_recv.setDelete(false);
+        //broadcast_sender.setDelete(false);
+        //new_connexion_recv.setDelete(false);
         //init sock
         new_connexion_sock.serverMode(NTW_PORT_SERVER);
         //init selector
