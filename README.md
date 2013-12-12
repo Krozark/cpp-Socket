@@ -1,6 +1,11 @@
 cpp-Socket
 ==========
 
+Current build status : 
+[![Build Status](https://travis-ci.org/Krozark/cpp-Socket.png?branch=master)](https://travis-ci.org/Krozark/cpp-Socket)
+
+Version : 0.2
+
 Some class to help to construct client/server with soket and serilized datas.
 
 It also make some methode to make binary RPC. The binary is translate using the serializer before the send.
