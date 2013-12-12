@@ -3,12 +3,12 @@
 
 namespace ntw
 {
-#if NTW_MODE == NTW_CLIENT
+
     /***************************
      ********** CLIENT**********
      **************************/
     template<typename ... Args>
-    void FuncWrapper::addPackage(FUNCTONS_ID id,SocketSerialized& sock,Args& ... args)
+    void FuncWrapper::cli::addPackage(int id,SocketSerialized& sock,Args& ... args)
     {
         sock<<id;
         addPackage(sock,args...);
@@ -16,14 +16,14 @@ namespace ntw
 
 
     template<typename T,typename ... Args>
-    void FuncWrapper::addPackage(SocketSerialized& sock,T& a,Args& ... args)
+    void FuncWrapper::cli::addPackage(SocketSerialized& sock,T& a,Args& ... args)
     {
         sock<<a;
         addPackage(sock,args...);
     }
 
     template<typename Ret,typename ... Args>
-    Ret FuncWrapper::send(SocketSerialized& sock,FUNCTONS_ID id,Args&& ... args)
+    Ret FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
     {
         Ret ret;
         addPackage(id,sock,args ...);
@@ -34,10 +34,8 @@ namespace ntw
         }
         return ret;
     }
-#else
-    /***************************
-     * ****** SERVER **********
-     * ************************/
+
+
 // ------------- UTILITY---------------
     template<int...> struct index_tuple{};
 
@@ -73,10 +71,12 @@ namespace ntw
         return res;
     };
 
+    /***********************************
+     * ******** SERVER ****************
+     * *********************************/
     template<typename Ret,typename ... Args>
-    Ret FuncWrapper::exec(Ret(*pf)(SocketSerialized&,Args ...),SocketSerialized& sock)
+    Ret FuncWrapper::srv::exec(Ret(*pf)(SocketSerialized&,Args ...),SocketSerialized& sock)
     {
         return exec__(pf,sock,typename make_indexes<Args...>::type(), std::tuple<typename std::remove_reference<Args>::type...>());
     }
-#endif
 }

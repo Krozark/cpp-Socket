@@ -13,7 +13,15 @@
 
 namespace ntw {
 
-SelectManager::SelectManager(float t): readfds(0), writefds(0), exceptfds(0), onSelect(0), max_id(0), _run(false), do_delete(false),data(0)
+SelectManager::SelectManager(float t): 
+    onSelect(0),
+    data(0),
+    do_delete(false),
+    readfds(0), 
+    writefds(0),
+    exceptfds(0),
+    max_id(0), 
+    _run(false)
 {
     setTimout(t);
     #ifdef _WIN32 //_WIN64

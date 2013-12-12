@@ -1,9 +1,7 @@
 #!/bin/bash
 
 make clean
-rm server
-make EXEC=server
+make shared && make clean
+make static && make clean
+make
 
-rm client
-make clean
-make EXEC=client

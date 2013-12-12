@@ -1,15 +1,6 @@
 #ifndef NTW_DEFINE_HPP
 #define NTW_DEFINE_HPP
 
-#define NTW_CLIENT  1
-#define NTW_SERVER  2
-
-/*
-#ifndef NTW_MODE
-#define NTW_MODE NTW_CLIENT
-#endif
-*/
-
 #define NTW_MAX_CONNEXION 5
 #define NTW_PORT_SERVER 3987
 #define NTW_PORT_CLIENT 3988

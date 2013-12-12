@@ -1,16 +1,10 @@
-SRVOBJ = $(wildcard srv-*.o)
-CLIOBJ = $(wildcard cli-*.o)
 OBJ = $(wildcard *.o)
-OBJ := $(filter-out $(SRVOBJ), $(OBJ))
-OBJ := $(filter-out $(CLIOBJ), $(OBJ))
 
-all: $(EXEC)
+static : $(OBJ)
+	ar rcs $(TOP)/$(STATIC) $^
+
+shared : $(OBJ)
+	gcc -shared -Wl,-soname,$(TOP)/$(SHARED) -o $(TOP)/$(SHARED) $^
 	
-$(SERVER): $(OBJ) $(SRVOBJ)
-	$(CC) $^ $(FLAGS) -o "$(TOP)/$(SERVER)"
-
-$(CLIENT): $(OBJ) $(CLIOBJ)
-	$(CC) $^ $(FLAGS) -o "$(TOP)/$(CLIENT)"
-
 clean:
 	@rm -f *.o

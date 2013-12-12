@@ -1,6 +1,5 @@
 #include <Socket/server/Server.hpp>
 
-#if NTW_MODE == NTW_SERVER
 namespace ntw
 {
 namespace srv
@@ -94,7 +93,7 @@ namespace srv
     {
         if(sock.receive() >0)
         {
-            ntw::FuncWrapper::dispatch(sock);
+            ntw::FuncWrapper::srv::dispatch(sock);
         }
         else
         {
@@ -130,11 +129,13 @@ namespace srv
     {
         client_mutex.lock();
         auto begin = clients.begin();
+        bool res = false;
         while(begin != clients.end())
         {
             if(&(*begin) == client_ptr)
             {
                 std::cout<<"delete client"<<std::endl;
+                res = true;
                 Client& client = *client_ptr;
 
                 request_recv.remove(&client.request_sock);
@@ -149,7 +150,7 @@ namespace srv
                 ++begin;
         }
         client_mutex.unlock();
+        return res;
     }
 }
 }
-#endif

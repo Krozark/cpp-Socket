@@ -31,44 +31,20 @@ namespace ntw
         return code;
     }
 
-#if NTW_MODE == NTW_CLIENT
-    /***************************
-     ********** CLIENT**********
-     **************************/
-    void FuncWrapper::addPackage(SocketSerialized& sock){}
-
-    int FuncWrapper::getVersion(SocketSerialized& sock)
+    /********** CLIENT ********************/
+    void FuncWrapper::cli::addPackage(SocketSerialized& sock)
     {
-        return send<int>(sock,GET_VERSION);
-    }
-    int FuncWrapper::testParamInt(SocketSerialized& sock,int p1)
-    {
-        return send<int>(sock,TESTPARAMINT,p1);
     }
 
-
-#else
-    /***************************
-     * ****** SERVER **********
-     * ************************/
-
-    int FuncWrapper::getVersion(SocketSerialized& sock)
-    {
-        return NTW_VERSION;
-    }
-
-    int FuncWrapper::testParamInt(SocketSerialized& sock,int v)
-    {
-        return v+12;
-    }
-
-
-    void FuncWrapper::dispatch(SocketSerialized& request)
+    /*********** SERVER ******************/
+    void FuncWrapper::srv::dispatch(SocketSerialized& request)
     {
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
 
-        switch(id)
+        ntw::dispatch(id,request);
+
+        /*switch(id)
         {
             case FUNCTONS_ID::UNKNOW :
                 {
@@ -84,10 +60,7 @@ namespace ntw
                 }break;
             default:
                 std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
-        }
+        }*/
+
     }
-
-
-#endif
-
 }

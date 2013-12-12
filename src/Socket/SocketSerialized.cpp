@@ -54,7 +54,7 @@ int SocketSerialized::receive()
         #endif
         uint16_t size = *(uint16_t*)&d;
         //reset
-        if (_buffer_size < 2+size)
+        if (int(_buffer_size) < 2+size)
             resize(2+size);
         //else _buffer_size ne change pas
         _cursor_begin = 2;
