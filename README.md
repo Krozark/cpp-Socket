@@ -46,35 +46,30 @@ All class are in ntw namespace.
 
 * ntw::FuncWrapper
     * This class define some (static) base functions for the communication
-    * This is in this class that you have to add you own function (.hpp, .cpp or .tpl for template)
-    * Client side : the body of function are juste like that : return send\<ReturnType\>(sock,unique function id,params ...)
-    * Server side : normal function, juste make your stuf, and return the result.
-    * Server also need to build FuncWrapper::dispatch(SocketSerialized& request) function. It's juste a big switch on the id function. Here is the default:
+    * This class use a dispatch function tha you have to build
+    * exec is a shortcut tha unpack param of the function in firs param, containing in the request, and call it.
 
 ```c++
-void FuncWrapper::dispatch(SocketSerialized& request)
+namespace ntw
 {
-    if(request.size()>0)
+    void dispatch(int id,SocketSerialized& request)
     {
-        int id = FUNCTONS_ID::UNKNOW;
-        request>>id;
-
         switch(id)
         {
-            case FUNCTONS_ID::UNKNOW :
+            case ntw::FuncWrapper::srv::FUNCTONS_ID::UNKNOW :
             {
-                std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
+                std::cerr<<"[ERROR] dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
             }break;
-            case FUNCTONS_ID::GET_VERSION :
+            case 1 :
             {
                 exec(getVersion,request);
             }break;
-            case  FUNCTONS_ID::TESTPARAMINT :
+            case  2 :
             {
                 exec(testParamInt,request);
             }break;
             default:
-            std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
+                std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
         }
     }
 }
@@ -89,60 +84,8 @@ void FuncWrapper::dispatch(SocketSerialized& request)
     * construct and connect it, and then, you can use the client.call((*pf)'SocketSerialized&,...)...) to make a rpc call. pf is a fonction defined in FuncWrapper (client.call is a synchronous call).
     * at the end, don't forget to call client.stop(), and client.wait() to stop the network thread.
 
-Exemples
-========
 
-
-You can find exemples of use in:
-* Socket/server/server.cpp
-
-```c++
-#include <Socket/server/Server.hpp>
-
-int main(int argc, char* argv[])
-{
-
-    const unsigned int max_client = 100;
-    ntw::srv::Server server(max_client);
-    server.start();
-
-    return 0;
-};
-```
-
-* Socket/client/client.cpp
-
-```c++
-#include <Socket/client/Client.hpp>
-#include <Socket/FuncWrapper.hpp>
-
-#include <iostream>
-
-int main(int argc, char* argv[])
-{
-    
-    ntw::cli::Client client;
-    int res = client.connect("127.0.0.1",NTW_PORT_SERVER);
-
-    if(res != NTW_ERROR_NO)
-    {
-        std::cerr<<"An error occurred (code:"<<res<<")"<<std::endl;
-        return res;
-    }
-
-    std::cout<<client.call(ntw::FuncWrapper::getVersion)<<std::endl;
-    std::cout<<client.call(ntw::FuncWrapper::testParamInt,25)<<std::endl;
-
-    client.stop();
-    client.wait();
-
-    return 0;
-};
-```
-
-
-
-You can build the exemple with "make".
+You can build the lib with "build.sh".
 
 
 
