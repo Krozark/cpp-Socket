@@ -1,4 +1,4 @@
-export LIB = Socket
+export LIB = libsocket
 export STATIC=$(LIB).a
 export SHARED=$(LIB).so
 
