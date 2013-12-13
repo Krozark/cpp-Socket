@@ -26,6 +26,25 @@ Note:
 Test on Ubuntu 12+ x64, but based on multiplatforme code.
 Used std::thread and std::mutex.
 
+Important
+=========
+
+You have to define your function dispatch. See the doc for more detail.
+
+``cpp
+
+namespace ntw
+{
+    class SocketSerialized;
+
+    void dispatch(int id,SocketSerialized& request)
+    {
+    };
+}
+
+``
+
+
 Class
 -----
 
