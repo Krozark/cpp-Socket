@@ -42,7 +42,12 @@ namespace ntw
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
 
-        ntw::dispatch(id,request);
+        if(ntw::dispatch(id,request) == Status::st::wrong_id)
+        {
+            request.clear();
+            request<<ntw::FuncWrapper::Status(Status::st::wrong_id);
+            request.sendCl();
+        }
 
         /*switch(id)
         {

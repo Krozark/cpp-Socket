@@ -11,8 +11,9 @@ namespace ntw
      * \brief the external function to call whene recv a message
      * \param id the function id
      * \param request the request who send the request
+     * \return error code. if the value is Status::st::wrong_id, send error message to client
      */
-    extern void dispatch(int id,SocketSerialized& request);
+    extern int dispatch(int id,SocketSerialized& request);
 
     /**
      * \brief Regroup somme helper function for TCP client server call
@@ -42,6 +43,35 @@ namespace ntw
             static int verifyIsConnected(SocketSerialized& sock);
 
             /**
+             * \brief A class to handle status response
+             */
+            class Status
+            {
+                public:
+                    Status(int c):code(c){}; ///< constructor
+
+                    friend Serializer& operator<<(Serializer& stream,const Status& self)
+                    {
+                        stream<<self.code;
+                        return stream;
+                    }
+
+                    friend Serializer& operator>>(Serializer& stream,const Status& self)
+                    {
+                        stream>>self.code;
+                        return stream;
+                    }
+                    int code; ///< code
+
+                    /**
+                     * \brief code values
+                     */
+                    enum st{wrong_id=-1,
+                        ok=0,
+                    };
+            };
+
+            /**
              * \brief Regroup function for build a TCP server
              */
             class srv 
@@ -53,8 +83,8 @@ namespace ntw
                     /***
                      * \brief shortcut function to call a function.
                      * Exctact the param from the socket
-                     * Note : sock format is <id|params ...>
-                     * \param func the function to call
+                     * Note : sock format is <id|status|params ...>
+                     * \param func the function to call. use "return send<T>(sock,id,Status& st)";
                      * \param sock the socket containing the param
                      * \return the func value
                      */
@@ -98,12 +128,13 @@ namespace ntw
                     /**
                      * \brief call the function of id id on the server with param ... args
                      * \param sock the socket to use
+                     * \param st stor the status (sended ok or not)
                      * \param id the id function to call on the server
                      * \param args the args of the function to call
-                     * \return the function called return value
+                     * \return the function called return value. Verify the status value before use it.
                      */
                     template<typename Ret,typename ... Args>
-                    static Ret send(SocketSerialized& sock,int id,Args&& ... args);
+                    static Ret send(SocketSerialized& sock,Status& st,int id,Args&& ... args);
 
                 private:
                     cli() = delete;

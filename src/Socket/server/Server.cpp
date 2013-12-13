@@ -34,19 +34,25 @@ namespace srv
         //start
         new_connexion_recv.start();
         request_recv.start();
-        broadcast_sender.start();
+
+        if(Config::broadcast)
+            broadcast_sender.start();
 
         //join
         new_connexion_recv.wait();
         request_recv.wait();
-        broadcast_sender.wait();
+
+        if(Config::broadcast)
+            broadcast_sender.wait();
     }
 
     void Server::stop()
     {
         new_connexion_recv.stop();
         request_recv.stop();
-        broadcast_sender.stop();
+
+        if(Config::broadcast)
+            broadcast_sender.stop();
 
     }
 
@@ -54,7 +60,9 @@ namespace srv
     {
         new_connexion_recv.wait();
         request_recv.wait();
-        broadcast_sender.wait();
+
+        if(Config::broadcast)
+            broadcast_sender.wait();
     }
     void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock)
     {
@@ -73,11 +81,14 @@ namespace srv
             ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
-        if(ok and not (self.broadcast_sender.add(&client.broadcast_sock,client.request_sock.getIp(),Config::port_client)))
+        if(Config::broadcast)
         {
-            ok = false;
-            self.request_recv.remove(&client.request_sock);
-            ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
+            if(ok and not (self.broadcast_sender.add(&client.broadcast_sock,client.request_sock.getIp(),Config::port_client)))
+            {
+                ok = false;
+                self.request_recv.remove(&client.request_sock);
+                ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
+            }
         }
 
         if(not ok)
@@ -142,7 +153,8 @@ namespace srv
                 request_recv.remove(&client.request_sock);
                 client.request_sock.shutdown();
 
-                broadcast_sender.remove(&client.broadcast_sock);
+                if(Config::broadcast)
+                    broadcast_sender.remove(&client.broadcast_sock);
                 client.broadcast_sock.shutdown();
 
                 begin = clients.erase(begin);

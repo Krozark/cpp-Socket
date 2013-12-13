@@ -59,7 +59,7 @@ namespace ntw
                  *
                  * \param pf the function to call
                  * \param args the function param
-                 * \return the rutun function value
+                 * \return the retun function value
                  */
                 template<typename Ret,typename ... Args>
                 Ret call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args);
@@ -70,7 +70,6 @@ namespace ntw
                 SocketSerialized new_broadcast_sock; ///< internal socket for broadcast listener
                 SocketSerialized broadcast_recv_sock; ///< internal Soket for broadcast reciver
                 SelectManager broadcast_recv; ///< manage the broadcast
-
                 static void onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock); ///< callback of the broadcast
         };
     }

@@ -23,14 +23,22 @@ namespace ntw
     }
 
     template<typename Ret,typename ... Args>
-    Ret FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
+    Ret FuncWrapper::cli::send(SocketSerialized& sock,Status& st,int id,Args&& ... args)
     {
         Ret ret;
         addPackage(id,sock,args ...);
         sock.send();
         if (sock.receive() > 0)
         {
-            sock>>ret;
+            sock>>st;
+            if(st.code != ntw::FuncWrapper::Status::st::wrong_id)
+            {
+                sock>>ret;
+            }
+            else
+            {
+                std::cerr<<"Recive Status different \"ok\""<<std::endl;
+            }
         }
         return ret;
     }
@@ -66,7 +74,7 @@ namespace ntw
         (void)ctx;
         sock.clear();
         Ret res = pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
-        sock<<res;
+        sock<<ntw::FuncWrapper::Status(ntw::FuncWrapper::Status::ok)<<res;
         sock.sendCl();
         return res;
     };

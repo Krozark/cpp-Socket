@@ -17,6 +17,7 @@ namespace ntw
             static int port_server; ///< port of the Server
             static int port_client; ///< port of the Client
             static double default_timeout; ///< default timeout for SelectManager
+            static bool broadcast; ///< broadcast server?
 
     };
 }

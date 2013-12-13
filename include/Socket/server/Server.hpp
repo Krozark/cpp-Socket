@@ -51,8 +51,8 @@ namespace ntw
             protected:
                 ntw::SocketSerialized new_connexion_sock; ///< socket tha manage new connextion
                 ntw::SelectManager new_connexion_recv; ///< manager for nex connextion
+                ntw::BalancingSelector request_recv; ///< socket managaer for request (TCP)
 
-                ntw::BalancingSelector request_recv; ///< socket for broadcast new connection
                 ntw::BalancingSelector broadcast_sender; ///< manager for broadcast
 
                 /**
