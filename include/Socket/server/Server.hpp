@@ -15,7 +15,7 @@ namespace ntw
         class Server
         {
             public:
-                Server(unsigned int max_client,unsigned int min_client=1,float timeout=NTW_DEFAULT_TIMEOUT);
+                Server(unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 

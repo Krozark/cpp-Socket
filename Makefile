@@ -1,4 +1,4 @@
-export LIB = cppsocket
+export LIB = Socket
 export STATIC=$(LIB).a
 export SHARED=$(LIB).so
 
@@ -24,6 +24,7 @@ CLEANDIRS = $(SUBDIRS:%=clean-%)
 
 #all: $(OBJ) subdirs
 
+
 static : src
 	$(MAKE) static -C obj
 
@@ -34,12 +35,17 @@ shared :
 install :
 	cp -f $(STATIC) /usr/local/lib/$(STATIC)
 	cp -f $(SHARED) /usr/local/lib/$(SHARED)
-	cp -rf include/Socket /usr/local/include/cppsocket
+	cp -rf include/Socket /usr/local/include/Socket
 
 uninstall:
 	rm -f /usr/local/lib/$(STATIC)
 	rm -f /usr/local/lib/$(SHARED)
-	rm -rf /usr/local/include/cppsocket
+	rm -rf /usr/local/include/Socket
+
+doc : doc/html 
+
+doc/html :
+	cd doc && doxygen
 
 subdirs: $(SUBDIRS)
 

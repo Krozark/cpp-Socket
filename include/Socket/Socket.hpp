@@ -33,7 +33,8 @@
 #include <string>
 #include <exception>
 
-#include <Socket/define.hpp>
+#include <Socket/Config.hpp>
+
 
 
 
@@ -73,7 +74,7 @@ class Socket
         bool connect(std::string host,int port);
         void bind();
         void listen(const int max_connexion);
-        void serverMode(int port,const int max_connexion=NTW_MAX_CONNEXION,std::string host="");//init sock_cfg + bind + listen
+        void serverMode(int port,const int max_connexion=Config::max_connexion,std::string host="");//init sock_cfg + bind + listen
 
         Socket accept();
         void accept(Socket& client);

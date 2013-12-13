@@ -3,6 +3,7 @@
 
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/SelectManager.hpp>
+#include <Socket/Config.hpp>
 #include <string>
 
 namespace ntw
@@ -21,7 +22,7 @@ namespace ntw
 
                 ~Client();
                 
-                int connect(const std::string& host,int port=NTW_PORT_SERVER);
+                int connect(const std::string& host,int port=Config::port_server);
                 void stop();
                 void wait();
 

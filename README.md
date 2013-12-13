@@ -30,6 +30,13 @@ Class
 
 All class are in ntw namespace.
 
+* ntw::Config
+    * define some values use for init server, client and SelectManager.
+        * max_connexion;
+        * port_server;
+        * port_client;
+        * default_timeout;
+
 * ntw::Serializer
     * allow you to add datas to the buffer that are convert in Big Endian for the network
     * allow you to add custom operators \<\< and \>\>  for easily use vour own class/stuct to convert.

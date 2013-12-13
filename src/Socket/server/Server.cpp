@@ -1,4 +1,5 @@
 #include <Socket/server/Server.hpp>
+#include <Socket/Config.hpp>
 
 namespace ntw
 {
@@ -14,7 +15,7 @@ namespace srv
         //broadcast_sender.setDelete(false);
         //new_connexion_recv.setDelete(false);
         //init sock
-        new_connexion_sock.serverMode(NTW_PORT_SERVER);
+        new_connexion_sock.serverMode(Config::port_server);
         //init selector
         new_connexion_recv.setRead(true);
         new_connexion_recv.onSelect = onNewClientRecv;
@@ -72,7 +73,7 @@ namespace srv
             ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
-        if(ok and not (self.broadcast_sender.add(&client.broadcast_sock,client.request_sock.getIp(),NTW_PORT_CLIENT)))
+        if(ok and not (self.broadcast_sender.add(&client.broadcast_sock,client.request_sock.getIp(),Config::port_client)))
         {
             ok = false;
             self.request_recv.remove(&client.request_sock);

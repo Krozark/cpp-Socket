@@ -1,5 +1,6 @@
 #include <Socket/client/Client.hpp>
 #include <Socket/FuncWrapper.hpp>
+#include <Socket/Config.hpp>
 
 namespace ntw
 {
@@ -10,7 +11,7 @@ namespace ntw
         broadcast_recv_sock(Socket::Dommaine::IP,Socket::Type::TCP)
         {
             //init broadcast
-            new_broadcast_sock.serverMode(NTW_PORT_CLIENT);
+            new_broadcast_sock.serverMode(Config::port_client);
 
             broadcast_recv.setRead(true);
             //broadcast_recv.setDelete(false);

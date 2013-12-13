@@ -7,6 +7,7 @@
 
 #include <Socket/define.hpp>
 #include <Socket/SocketSerialized.hpp>
+#include <Socket/Config.hpp>
 
 namespace ntw {
 
@@ -16,7 +17,7 @@ namespace ntw {
     {
 
         public:
-            explicit SelectManager(float timeout=NTW_DEFAULT_TIMEOUT);
+            explicit SelectManager(float timeout=Config::default_timeout);
             ~SelectManager();
             
             void add(SocketSerialized* s);
@@ -26,11 +27,11 @@ namespace ntw {
             void(*onSelect)(SelectManager& self,void* data,SocketSerialized& s);
             void* data;
 
-            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=NTW_DEFAULT_TIMEOUT);
+            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=Config::default_timeout);
             void setRead(bool read=false);
             void setWrite(bool write=false);
             void setExcept(bool except=false);
-            void setTimout(float timout_sec=NTW_DEFAULT_TIMEOUT);
+            void setTimout(float timout_sec=Config::default_timeout);
 
             void start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
             void stop();

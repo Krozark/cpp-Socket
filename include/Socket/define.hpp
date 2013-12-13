@@ -1,15 +1,6 @@
 #ifndef NTW_DEFINE_HPP
 #define NTW_DEFINE_HPP
 
-#define NTW_MAX_CONNEXION 5
-#define NTW_PORT_SERVER 3987
-#define NTW_PORT_CLIENT 3988
-
-#define NTW_VERSION 42
-
-#define NTW_DEFAULT_TIMEOUT 5.f
-
-
 /**************************
  * ERRORS MESSAGE / code
  * ***********************/
