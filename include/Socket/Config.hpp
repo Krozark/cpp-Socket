@@ -4,7 +4,7 @@
 namespace ntw
 {
     /**
-     * A class that contains default configurations
+     * \brief A class that contains default configurations
      */
     class Config
     {

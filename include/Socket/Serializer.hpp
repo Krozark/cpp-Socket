@@ -20,67 +20,86 @@ __ORDER_PDP_ENDIAN__
 #endif
 
 namespace ntw {
-/* Convert local data in BIG ENDIAN for network, and from big endian to local  */
+/**
+ * A class that Convert local data in BIG ENDIAN for network, and from big endian to local ordering
+ */
 class Serializer
 {
     public:
+        /**
+         * \brief Constructor
+         * \param buffer_size the internal initial buffer size
+         */
         explicit Serializer(unsigned int buffer_size=255);
+
+        /**
+         * \brief Destructor
+         */
         ~Serializer();
 
+        /**
+         * \brief clear the buffe, but nor free it
+         */
         void clear();
         
         Serializer(const Serializer&) = delete;
         Serializer& operator=(const Serializer&) = delete;
 
 
+        /**
+         * \return The number of byts stored
+         */
         const unsigned int size()const;
 
         /********* SERIALIZE *************/
-        //1 oct | 8 bit
-        Serializer& operator<<(char c);
-        //2 oct | 16 bit
-        Serializer& operator<<(short int s);
-        //4 oct | 32 bit
-        Serializer& operator<<(int i);
-        Serializer& operator<<(unsigned int i);
-        Serializer& operator<<(float f);
-        //8 oct | 64 bit
-        Serializer& operator<<(double d);
-        Serializer& operator<<(long int l);
+        Serializer& operator<<(char c); ///< Oveload operator to stor data. 1 oct | 8 bit
+
+        Serializer& operator<<(short int s);///< Oveload operator to stor data. 2 oct | 16 bit
+
+        Serializer& operator<<(int i);///< Oveload operator to stor data. 4 oct | 32 bit
+        Serializer& operator<<(unsigned int i);///< Oveload operator to stor data.  4 oct | 32 bit
+        Serializer& operator<<(float f);///< Oveload operator to stor data.  4 oct | 32 bit
+
+        Serializer& operator<<(double d);///< Oveload operator to stor data. 8 oct | 64 bit
+        Serializer& operator<<(long int l);///< Oveload operator to stor data. 8 oct | 64 bit
+        
         //16 oct | 124 bit
         //Serializer& operator<<(long double ld){push(*reinterpret_cast<uint128_t*>(&ld);};
-        //1 oct | 8 bit []
-        Serializer& operator<<(const char* const c);
-        //string
-        Serializer& operator<<(const std::string& str);
+        
+        Serializer& operator<<(const char* const c);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
+        Serializer& operator<<(const std::string& str);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
+
 
         /********** UNSERIALIZE ***********/
-        //1 oct | 8 bit
-        Serializer& operator>>(char& c);
-        //2 oct | 16 bit
-        Serializer& operator>>(short int s);
-        //4 oct | 32 bit
-        Serializer& operator>>(int& i);
-        Serializer& operator>>(unsigned int& i);
-        Serializer& operator>>(float& f);
-        //8 oct | 64 bit
-        Serializer& operator>>(double& d);
-        Serializer& operator>>(long int& l);
-        //1 oct | 8 bit []
-        Serializer& operator>>(char*& c);
-        Serializer& operator>>(std::string& str);
+        Serializer& operator>>(char& c); ///< Oveload operator to extract datas. 1 oct | 8 bit
+
+        Serializer& operator>>(short int s); ///< Oveload operator to extract datas. 2 oct | 16 bit
+
+        Serializer& operator>>(int& i); ///< Oveload operator to extract datas. 4 oct | 32 bit
+        Serializer& operator>>(unsigned int& i); ///< Oveload operator to extract datas. 4 oct | 32 bit
+        Serializer& operator>>(float& f); ///< Oveload operator to extract datas.4 oct | 32 bit
+
+        Serializer& operator>>(double& d); ///< Oveload operator to extract datas. 8 oct | 64 bit
+        Serializer& operator>>(long int& l); ///< Oveload operator to extract datas. 8 oct | 64 bit
+
+        Serializer& operator>>(char*& c); ///< Oveload operator to extract datas. 1 oct | 8 bit []
+        Serializer& operator>>(std::string& str); ///< Oveload operator to extract datas. 1 oct | 8 bit []
 
 
-        friend std::ostream& operator<<(std::ostream& output,const Serializer& self);
+        friend std::ostream& operator<<(std::ostream& output,const Serializer& self); ///<print each byt by his int value between <>
 
 
     protected:
 
-        unsigned char* _buffer;
-        unsigned int _cursor_end;
-        unsigned int _cursor_begin;
-        unsigned int _buffer_size;
+        unsigned char* _buffer; ///< internal buffer
+        unsigned int _cursor_end; ///< end cursor
+        unsigned int _cursor_begin; ///< start cursor
+        unsigned int _buffer_size;///< size of the buffer
 
+        /**
+         * \brief realoc the buffer
+         * \param buffer_cursor_end the size to alloc
+         */
         inline void resize(const unsigned int buffer_cursor_end)
         {
             unsigned char* buffer = new unsigned char[buffer_cursor_end];
@@ -93,7 +112,11 @@ class Serializer
 
 
         /************ ADD DATAs ***************/
-
+        /**
+         * \brief Helper function to add datas
+         * and convert it in big endian
+         * \param a data to add
+         */
         inline void push(uint8_t& a){
             if(_buffer_size < _cursor_end + 1)
                 resize(_buffer_size+128);
@@ -101,6 +124,11 @@ class Serializer
             _buffer[_cursor_end++] = a;
         };
 
+        /**
+         * \brief Helper function to add datas
+         * and convert it in big endian
+         * \param a data to add
+         */
         inline void push(uint16_t& a) {
             if(_buffer_size < _cursor_end + 2)
                 resize(_buffer_size+128);
@@ -119,6 +147,11 @@ class Serializer
 
         }
 
+        /**
+         * \brief Helper function to add datas
+         * and convert it in big endian
+         * \param a data to add
+         */
         inline void push(uint32_t& a){
             if(_buffer_size < _cursor_end + 4)
                 resize(_buffer_size+128);
@@ -141,6 +174,11 @@ class Serializer
 
         }
 
+        /**
+         * \brief Helper function to add datas
+         * and convert it in big endian
+         * \param a data to add
+         */
         inline void push(uint64_t& a){
             if(_buffer_size < _cursor_end + 8)
                 resize(_buffer_size+128);
@@ -171,6 +209,11 @@ class Serializer
         }
 
         /***************** GET DATAs ****************/
+        /**
+         * \brief Helper function to get datas
+         * and convert it from big endian to local encoding
+         * \param a data to get
+         */
         inline void pop(uint8_t& a){
             if(_cursor_begin +1 <= _cursor_end )
             {
@@ -178,6 +221,11 @@ class Serializer
             }
         };
 
+        /**
+         * \brief Helper function to get datas
+         * and convert it from big endian to local encoding
+         * \param a data to get
+         */
         inline void pop(uint16_t& a){
             if(_cursor_begin +2 <= _cursor_end)
             {
@@ -194,6 +242,11 @@ class Serializer
             }
         };
 
+        /**
+         * \brief Helper function to get datas
+         * and convert it from big endian to local encoding
+         * \param a data to get
+         */
         inline void pop(uint32_t& a){
             if(_cursor_begin +4 <= _cursor_end)
             {
@@ -214,6 +267,11 @@ class Serializer
             }
         };
 
+        /**
+         * \brief Helper function to get datas
+         * and convert it from big endian to local encoding
+         * \param a data to get
+         */
         inline void pop(uint64_t& a){
             if(_cursor_begin +8 <= _cursor_end)
             {

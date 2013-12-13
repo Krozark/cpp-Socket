@@ -36,13 +36,18 @@
 #include <Socket/Config.hpp>
 
 
-
-
 namespace ntw {
 
+/**
+ * \brief A class to manage exception
+ */
 class SocketExeption: public std::exception
 {
     public:
+        /**
+         * \brief Constructor
+         * \param error Message to display
+         */
         SocketExeption(std::string error) : msg(error) {};
         ~SocketExeption() throw() {};
         virtual const char* what() const throw()
@@ -50,37 +55,103 @@ class SocketExeption: public std::exception
             return msg.c_str();
         };
     private:
-        std::string msg;
+        std::string msg; ///< the message
 };
 
 class SocketSerialized;
 
+/**
+ * \brief A class tha encapsulate C socket, and made it mor easy to use
+ */
 class Socket
 {
     public:
         //static int max_id;
 
+        /**
+         * \brief Named Dommaine type. Others can be used
+         */
         enum Dommaine {IP=AF_INET, LOCAL=AF_UNIX};
+
+        /**
+         * \brief named Type of socket. Others can be used
+         */
         enum Type {TCP=SOCK_STREAM, UDP=SOCK_DGRAM};
+
+        /**
+         * \brief Named Down mode
+         */
         enum Down {SEND=0,RECIVE=1,BOTH=2};
 
+        /**
+         * \brief Constructor
+         * \param dommaine the dommaine for the socket
+         * \param type the type of socket
+         * \param protocole the protocal to use default is 0
+         */
         Socket(Dommaine dommaine,Type type,int protocole=0);
+
+        /**
+         * \brief Destructor
+         */
         ~Socket();
 
         Socket& operator=(const Socket&) = delete;
 
+        /**
+         * \return get the id of the socket
+         */
         const SOCKET id(){return sock;}
 
+        /**
+         * \brief connect the socket to the host
+         * \param host host adresse (ip or adresse)
+         * \param port the port to use
+         */
         bool connect(std::string host,int port);
-        void bind();
-        void listen(const int max_connexion);
-        void serverMode(int port,const int max_connexion=Config::max_connexion,std::string host="");//init sock_cfg + bind + listen
 
+        /**
+         * \brief Bind the socket
+         */
+        void bind();
+
+        /**
+         * \brief call the listen C function
+         */
+        void listen(const int max_connexion);
+
+        /**
+         * \brief Short cut function to call bind and listen
+         * \param port the port to use
+         * \param max_connexion the number of client
+         * \param host the host to use. default is INADDR_ANY
+         */
+        void serverMode(int port,const int max_connexion=Config::max_connexion,std::string host="");
+
+        /**
+         * \brief Creat a new soket and call accept(Socket&) on it
+         * \return the new connextion etablish
+         */
         Socket accept();
+
+        /**
+         * \brief accept a new connection
+         * \param client the new client
+         */
         void accept(Socket& client);
 
+        /**
+         * \brief shutdown the socket
+         * \param mode is the mod to close
+         */
         bool shutdown(Down mode=Down::BOTH);
 
+        /**
+         * \brief Send data
+         * \param data the buffer to send
+         * \param size the buffer size
+         * \param flags the flags to use
+         */
         template<typename T>
         inline void send(const T* data,const size_t size,const int flags=0) const
         {
@@ -91,25 +162,38 @@ class Socket
             }
         }
 
+        /**
+         * \brief receive data and stor it to the buffer
+         * \param buffer the buffer to store the data receive
+         * \param size the size of data to receive
+         * \param flags the flags to use
+         */
         template<typename T>
         inline int receive(T* buffer,const size_t size,const int flags=0) const
         {
             return ::recv(sock,buffer,size,flags);
         };
 
+        /**
+         * \return return the ip
+         */
         std::string getIp()const;
-        unsigned int getPort() const;
 
+        /**
+         * \return the port use
+         */
+        unsigned int getPort() const;
 
 
     protected:
         friend class SocketSerialized;
-        Socket();// intern use only;
+        Socket();///< intern use only;
+        /**
+         * \brief close the socket proprely
+         */
         inline void _close(){if(sock != INVALID_SOCKET)closesocket(sock);};
-        //socket
-        SOCKET sock;
-        //configuration
-        SOCKADDR_IN sock_cfg;
+        SOCKET sock; ///< C socket type
+        SOCKADDR_IN sock_cfg; ///< configuration struct
 };
 
 };
