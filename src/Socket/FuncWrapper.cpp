@@ -48,24 +48,5 @@ namespace ntw
             request<<ntw::FuncWrapper::Status(Status::st::wrong_id);
             request.sendCl();
         }
-
-        /*switch(id)
-        {
-            case FUNCTONS_ID::UNKNOW :
-                {
-                    std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID UNKNOW"<<std::endl;
-                }break;
-            case FUNCTONS_ID::GET_VERSION :
-                {
-                    exec(getVersion,request);
-                }break;
-            case  FUNCTONS_ID::TESTPARAMINT :
-                {
-                    exec(testParamInt,request);
-                }break;
-            default:
-                std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
-        }*/
-
     }
 }
