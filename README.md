@@ -31,7 +31,7 @@ Important
 
 You have to define your function dispatch. See the doc for more detail.
 
-``cpp
+```C++
 
 namespace ntw
 {
@@ -42,7 +42,7 @@ namespace ntw
     };
 }
 
-``
+```
 
 
 Class
