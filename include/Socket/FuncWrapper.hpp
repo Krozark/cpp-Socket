@@ -14,6 +14,9 @@ namespace ntw
      */
     extern void dispatch(int id,SocketSerialized& request);
 
+    /**
+     * \brief Regroup somme helper function for TCP client server call
+     */
     class FuncWrapper
     {
         public:
