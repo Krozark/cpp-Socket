@@ -24,6 +24,7 @@ Note:
 * Server::exec(R (\*fun)(SocketSerialized&,Args ...),Args...)
 
 Test on Ubuntu 12+ x64, but based on multiplatforme code.
+Used std::thread and std::mutex.
 
 Class
 -----
