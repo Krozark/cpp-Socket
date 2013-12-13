@@ -1,4 +1,4 @@
-export LIB = socket
+export LIB = cppsocket
 export STATIC=$(LIB).a
 export SHARED=$(LIB).so
 
@@ -34,12 +34,12 @@ shared :
 install :
 	cp -f $(STATIC) /usr/local/lib/$(STATIC)
 	cp -f $(SHARED) /usr/local/lib/$(SHARED)
-	cp -rf include/Socket /usr/local/include/Socket
+	cp -rf include/Socket /usr/local/include/cppsocket
 
 uninstall:
 	rm -f /usr/local/lib/$(STATIC)
 	rm -f /usr/local/lib/$(SHARED)
-	rm -rf /usr/local/include/Socket
+	rm -rf /usr/local/include/cppsocket
 
 subdirs: $(SUBDIRS)
 
