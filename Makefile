@@ -14,7 +14,7 @@ OBJ = $(SRC:.c=.o) $(SRC:*.cpp=.o)
 
 SUBDIRS = src obj
 
-export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
+export FLAGS = -o3 -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
 
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 
