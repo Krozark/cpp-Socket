@@ -85,11 +85,12 @@ namespace ntw
                      * Exctact the param from the socket
                      * Note : sock format is <id|status|params ...>
                      * \param func the function to call. use "return send<T>(sock,id,Status& st)";
+                     * \param status the status. [Default is ntw::FuncWrapper::Status::ok =>0].
                      * \param sock the socket containing the param
                      * \return the func value
                      */
                     template<typename Ret,typename ... Args>
-                    static Ret exec(Ret(*func)(SocketSerialized&,Args ...),SocketSerialized& sock);
+                    static Ret exec(Ret(*func)(SocketSerialized&, int& status,Args ...),SocketSerialized& sock);
 
                 private:
                     srv() = delete;

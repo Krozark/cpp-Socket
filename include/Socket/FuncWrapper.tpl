@@ -68,13 +68,14 @@ namespace ntw
     // ----------UNPACK TUPLE AND APPLY TO FUNCTION ---------
 
     template<class Ret, class... Args, int... Indexes>
-    inline Ret exec__( Ret (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
+    inline Ret exec__( Ret (*pf)(SocketSerialized&,int&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
     {
         int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
         (void)ctx;
         sock.clear();
-        Ret res = pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
-        sock<<ntw::FuncWrapper::Status(ntw::FuncWrapper::Status::ok)<<res;
+        int status = ntw::FuncWrapper::Status::ok;
+        Ret res = pf(sock,status,std::forward<Args>(std::get<Indexes>(args))...);
+        sock<<ntw::FuncWrapper::Status(status)<<res;
         sock.sendCl();
         return res;
     };
@@ -83,7 +84,7 @@ namespace ntw
      * ******** SERVER ****************
      * *********************************/
     template<typename Ret,typename ... Args>
-    Ret FuncWrapper::srv::exec(Ret(*pf)(SocketSerialized&,Args ...),SocketSerialized& sock)
+    Ret FuncWrapper::srv::exec(Ret(*pf)(SocketSerialized&,int&,Args ...),SocketSerialized& sock)
     {
         return exec__(pf,sock,typename make_indexes<Args...>::type(), std::tuple<typename std::remove_reference<Args>::type...>());
     }
