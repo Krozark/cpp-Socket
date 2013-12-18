@@ -22,6 +22,24 @@ namespace ntw
         addPackage(sock,args...);
     }
 
+    template<typename ... Args>
+    void FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
+    {
+        addPackage(id,sock,args ...);
+        sock.send();
+        if (sock.receive() > 0)
+        {
+            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+            {
+            }
+            else
+            {
+                std::cerr<<"Recive Status different \"ok\""<<std::endl;
+            }
+        }
+        return;
+    }
+
     template<typename Ret,typename ... Args>
     Ret FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
     {
@@ -41,6 +59,7 @@ namespace ntw
         }
         return ret;
     }
+
 
 
 // ------------- UTILITY---------------
@@ -75,6 +94,18 @@ namespace ntw
         sock.setStatus(ntw::FuncWrapper::Status::ok);
         Ret res = pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
         sock<<res;
+        sock.sendCl();
+        return sock.getStatus();
+    };
+
+    template<class... Args, int... Indexes>
+    int exec__( void (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
+    {
+        int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
+        (void)ctx;
+        sock.clear();
+        sock.setStatus(ntw::FuncWrapper::Status::ok);
+        pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
         sock.sendCl();
         return sock.getStatus();
     };
