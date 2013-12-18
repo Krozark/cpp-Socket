@@ -66,7 +66,7 @@ namespace ntw
                     /**
                      * \brief code values
                      */
-                    enum st{wrong_id=-1,
+                    enum st{wrong_id=-2,
                         ok=0,
                     };
             };
@@ -87,10 +87,10 @@ namespace ntw
                      * \param func the function to call. use "return send<T>(sock,id,Status& st)";
                      * \param status the status. [Default is ntw::FuncWrapper::Status::ok =>0].
                      * \param sock the socket containing the param
-                     * \return the func value
+                     * \return the func status
                      */
                     template<typename Ret,typename ... Args>
-                    static Ret exec(Ret(*func)(SocketSerialized&, int& status,Args ...),SocketSerialized& sock);
+                    static int exec(Ret(*func)(SocketSerialized&, int& status,Args ...),SocketSerialized& sock);
 
                 private:
                     srv() = delete;
