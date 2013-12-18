@@ -220,23 +220,16 @@ void SelectManager::run()
         auto end = datas.end();
         for(auto it=datas.begin();it!=end /*and res > 0*/;++it)
         {
-            auto& iit = **it;
+            SocketSerialized& iit = **it;
             int id = iit.id(); 
-            if(readfds and FD_ISSET(id,readfds))
+
+            if((readfds and FD_ISSET(id,readfds)) or
+                (writefds and FD_ISSET(id,writefds)) or
+                (exceptfds and FD_ISSET(id,exceptfds))
+              )
             {
-                onSelect(*this,data,iit);
-                --res;
-                continue;
-            }
-            if(writefds and FD_ISSET(id,writefds))
-            {
-                onSelect(*this,data,iit);
-                --res;
-                continue;
-            }
-            if(exceptfds and FD_ISSET(id,exceptfds))
-            {
-                onSelect(*this,data,iit);
+                //onSelect(*this,data,iit);
+                std::thread(onSelect,std::ref(*this),data,std::ref(iit)).detach();
                 --res;
                 continue;
             }

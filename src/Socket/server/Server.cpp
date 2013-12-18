@@ -154,8 +154,10 @@ namespace srv
                 client.request_sock.shutdown();
 
                 if(Config::broadcast)
+                {
                     broadcast_sender.remove(&client.broadcast_sock);
-                client.broadcast_sock.shutdown();
+                    client.broadcast_sock.shutdown();
+                }
 
                 begin = clients.erase(begin);
             }
