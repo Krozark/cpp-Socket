@@ -42,6 +42,16 @@ class SocketSerialized : public Serializer, public Socket
          */
         int receive();
 
+        /**
+         * set the status code
+         */
+        void setStatus(short int status);
+
+        /**
+         * \return the status code
+         */
+        short int getStatus()const;
+
         /// SERIALIZE
         /**
          * \brief clear the internal buffer.
@@ -56,9 +66,12 @@ class SocketSerialized : public Serializer, public Socket
         SocketSerialized(const SocketSerialized&) = delete;
         SocketSerialized& operator=(const SocketSerialized&) = delete;
 
+        friend std::ostream& operator<<(std::ostream& output,const SocketSerialized& self); ///<print each byt by his int value between <>
+
 
     private:
         //bool is_send;
+        short int status;///< status header default is 0
 
 };
 

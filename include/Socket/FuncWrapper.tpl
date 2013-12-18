@@ -23,15 +23,14 @@ namespace ntw
     }
 
     template<typename Ret,typename ... Args>
-    Ret FuncWrapper::cli::send(SocketSerialized& sock,Status& st,int id,Args&& ... args)
+    Ret FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
     {
         Ret ret;
         addPackage(id,sock,args ...);
         sock.send();
         if (sock.receive() > 0)
         {
-            sock>>st;
-            if(st.code != ntw::FuncWrapper::Status::st::wrong_id)
+            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
             {
                 sock>>ret;
             }
@@ -68,23 +67,23 @@ namespace ntw
     // ----------UNPACK TUPLE AND APPLY TO FUNCTION ---------
 
     template<class Ret, class... Args, int... Indexes>
-    int exec__( Ret (*pf)(SocketSerialized&,int&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
+    int exec__( Ret (*pf)(SocketSerialized&,Args...),SocketSerialized& sock, index_tuple< Indexes... >, std::tuple<Args...>&& args)
     {
         int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
         (void)ctx;
         sock.clear();
-        int status = ntw::FuncWrapper::Status::ok;
-        Ret res = pf(sock,status,std::forward<Args>(std::get<Indexes>(args))...);
-        sock<<ntw::FuncWrapper::Status(status)<<res;
+        sock.setStatus(ntw::FuncWrapper::Status::ok);
+        Ret res = pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
+        sock<<res;
         sock.sendCl();
-        return status;
+        return sock.getStatus();
     };
 
     /***********************************
      * ******** SERVER ****************
      * *********************************/
     template<typename Ret,typename ... Args>
-    int FuncWrapper::srv::exec(Ret(*pf)(SocketSerialized&,int&,Args ...),SocketSerialized& sock)
+    int FuncWrapper::srv::exec(Ret(*pf)(SocketSerialized&,Args ...),SocketSerialized& sock)
     {
         return exec__(pf,sock,typename make_indexes<Args...>::type(), std::tuple<typename std::remove_reference<Args>::type...>());
     }

@@ -48,9 +48,9 @@ namespace ntw
             class Status
             {
                 public:
-                    Status(int c):code(c){}; ///< constructor
+                    Status(short int c):code(c){}; ///< constructor
 
-                    friend Serializer& operator<<(Serializer& stream,const Status& self)
+                    /*friend Serializer& operator<<(Serializer& stream,const Status& self)
                     {
                         stream<<self.code;
                         return stream;
@@ -60,8 +60,8 @@ namespace ntw
                     {
                         stream>>self.code;
                         return stream;
-                    }
-                    int code; ///< code
+                    }*/
+                    short int code; ///< code
 
                     /**
                      * \brief code values
@@ -82,15 +82,14 @@ namespace ntw
 
                     /***
                      * \brief shortcut function to call a function.
-                     * Exctact the param from the socket
+                     * Exctact the param from the socket, and store the result in the socket
                      * Note : sock format is <id|status|params ...>
-                     * \param func the function to call. use "return send<T>(sock,id,Status& st)";
-                     * \param status the status. [Default is ntw::FuncWrapper::Status::ok =>0].
+                     * \param func the function to call. use "return send<T>(sock,id, Args...)";
                      * \param sock the socket containing the param
-                     * \return the func status
+                     * \return the func socket status
                      */
                     template<typename Ret,typename ... Args>
-                    static int exec(Ret(*func)(SocketSerialized&, int& status,Args ...),SocketSerialized& sock);
+                    static int exec(Ret(*func)(SocketSerialized&,Args ...),SocketSerialized& sock);
 
                 private:
                     srv() = delete;
@@ -129,13 +128,12 @@ namespace ntw
                     /**
                      * \brief call the function of id id on the server with param ... args
                      * \param sock the socket to use
-                     * \param st stor the status (sended ok or not)
                      * \param id the id function to call on the server
                      * \param args the args of the function to call
                      * \return the function called return value. Verify the status value before use it.
                      */
                     template<typename Ret,typename ... Args>
-                    static Ret send(SocketSerialized& sock,Status& st,int id,Args&& ... args);
+                    static Ret send(SocketSerialized& sock,int id,Args&& ... args);
 
                 private:
                     cli() = delete;

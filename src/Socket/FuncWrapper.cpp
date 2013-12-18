@@ -5,18 +5,20 @@ namespace ntw
     int FuncWrapper::msg(SocketSerialized& sock,const std::string message,unsigned int code)
     {
         sock.clear();
-        sock<<message<<code;
+        sock.setStatus(code);
+        sock<<message;
         sock.sendCl();
         return NTW_ERROR_NO;
     }
 
     int FuncWrapper::verifyIsConnected(SocketSerialized& sock)
     {
-        int code = NTW_ERROR_UNKNOW; 
+        short int code = NTW_ERROR_UNKNOW; 
         if(sock.receive() > 0)
         {
             std::string msg;
-            sock>>msg>>code;
+            sock>>msg;
+            code = sock.getStatus();
 
             if(std::string(msg) == std::string(NTW_WELCOM_MSG) and code == NTW_ERROR_NO)
             {
@@ -45,7 +47,7 @@ namespace ntw
         if(ntw::dispatch(id,request) == Status::st::wrong_id)
         {
             request.clear();
-            request<<ntw::FuncWrapper::Status(Status::st::wrong_id);
+            request.setStatus(Status::st::wrong_id);
             request.sendCl();
         }
     }
