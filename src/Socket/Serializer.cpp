@@ -169,7 +169,7 @@ std::ostream& operator<<(std::ostream& output,const Serializer& self)
         if(self._buffer[i] < 33 or self._buffer[i] >126)
             output<<"<"<<(int)self._buffer[i]<<">";
         else
-            output<<"<"<<(char)self._buffer[i]<<">";
+            output<<"'"<<(char)self._buffer[i]<<"'";
     }
     return output;
 };

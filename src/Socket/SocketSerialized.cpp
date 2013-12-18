@@ -107,7 +107,6 @@ short int SocketSerialized::getStatus()const
 void SocketSerialized::clear()
 {
     _cursor_begin = _cursor_end = 4;
-    status = 0;
 }
 
 std::ostream& operator<<(std::ostream& output,const SocketSerialized& self)
@@ -118,7 +117,7 @@ std::ostream& operator<<(std::ostream& output,const SocketSerialized& self)
         if(self._buffer[i] < 33 or self._buffer[i] >126)
             output<<"<"<<(int)self._buffer[i]<<">";
         else
-            output<<"<"<<(char)self._buffer[i]<<">";
+            output<<"'"<<(char)self._buffer[i]<<"'";
     }
     return output;
 };
