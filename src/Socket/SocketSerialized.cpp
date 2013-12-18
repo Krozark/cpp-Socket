@@ -55,7 +55,6 @@ int SocketSerialized::receive()
 {
     //recuperer la taille dans les 4 premier oct
     int res = Socket::receive(_buffer,4);
-    std::cout<<"receive: "<<res<<std::endl;
     if (res > 0)
     {
         uint8_t d[2];
