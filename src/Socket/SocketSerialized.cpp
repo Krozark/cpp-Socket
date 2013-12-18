@@ -52,7 +52,7 @@ void SocketSerialized::send()
 
 int SocketSerialized::receive()
 {
-    //recuperer la taille dans les 2 premier oct
+    //recuperer la taille dans les 4 premier oct
     int res = Socket::receive(_buffer,4);
     if (res > 0)
     {

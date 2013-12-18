@@ -74,13 +74,14 @@ namespace ntw
                 {
                     return NTW_ERROR_CONNEXION;
                 }
-                std::cout<<"Verify connexion"<<std::endl;
-                if (ntw::FuncWrapper::verifyIsConnected(request_sock) != NTW_ERROR_NO)
-                {
-                    return NTW_ERROR_CONNEXION;
-                }
-                std::cout<<"Ready"<<std::endl;
             }
+
+            std::cout<<"Verify connexion"<<std::endl;
+            if (ntw::FuncWrapper::cli::verifyIsConnected(request_sock) != NTW_ERROR_NO)
+            {
+                return NTW_ERROR_CONNEXION;
+            }
+            std::cout<<"Ready"<<std::endl;
             return NTW_ERROR_NO;
         }
 

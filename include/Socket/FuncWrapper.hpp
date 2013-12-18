@@ -34,13 +34,6 @@ namespace ntw
              */
             static int msg(SocketSerialized& sock,const std::string message,unsigned int code);
 
-            /**
-             * \brief receive data from sock and check if
-             * the message and code recv are the welcome one.
-             * \param sock socket to check
-             * \return the code recv
-             */
-            static int verifyIsConnected(SocketSerialized& sock);
 
             /**
              * \brief A class to handle status response
@@ -144,6 +137,14 @@ namespace ntw
                      */
                     template<typename ... Args>
                     static void send(SocketSerialized& sock,int id,Args&& ... args);
+
+                    /**
+                     * \brief receive data from sock and check if
+                     * the message and code recv are the welcome one.
+                     * \param sock socket to check
+                     * \return the code recv
+                     */
+                    static int verifyIsConnected(SocketSerialized& sock);
 
                 private:
                     cli() = delete;
