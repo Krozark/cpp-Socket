@@ -20,5 +20,6 @@
 #define NTW_ERROR_TIMEOUT 3
 #define NTW_ERROR_SELECT 4
 #define NTW_ERROR_CONNEXION 5
+#define NTW_STOP_CONNEXION -3
 
 #endif

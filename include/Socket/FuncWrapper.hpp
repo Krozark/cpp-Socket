@@ -59,7 +59,8 @@ namespace ntw
                     /**
                      * \brief code values
                      */
-                    enum st{wrong_id=-2,
+                    enum st{stop=NTW_STOP_CONNEXION,
+                        wrong_id=-2,
                         ok=0,
                     };
             };

@@ -1,4 +1,5 @@
 #include <Socket/SocketSerialized.hpp>
+#include <Socket/define.hpp>
 
 namespace ntw {
 
@@ -93,6 +94,7 @@ int SocketSerialized::receive()
     else
     {
         clear();
+        setStatus(NTW_STOP_CONNEXION);
     }
     //std::cout<<"recv: "<<*this<<std::endl;
     return res;

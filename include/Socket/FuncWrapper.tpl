@@ -29,12 +29,12 @@ namespace ntw
         sock.send();
         if (sock.receive() > 0)
         {
-            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+            /*if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
             {
             }
-            else
+            else*/
             {
-                std::cerr<<"Recive Status different \"ok\""<<std::endl;
+                std::cerr<<"[Send] Recive Status: "<<sock.getStatus()<<std::endl;
             }
         }
         return;

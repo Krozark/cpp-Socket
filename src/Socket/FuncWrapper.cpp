@@ -32,7 +32,7 @@ namespace ntw
 
     int FuncWrapper::cli::verifyIsConnected(SocketSerialized& sock)
     {
-        short int code = NTW_ERROR_UNKNOW; 
+        short int code; 
         if(sock.receive() > 0)
         {
             std::string msg;
@@ -48,6 +48,10 @@ namespace ntw
                 std::cerr<<"verifyIsConnected <"<<code<<":"<<msg<<">"<<std::endl;
             }
             sock.clear();
+        }
+        else
+        {
+            code = sock.getStatus();
         }
         return code;
     }
