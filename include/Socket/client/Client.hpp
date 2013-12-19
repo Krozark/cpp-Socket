@@ -64,8 +64,8 @@ namespace ntw
                 template<typename Ret,typename ... Args>
                 Ret call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args);
 
-            private:
                 SocketSerialized request_sock; ///< internal socket for communication
+            private:
 
                 SocketSerialized new_broadcast_sock; ///< internal socket for broadcast listener
                 SocketSerialized broadcast_recv_sock; ///< internal Soket for broadcast reciver

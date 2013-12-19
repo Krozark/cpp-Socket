@@ -90,6 +90,10 @@ int SocketSerialized::receive()
         if(size>0)
             res += Socket::receive(_buffer+4,size);
     }
+    else
+    {
+        clear();
+    }
     //std::cout<<"recv: "<<*this<<std::endl;
     return res;
 };
