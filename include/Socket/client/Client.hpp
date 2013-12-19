@@ -63,6 +63,16 @@ namespace ntw
                  */
                 template<typename Ret,typename ... Args>
                 Ret call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args);
+                /**
+                 * \brief Call a function on the server of id=id.
+                 * "return ntw::FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args);"
+                 * Ret have to be define as template parameter
+                 * \param id the functiuon id to call
+                 * \param args the function param
+                 * \return the retun function value
+                 */
+                template<typename Ret,typename ... Args>
+                Ret call(int id,Args&& ... args);
 
                 SocketSerialized request_sock; ///< internal socket for communication
             private:

@@ -1,4 +1,5 @@
 #include <utility>
+#include <Socket/FuncWrapper.hpp>
 
 namespace ntw
 {
@@ -8,7 +9,15 @@ namespace ntw
         template<typename Ret,typename ... Args>
         Ret Client::call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args)
         {
+            request_sock.setStatus(ntw::FuncWrapper::Status::st::ok);
             return pf(request_sock,std::forward<Args>(args)...);
+        }
+
+        template<typename Ret,typename ... Args>
+        Ret Client::call(int id,Args&& ... args)
+        {
+            request_sock.setStatus(ntw::FuncWrapper::Status::st::ok);
+            ntw::FuncWrapper::cli::send(request_sock,id,std::forward<Args>(args)...);
         }
     }
 }
