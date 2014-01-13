@@ -111,7 +111,7 @@ namespace srv
                 ntw::FuncWrapper::srv::dispatch(sock);
                 rm = false;
             }
-            catch (ntw::SocketExeption e)
+            catch (ntw::SocketExeption& e)
             {
                 //rm = true;
             }
