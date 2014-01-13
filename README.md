@@ -81,7 +81,8 @@ All class are in ntw namespace.
     * This class use a dispatch function tha you have to build
     * exec is a shortcut tha unpack param of the function in firs param, containing in the request, and call it.
 
-```c++
+```C++
+
 namespace ntw
 {
     void dispatch(int id,SocketSerialized& request)
@@ -105,6 +106,7 @@ namespace ntw
         }
     }
 }
+
 ```
 
 * ntw::srv::Server
