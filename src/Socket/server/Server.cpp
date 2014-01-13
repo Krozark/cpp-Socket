@@ -103,11 +103,21 @@ namespace srv
 
     void Server::onRequestRecv(ntw::SelectManager& request_recv,void* data, ntw::SocketSerialized& sock)
     {
+        bool rm = true;
         if(sock.receive() >0)
         {
-            ntw::FuncWrapper::srv::dispatch(sock);
+            try
+            {
+                ntw::FuncWrapper::srv::dispatch(sock);
+                rm = false;
+            }
+            catch (ntw::SocketExeption e)
+            {
+                //rm = true;
+            }
         }
-        else
+        
+        if(rm)
         {
             std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl; 
             Server& self = *(Server*)data;

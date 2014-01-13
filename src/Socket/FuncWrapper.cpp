@@ -21,13 +21,14 @@ namespace ntw
     {
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
-
+        
         if(ntw::dispatch(id,request) == Status::st::wrong_id)
         {
             request.clear();
             request.setStatus(Status::st::wrong_id);
             request.sendCl();
         }
+
     }
 
     int FuncWrapper::cli::verifyIsConnected(SocketSerialized& sock)
