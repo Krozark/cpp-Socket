@@ -153,13 +153,15 @@ class Socket
          * \param flags the flags to use
          */
         template<typename T>
-        inline void send(const T* data,const size_t size,const int flags=0) const
+        inline int send(const T* data,const size_t size,const int flags=0) const
         {
-            if(::send(sock,data,size,flags) ==  SOCKET_ERROR)
+            int res;
+            if((res = ::send(sock,data,size,flags)) ==  SOCKET_ERROR)
             {
                 perror("Send()");
                 throw SocketExeption("Sending message fail");
             }
+            return res;
         }
 
         /**
