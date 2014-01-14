@@ -48,7 +48,7 @@ void SocketSerialized::send()
     //envoyer
     //std::cout<<"send: "<<*this<<std::endl;
     int res = Socket::send(_buffer+_cursor_begin-4, 4+size);
-    std::cout<<"Recv : "<<res<<"/"<<int(4+size)<<std::endl;
+    std::cout<<"Send : "<<res<<"/"<<int(4+size)<<std::endl;
     //reset
     //clear();
 };
@@ -90,8 +90,17 @@ int SocketSerialized::receive()
         _cursor_end = 4+size;
         //remplacer le buffer
         if(size>0)
-            res += Socket::receive(_buffer+4,size);
-        std::cout<<"Recv size: "<<size<<std::endl;
+        {
+            int recv_left = size;
+            int recv = 0;
+            while(recv_left > 0)
+            {
+                recv = Socket::receive(_buffer+4+recv,recv_left);
+                std::cout<<"Recv size: "<<recv<<std::endl;
+                res+=recv;
+                recv_left -=recv;
+            }
+        }
     }
     else
     {
