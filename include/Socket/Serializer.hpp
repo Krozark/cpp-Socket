@@ -52,16 +52,16 @@ class Serializer
         const unsigned int size()const;
 
         /********* SERIALIZE *************/
-        Serializer& operator<<(char c); ///< Oveload operator to stor data. 1 oct | 8 bit
+        Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
 
-        Serializer& operator<<(short int s);///< Oveload operator to stor data. 2 oct | 16 bit
+        Serializer& operator<<(const short int s);///< Oveload operator to stor data. 2 oct | 16 bit
 
-        Serializer& operator<<(int i);///< Oveload operator to stor data. 4 oct | 32 bit
-        Serializer& operator<<(unsigned int i);///< Oveload operator to stor data.  4 oct | 32 bit
-        Serializer& operator<<(float f);///< Oveload operator to stor data.  4 oct | 32 bit
+        Serializer& operator<<(const int i);///< Oveload operator to stor data. 4 oct | 32 bit
+        Serializer& operator<<(const unsigned int i);///< Oveload operator to stor data.  4 oct | 32 bit
+        Serializer& operator<<(const float f);///< Oveload operator to stor data.  4 oct | 32 bit
 
-        Serializer& operator<<(double d);///< Oveload operator to stor data. 8 oct | 64 bit
-        Serializer& operator<<(long int l);///< Oveload operator to stor data. 8 oct | 64 bit
+        Serializer& operator<<(const double d);///< Oveload operator to stor data. 8 oct | 64 bit
+        Serializer& operator<<(const long int l);///< Oveload operator to stor data. 8 oct | 64 bit
         
         //16 oct | 124 bit
         //Serializer& operator<<(long double ld){push(*reinterpret_cast<uint128_t*>(&ld);};
@@ -117,7 +117,7 @@ class Serializer
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(uint8_t& a){
+        inline void push(const uint8_t& a){
             if(_buffer_size < _cursor_end + 1)
                 resize(_buffer_size+128);
 
@@ -129,11 +129,11 @@ class Serializer
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(uint16_t& a) {
+        inline void push(const uint16_t& a) {
             if(_buffer_size < _cursor_end + 2)
                 resize(_buffer_size+128);
 
-            uint8_t *d = (uint8_t *)&a;
+            const uint8_t *d = (const uint8_t *)&a;
 
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             _buffer[_cursor_end++] = d[0];
@@ -152,11 +152,11 @@ class Serializer
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(uint32_t& a){
+        inline void push(const uint32_t& a){
             if(_buffer_size < _cursor_end + 4)
                 resize(_buffer_size+128);
 
-            uint8_t *d = (uint8_t *)&a;
+            const uint8_t *d = (const uint8_t *)&a;
 
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             _buffer[_cursor_end++] = d[0];
@@ -179,11 +179,11 @@ class Serializer
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(uint64_t& a){
+        inline void push(const uint64_t& a){
             if(_buffer_size < _cursor_end + 8)
                 resize(_buffer_size+128);
 
-            uint8_t *d = (uint8_t *)&a;
+            const uint8_t *d = (const uint8_t *)&a;
 
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             _buffer[_cursor_end++] = d[0];

@@ -47,7 +47,7 @@ void SocketSerialized::send()
     }
     //envoyer
     //std::cout<<"send: "<<*this<<std::endl;
-    int res = Socket::send(_buffer+_cursor_begin-4, 4+size);
+    Socket::send(_buffer+_cursor_begin-4, 4+size);
     //reset
     //clear();
 };

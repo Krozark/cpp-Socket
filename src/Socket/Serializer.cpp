@@ -27,50 +27,50 @@ const unsigned int Serializer::size()const
 
 /********* SERIALIZE *************/
 //1 oct | 8 bit
-Serializer& Serializer::operator<<(char c)
+Serializer& Serializer::operator<<(const char c)
 {
-    push(*reinterpret_cast<uint8_t*>(&c));
+    push(*reinterpret_cast<const uint8_t*>(&c));
     return *this;
 };
 //2 oct | 16 bit
-Serializer& Serializer::operator<<(short int s)
+Serializer& Serializer::operator<<(const short int s)
 {
-    push(*reinterpret_cast<uint16_t*>(&s));
+    push(*reinterpret_cast<const uint16_t*>(&s));
     return *this;
 };
 //4 oct | 32 bit
-Serializer& Serializer::operator<<(int i)
+Serializer& Serializer::operator<<(const int i)
 {
-    push(*reinterpret_cast<uint32_t*>(&i));
+    push(*reinterpret_cast<const uint32_t*>(&i));
     return *this;
 };
 
-Serializer& Serializer::operator<<(unsigned int i)
+Serializer& Serializer::operator<<(const unsigned int i)
 {
-    push(*reinterpret_cast<uint32_t*>(&i));
+    push(*reinterpret_cast<const uint32_t*>(&i));
     return *this;
 };
 
-Serializer& Serializer::operator<<(float f)
+Serializer& Serializer::operator<<(const float f)
 {
-    push(*reinterpret_cast<uint32_t*>(&f));
+    push(*reinterpret_cast<const uint32_t*>(&f));
     return *this;
 };
 //8 oct | 64 bit
-Serializer& Serializer::operator<<(double d)
+Serializer& Serializer::operator<<(const double d)
 {
-    push(*reinterpret_cast<uint64_t*>(&d));
+    push(*reinterpret_cast<const uint64_t*>(&d));
     return *this;
 };
-Serializer& Serializer::operator<<(long int l)
+Serializer& Serializer::operator<<(const long int l)
 {
-    push(*reinterpret_cast<uint64_t*>(&l));
+    push(*reinterpret_cast<const uint64_t*>(&l));
     return *this;
 };
 //1 oct | 8 bit []
 Serializer& Serializer::operator<<(const char* const c)
 {
-    uint8_t* data = (uint8_t*)c;
+    const uint8_t* data = (const uint8_t*)c;
     for(int i=0;c[i];++i) //exit when \0
         push(data[i]);
     uint8_t end = '\0';
