@@ -95,7 +95,7 @@ int SocketSerialized::receive()
             int recv = 0;
             while(recv_left > 0)
             {
-                recv = Socket::receive(_buffer+res,recv_left-recv);
+                recv = Socket::receive(_buffer+res,recv_left);
                 if(recv<0)
                     break;
                 std::cout<<"Recv size: "<<recv<<std::endl;
