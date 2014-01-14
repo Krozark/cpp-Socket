@@ -48,7 +48,6 @@ void SocketSerialized::send()
     //envoyer
     //std::cout<<"send: "<<*this<<std::endl;
     int res = Socket::send(_buffer+_cursor_begin-4, 4+size);
-    std::cout<<"Send : "<<res<<"/"<<int(4+size)<<std::endl;
     //reset
     //clear();
 };
@@ -98,7 +97,6 @@ int SocketSerialized::receive()
                 recv = Socket::receive(_buffer+res,recv_left);
                 if(recv<0)
                     break;
-                std::cout<<"Recv size: "<<recv<<std::endl;
                 res+=recv;
                 recv_left -=recv;
             }
@@ -110,7 +108,6 @@ int SocketSerialized::receive()
         setStatus(NTW_STOP_CONNEXION);
     }
     //std::cout<<"recv: "<<*this<<std::endl;
-    std::cout<<"Recv real: "<<res<<std::endl;
     return res;
 };
 
