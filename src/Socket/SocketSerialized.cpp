@@ -55,6 +55,7 @@ void SocketSerialized::send()
 int SocketSerialized::receive()
 {
     //recuperer la taille dans les 4 premier oct
+    std::cout<<"SocketSerialized::recv()"<<std::endl;
     int res = Socket::receive(_buffer,4);
     if (res > 0)
     {
@@ -88,14 +89,18 @@ int SocketSerialized::receive()
         _cursor_begin = 4;
         _cursor_end = 4+size;
         //remplacer le buffer
+        std::cout<<"SocketSerialized::recv()"<<size<<" "<<status<<std::endl;
         if(size>0)
         {
             int recv_left = size;
             int recv = 0;
             while(recv_left > 0)
             {
+                std::cout<<"left"<<recv_left<<std::endl;
                 recv = Socket::receive(_buffer+res,recv_left);
-                if(recv<0)
+                std::cout<<"recv"<<recv<<std::endl;
+                if(recv<=0)
+                    //TODO ERROR
                     break;
                 res+=recv;
                 recv_left -=recv;
@@ -107,7 +112,7 @@ int SocketSerialized::receive()
         clear();
         setStatus(NTW_STOP_CONNEXION);
     }
-    //std::cout<<"recv: "<<*this<<std::endl;
+    std::cout<<"recv: "<<*this<<std::endl;
     return res;
 };
 

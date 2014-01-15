@@ -26,7 +26,7 @@ namespace ntw
     void FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
     {
         addPackage(id,sock,args ...);
-        sock.send();
+        sock.sendCl();
         if (sock.receive() > 0)
         {
             /*if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
@@ -45,7 +45,7 @@ namespace ntw
     {
         Ret ret;
         addPackage(id,sock,args ...);
-        sock.send();
+        sock.sendCl();
         if (sock.receive() > 0)
         {
             if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
