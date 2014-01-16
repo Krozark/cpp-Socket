@@ -35,7 +35,7 @@ class SocketSerialized : public Serializer, public Socket
         /**
          * \brief Send data in the buffer
          */
-        void send();
+        int send();
 
         /**
          * \brief store data into the internal buffer
