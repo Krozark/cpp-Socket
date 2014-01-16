@@ -6,12 +6,13 @@
 #include <errno.h>
 #include <string.h>
  	
-#ifdef _WIN32 //_WIN64
-#include <fcntl.h>
-#include <io.h>
-#endif
-
 namespace ntw {
+
+template<class C,typename ... Args>
+void thread_method(C* obj,void(C::*func)(Args ...),Args ... args)
+{
+    (obj->*func)(args ...);
+};
 
 SelectManager::SelectManager(float t): 
     onSelect(0),
@@ -20,69 +21,70 @@ SelectManager::SelectManager(float t):
     readfds(0), 
     writefds(0),
     exceptfds(0),
-    max_id(0), 
     _run(false)
 {
     setTimout(t);
-    #ifdef _WIN32 //_WIN64
-    ::_pipe(pipe_fd,16,O_BINARY);
-    #elif __linux
-    ::pipe(pipe_fd);//pipe_fd[0] = read, [1] = write
-    #else
-    #error pipe not defined for this platform
-    #endif
 };
 
 SelectManager::~SelectManager()
 {
-    #ifdef _WIN32 //_WIN64
-    ::_close(pipe_fd[0]);
-    ::_close(pipe_fd[1]);
-    #elif __linux
-    ::close(pipe_fd[0]);
-    ::close(pipe_fd[1]);
-    #else
-    #error pipe not defined for this platform
-    #endif
-
     clear();
-
-    if(readfds)
-        delete readfds;
-    if(writefds)
-        delete writefds;
-    if(exceptfds)
-        delete exceptfds;
 }
 
 void SelectManager::add(SocketSerialized* s)
 {
-    datas.emplace_back(s);
-    breakSelect();
+    mutex.lock();
+    datas.emplace_back(std::make_tuple(s,std::thread(),new bool(_run)));
+    
+    if(_run)
+    {
+        auto& tuple = datas.back();
+        SocketSerialized* sock = std::get<0>(tuple);
+        bool* b = std::get<2>(tuple);
+
+        std::get<1>(tuple) = std::thread(&SelectManager::run,this,sock,b);
+    }
+
+    mutex.unlock();
 };
 
 bool SelectManager::remove(SocketSerialized* s)
 {
+    mutex.lock();
     auto end = datas.end();
-    auto it = std::find(datas.begin(),end,s);
-    if(it != end)
+    for(auto it = datas.begin();it!= end;++it)
     {
-        datas.erase(it);
-        breakSelect();
-        return true;
+        if(s == std::get<0>(*it))
+        {
+            *std::get<2>(*it) = false; //run = false
+            std::get<1>(*it).detach();
+            datas.erase(it);//memory free at the end of thread execution (in run)
+            mutex.unlock();
+            return true;
+        }
     }
+    mutex.unlock();
     return false;
 };
 void SelectManager::clear()
 {
     if(do_delete)
     {
-        for(SocketSerialized* s : datas)
-            delete s;
+        for(auto& tuple : datas)
+        {
+            delete std::get<0>(tuple);//soket
+            delete std::get<2>(tuple);//bool*
+        }
+    }
+    else //delete the bool
+    {
+        for(auto& tuple : datas)
+        {
+            delete std::get<2>(tuple);//bool*
+        }
     }
 
     datas.clear();
-    breakSelect();
 
 };
 
@@ -97,57 +99,21 @@ void SelectManager::setArgs(bool read,bool write,bool except,float timeout_sec)
 void SelectManager::setRead(bool read)
 {
     mutex.lock();
-    if(read)
-    {
-        if(not readfds)
-            readfds = new fd_set;
-    }
-    else
-    {
-        if(readfds)
-        {
-            delete readfds;
-            readfds = 0;
-        }
-    }
+    readfds = read;
     mutex.unlock();
 };
 
 void SelectManager::setWrite(bool write)
 {
     mutex.lock();
-    if(write)
-    {
-        if(not writefds)
-            writefds = new fd_set;
-    }
-    else
-    {
-        if(writefds)
-        {
-            delete writefds;
-            writefds = 0;
-        }
-    }
+    writefds = write;
     mutex.unlock();
 };
 
 void SelectManager::setExcept(bool except)
 {
     mutex.lock();
-    if(except)
-    {
-        if(not exceptfds)
-            exceptfds = new fd_set;
-    }
-    else
-    {
-        if(exceptfds)
-        {
-            delete exceptfds;
-            exceptfds = 0;
-        }
-    }
+    exceptfds = except;
     mutex.unlock();
 };
 
@@ -159,133 +125,130 @@ void SelectManager::setTimout(float timeout_sec)
     mutex.unlock();
 };
 
-template<class C,typename ... Args>
-void thread_method(C* obj,void(C::*func)(Args ...),Args ... args)
-{
-    (obj->*func)(args ...);
-};
 
 void SelectManager::start()
 {
+    thread = std::thread(&SelectManager::run_me,this);
+}
+
+void SelectManager::run_me()
+{
     mutex.lock();
     _run = true;
-    thread= std::thread(thread_method<SelectManager>,this,&SelectManager::run);
+    for(auto& tuple : datas)
+    {
+        SocketSerialized* sock = std::get<0>(tuple);
+        bool* b = std::get<2>(tuple);
+        *b = true;
+
+        std::get<1>(tuple) = std::thread(&SelectManager::run,this,sock,b);
+    }
     mutex.unlock();
+
+    while(_run)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
 };
 
 void SelectManager::stop()
 {
     mutex.lock();
     _run=false;
-    breakSelect();
+    for(auto& tuple : datas)
+    {
+        bool* b = std::get<2>(tuple);
+        *b = false;
+    }
     mutex.unlock();
 }
 
-void SelectManager::run()
+void SelectManager::wait()
 {
+    thread.join();
+    /*for(auto& tuple : datas)
+        std::get<1>(tuple).join();*/
+}
+
+void SelectManager::detach()
+{
+    thread.detach();
+    for(auto& tuple : datas)
+        std::get<1>(tuple).detach();
+}
+
+unsigned int SelectManager::size()const
+{
+    return datas.size();
+}
+
+void SelectManager::setDelete(bool d)
+{
+    do_delete = d;
+}
+
+void SelectManager::run(SocketSerialized* sock_ptr,bool* run_ptr)
+{
+    SocketSerialized& sock = *sock_ptr;
+    bool& run = *run_ptr;
+
     int res;
-    while(_run)
+    fd_set* read = readfds?new fd_set:0; ///< flag for select
+    fd_set* write = writefds?new fd_set:0; ///< flag for select
+    fd_set* except = exceptfds?new fd_set:0; ///< flag for select
+
+    const int id = sock.id();
+    const int max_id = id + 1;
+
+    while(run)
     {
-        reset();//TODO
+        if(read)
+        {
+            FD_ZERO(read);
+            FD_SET(id,read);
+        }
+        if(write)
+        {
+            FD_ZERO(write);
+            FD_SET(id,write);
+        }
+        if(except)
+        {
+            FD_ZERO(except);
+            FD_SET(id,except);
+        }
         
-        auto time = timeout;//copy
-        res = select(max_id,readfds,writefds,exceptfds,&time);
+        timeval time = timeout;//copy
+        res = select(max_id,read,write,except,&time);
 
         if(res <0)
         {
             perror("select()");
             return;
         }
-        else if (res == 0) //timout
+        else if (res == 0) //timeout
             continue;
-        else
-        {
-            if( (readfds and FD_ISSET(pipe_fd[0],readfds))
-                or (writefds and FD_ISSET(pipe_fd[0],writefds))
-                or (exceptfds and FD_ISSET(pipe_fd[0],exceptfds)))
-            {
-                char buffer[16];
-                #ifdef _WIN32 //_WIN64
-                ::_read(pipe_fd[0], buffer, sizeof(buffer));
-                #elif __linux
-                ::read(pipe_fd[0], buffer, sizeof(buffer));
-                #else
-                #error pipe not defined for this platform
-                #endif
-                continue;
-            }
-        }
 
-        //loop sur les Socket pour savoir si c'est elle
-        auto end = datas.end();
-        for(auto it=datas.begin();it!=end /*and res > 0*/;++it)
-        {
-            SocketSerialized& iit = **it;
-            int id = iit.id(); 
-
-            if((readfds and FD_ISSET(id,readfds)) or
-                (writefds and FD_ISSET(id,writefds)) or
-                (exceptfds and FD_ISSET(id,exceptfds))
-              )
-            {
-                //onSelect(*this,data,iit);
-                std::thread(onSelect,std::ref(*this),data,std::ref(iit)).detach();
-                --res;
-                continue;
-            }
-        }
+        onSelect(*this,data,sock);
     }
-};
 
-void SelectManager::reset()
-{
-    //reset
-    if(readfds)
-        FD_ZERO(readfds);
-    if(writefds)
-        FD_ZERO(writefds);
-    if(exceptfds)
-        FD_ZERO(exceptfds);
 
-    max_id = pipe_fd[0]+1;
-    //pipe add
-    if(readfds)
-        FD_SET(pipe_fd[0],readfds);
-    if(writefds)
-        FD_SET(pipe_fd[0],writefds);
-    if(exceptfds)
-        FD_SET(pipe_fd[0],exceptfds);
-
-    auto end = datas.end();
-    // add to the connection all socket
-    for(auto it=datas.begin();it!=end;++it)
+    if(read)
     {
-        int id = (*it)->id();
-        if(id>=max_id)
-            max_id=id+1;
-        //add socket
-        if(readfds)
-            FD_SET(id,readfds);
-        if(writefds)
-            FD_SET(id,writefds);
-        if(exceptfds)
-            FD_SET(id,exceptfds);
+        delete read;
     }
+    if(write)
+    {
+        delete write;
+    }
+    if(except)
+    {
+        delete except;
+    }
+
+    delete run_ptr;
+    if(do_delete)
+        delete sock_ptr;
 };
-
-void SelectManager::breakSelect()
-{
-    char buffer = 1;
-    #ifdef _WIN32 //_WIN64
-    ::_write(pipe_fd[1],&buffer,1); //juste pour break le select
-    #elif __linux
-    ::write(pipe_fd[1],&buffer,1); //juste pour break le select
-    #else
-    #error pipe not defined for this platform
-    #endif
-}
-
-
-
 
 };

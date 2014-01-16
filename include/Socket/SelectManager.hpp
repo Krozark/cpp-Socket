@@ -1,9 +1,10 @@
 #ifndef NTW_SELECTMANAGER_HPP
 #define NTW_SELECTMANAGER_HPP
 
-#include <vector>
+#include <list>
 #include <thread>
 #include <mutex>
+#include <tuple>
 
 #include <Socket/define.hpp>
 #include <Socket/SocketSerialized.hpp>
@@ -105,46 +106,41 @@ namespace ntw {
             /**
              * \brief wait the end of the thread
              */
-            inline void wait(){thread.join();};
+            void wait();
 
             /**
              * \brief Detache the internal thed execution
              */
-            inline void detach(){thread.detach();};
-            //inline bool joinable(){return thread.joinable();};
+            void detach();
 
             /**
              * \return the number of socket to manage
              */
-            inline unsigned int size()const{return datas.size();};
+            unsigned int size()const;
 
             /**
              * \brief if true, delete soket on destruction and when clear id call
              */
-            inline void setDelete(bool d){do_delete = d;};
+            void setDelete(bool d);
 
             SelectManager(const SelectManager& other) = delete;
             SelectManager& operator=(const SelectManager& other) = delete;
 
         private:
             friend class BalancingSelector;
-            void run(); ///< Use Start to run it
-            void reset(); ///< reset the flags for select 
-            void breakSelect(); ///< break the select (used when a new socket is added
+            void run(SocketSerialized* sock,bool* run); //run a specifique client on his thread
+            void run_me(); ///< Use Start to run it
             bool do_delete;///< setDelet value
 
-            fd_set* readfds; ///< flag for select
-            fd_set* writefds; ///< flag for select
-            fd_set* exceptfds; ///< flag for select
+            bool readfds; ///< flag for select
+            bool writefds; ///< flag for select
+            bool exceptfds; ///< flag for select
             timeval timeout; ///<  flag for select
 
-            std::vector<SocketSerialized*> datas; ///< internal socket to manage
-            volatile int max_id; ///< the max id of sokets stored
+            std::list<std::tuple<SocketSerialized*,std::thread,bool*>> datas; ///< internal socket to manage
             volatile bool _run; ///< is running?
-            std::thread thread;///< the tread tu use
             std::mutex mutex; ///< the mutex to use
-
-            int pipe_fd[2]; ///< use for break select whene a new socket is added
+            std::thread thread;
     };
 };
 

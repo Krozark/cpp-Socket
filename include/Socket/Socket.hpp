@@ -101,7 +101,7 @@ class Socket
         /**
          * \return get the id of the socket
          */
-        const SOCKET id(){return sock;}
+        const SOCKET id()const{return sock;}
 
         /**
          * \brief connect the socket to the host

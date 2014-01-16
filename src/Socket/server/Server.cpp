@@ -103,11 +103,9 @@ namespace srv
 
     void Server::onRequestRecv(ntw::SelectManager& request_recv,void* data, ntw::SocketSerialized& sock)
     {
-        std::cout<<"onRequestRecv"<<std::endl;
         bool rm = true;
         if(sock.receive() >0)
         {
-            std::cout<<"recv>0"<<std::endl;
             try
             {
                 ntw::FuncWrapper::srv::dispatch(sock);

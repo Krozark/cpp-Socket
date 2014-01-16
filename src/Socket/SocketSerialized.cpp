@@ -1,6 +1,8 @@
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/define.hpp>
 
+#include <thread>
+
 namespace ntw {
 
 SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole): Serializer(255), Socket(dommaine,type,protocole), status(0)
@@ -46,7 +48,6 @@ int SocketSerialized::send()
         #endif
     }
     //envoyer
-    //std::cout<<"send: "<<*this<<std::endl;
     int res = Socket::send(_buffer+_cursor_begin-4, 4+size);
     //reset
     //clear();
@@ -56,7 +57,6 @@ int SocketSerialized::send()
 int SocketSerialized::receive()
 {
     //recuperer la taille dans les 4 premier oct
-    std::cout<<"SocketSerialized::recv()"<<std::endl;
     int res = Socket::receive(_buffer,4);
     if (res > 0)
     {
@@ -90,16 +90,13 @@ int SocketSerialized::receive()
         _cursor_begin = 4;
         _cursor_end = 4+size;
         //remplacer le buffer
-        std::cout<<"SocketSerialized::recv()"<<size<<" "<<status<<std::endl;
         if(size>0)
         {
             int recv_left = size;
             int recv = 0;
             while(recv_left > 0)
             {
-                std::cout<<"left"<<recv_left<<std::endl;
                 recv = Socket::receive(_buffer+res,recv_left);
-                std::cout<<"recv"<<recv<<std::endl;
                 if(recv<=0)
                     //TODO ERROR
                     break;
@@ -113,7 +110,6 @@ int SocketSerialized::receive()
         clear();
         setStatus(NTW_STOP_CONNEXION);
     }
-    std::cout<<"recv: "<<*this<<std::endl;
     return res;
 };
 
@@ -134,7 +130,7 @@ void SocketSerialized::clear()
 
 std::ostream& operator<<(std::ostream& output,const SocketSerialized& self)
 {
-    output<<"["<<self.size()<<":"<<self.status<<"]";
+    output<<"[id("<<self.id()<<"),size("<<self.size()<<"),status("<<self.status<<")]";
     for(unsigned int i=self._cursor_begin; i<self._cursor_end;++i)
     {
         if(self._buffer[i] < 33 or self._buffer[i] >126)
