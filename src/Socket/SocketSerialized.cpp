@@ -5,10 +5,12 @@
 
 namespace ntw {
 
+#define HEADER_SIZE (4+2)
+
 SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole): Serializer(255), Socket(dommaine,type,protocole), status(0)
 {
     //reserver les 2 premier bits pour la taille
-    _cursor_end =_cursor_begin = 4;
+    _cursor_end =_cursor_begin = HEADER_SIZE;
     //is_send=false;
 };
 
@@ -16,18 +18,22 @@ SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255)
 {
     std::swap(s.sock,sock);
     std::swap(s.sock_cfg,sock_cfg);
-    _cursor_end =_cursor_begin = 4;
+    _cursor_end =_cursor_begin = HEADER_SIZE;
 };
 
 int SocketSerialized::send()
 {
     //écrire la taille dans les 2 premier oct
-    uint16_t size = _cursor_end - _cursor_begin;
+    uint32_t size = _cursor_end - _cursor_begin;
     uint8_t *d = (uint8_t *)&size;
     #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-    _buffer[_cursor_begin - 4] = d[0];
-    _buffer[_cursor_begin - 3] = d[1];
+    _buffer[_cursor_begin - 6] = d[0];
+    _buffer[_cursor_begin - 5] = d[1];
+    _buffer[_cursor_begin - 4] = d[2];
+    _buffer[_cursor_begin - 3] = d[3];
     #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    _buffer[_cursor_begin - 6] = d[3];
+    _buffer[_cursor_begin - 5] = d[2];
     _buffer[_cursor_begin - 4] = d[1];
     _buffer[_cursor_begin - 3] = d[0];
     #else
@@ -48,7 +54,7 @@ int SocketSerialized::send()
         #endif
     }
     //envoyer
-    int res = Socket::send(_buffer+_cursor_begin-4, 4+size);
+    int res = Socket::send(_buffer+_cursor_begin-HEADER_SIZE, HEADER_SIZE+size);
     //reset
     //clear();
     return res;
@@ -56,39 +62,50 @@ int SocketSerialized::send()
 
 int SocketSerialized::receive()
 {
-    //recuperer la taille dans les 4 premier oct
-    int res = Socket::receive(_buffer,4);
+    //recuperer la taille dans les 6 premier oct
+    int res = Socket::receive(_buffer,HEADER_SIZE);
     if (res > 0)
     {
-        uint8_t d[2];
-        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        d[0]= _buffer[0];
-        d[1]= _buffer[1];
-        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        d[1]= _buffer[0];
-        d[0]= _buffer[1];
-        #else
-        #error "byte orden not suported (PDP endian)"
-        #endif
-        uint16_t size = *(uint16_t*)&d;
+        uint32_t size;
+        {
+            uint8_t d[4];
+            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            d[0]= _buffer[0];
+            d[1]= _buffer[1];
+            d[2]= _buffer[2];
+            d[3]= _buffer[3];
+            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+            d[3]= _buffer[0];
+            d[2]= _buffer[1];
+            d[1]= _buffer[2];
+            d[0]= _buffer[3];
+            #else
+            #error "byte orden not suported (PDP endian)"
+            #endif
+            size = *(uint32_t*)&d;
+        }
 
-        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        d[0]= _buffer[2];
-        d[1]= _buffer[3];
-        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        d[1]= _buffer[2];
-        d[0]= _buffer[3];
-        #else
-        #error "byte orden not suported (PDP endian)"
-        #endif
-        status = *(uint16_t*)&d;
+
+        {
+            uint8_t d[2];
+            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            d[0]= _buffer[4];
+            d[1]= _buffer[5];
+            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+            d[1]= _buffer[4];
+            d[0]= _buffer[5];
+            #else
+            #error "byte orden not suported (PDP endian)"
+            #endif
+            status = *(uint16_t*)&d;
+        }
 
         //reset
-        if (int(_buffer_size) < 4+size)
-            resize(4+size);
+        if (int(_buffer_size) < (int)HEADER_SIZE+(int)size)
+            resize(HEADER_SIZE+size);
         //else _buffer_size ne change pas
-        _cursor_begin = 4;
-        _cursor_end = 4+size;
+        _cursor_begin = HEADER_SIZE;
+        _cursor_end = HEADER_SIZE+size;
         //remplacer le buffer
         if(size>0)
         {
@@ -125,7 +142,7 @@ short int SocketSerialized::getStatus()const
 
 void SocketSerialized::clear()
 {
-    _cursor_begin = _cursor_end = 4;
+    _cursor_begin = _cursor_end = HEADER_SIZE;
 }
 
 std::ostream& operator<<(std::ostream& output,const SocketSerialized& self)
