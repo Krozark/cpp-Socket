@@ -48,6 +48,10 @@ namespace ntw
                  */
                 void wait();
 
+                void (*on_new_client)(ntw::srv::Server& self,ntw::srv::Client& client);
+                void (*on_delete_client)(ntw::srv::Server& self,ntw::srv::Client& client);
+
+
             protected:
                 ntw::SocketSerialized new_connexion_sock; ///< socket tha manage new connextion
                 ntw::SelectManager new_connexion_recv; ///< manager for nex connextion

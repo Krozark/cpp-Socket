@@ -9,7 +9,9 @@ namespace srv
         new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
         request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout),
-        broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
+        broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout),
+        on_new_client(nullptr),
+        on_delete_client(nullptr)
     {
         //request_recv.setDelete(false);
         //broadcast_sender.setDelete(false);
@@ -91,6 +93,8 @@ namespace srv
         }
         else
         {
+            if(self.on_new_client)
+                self.on_new_client(self,client);
             ntw::FuncWrapper::msg(client.request_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
         }            
     }
@@ -143,6 +147,9 @@ namespace srv
 
     bool Server::remove(Client* client_ptr)
     {
+        if(this->on_delete_client)
+            this->on_delete_client(*this,*client_ptr);
+
         client_mutex.lock();
         auto begin = clients.begin();
         bool res = false;

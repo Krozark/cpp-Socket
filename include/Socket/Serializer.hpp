@@ -105,7 +105,7 @@ class Serializer
             unsigned char* buffer = new unsigned char[buffer_cursor_end];
             buffer = (unsigned char*)memcpy(buffer,_buffer,_buffer_size);
 
-            delete _buffer;
+            delete[] _buffer;
             _buffer = buffer;
             _buffer_size = buffer_cursor_end;
         };
