@@ -15,6 +15,11 @@ namespace ntw
             return this == &other;
         }
 
+        const SocketSerialized& Client::sock()const
+        {
+            return request_sock;
+        }
+
         /// PRIVATE
     }
 

@@ -30,6 +30,8 @@ namespace ntw
                  * \brief Compare 2 clients
                  */
                 bool operator==(const Client& other);
+
+                const SocketSerialized& sock()const;
             private:
                 friend class Server;
 
