@@ -166,8 +166,8 @@ void SelectManager::stop()
 void SelectManager::wait()
 {
     thread.join();
-    /*for(auto& tuple : datas)
-        std::get<1>(tuple).join();*/
+    for(auto& tuple : datas)
+        std::get<1>(tuple).join();
 }
 
 void SelectManager::detach()

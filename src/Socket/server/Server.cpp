@@ -38,12 +38,6 @@ namespace srv
         if(Config::broadcast)
             broadcast_sender.start();
 
-        //join
-        new_connexion_recv.wait();
-        request_recv.wait();
-
-        if(Config::broadcast)
-            broadcast_sender.wait();
     }
 
     void Server::stop()
