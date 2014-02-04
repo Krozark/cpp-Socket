@@ -14,7 +14,7 @@ SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,i
     //is_send=false;
 };
 
-SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255)
+SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255), Socket(s.need_connect)
 {
     std::swap(s.sock,sock);
     std::swap(s.sock_cfg,sock_cfg);

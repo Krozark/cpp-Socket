@@ -7,12 +7,12 @@
 namespace ntw {
 //int Socket::max_id = 0;
 
-Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock(INVALID_SOCKET)
+Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock(INVALID_SOCKET), need_connect(type == Socket::Type::TCP)
 {
     //déclaration de la socket
-    if((sock = socket(dommaine,type,protocole)) == INVALID_SOCKET)
+    if((sock = ::socket(dommaine,type,protocole)) == INVALID_SOCKET)
     {
-        perror("socket()");
+        ::perror("socket()");
         throw SocketExeption("Invalid socket");
     }
 
@@ -20,11 +20,11 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock
      //max_id = (sock>max_id)?sock:max_id;
 
     //sin_family = Dommaine
+    ::memset((char*)&sock_cfg,0,sizeof(sock_cfg)); // mise a 0
     sock_cfg.sin_family = dommaine;
-    memset(&(sock_cfg.sin_zero),'\0',8); // mise a 0
 };
 
-Socket::Socket() : sock(INVALID_SOCKET)
+Socket::Socket(bool need_conn) : sock(INVALID_SOCKET), need_connect(need_conn)
 {
 }
 
@@ -33,24 +33,38 @@ Socket::~Socket()
     _close();
 };
 
-bool Socket::connect(std::string host,int port)
+bool Socket::connect(const std::string& host,int port)
 {
     //sin_addr.s_addr =  adresse IP
     sock_cfg.sin_addr.s_addr = inet_addr(host.c_str());
     //sin_port = port à utiliser
     sock_cfg.sin_port = htons(port);
 
-    if(::connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
-    {
-        std::cerr<<"<id:"<<sock<<">Connected to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
-        return true;
-    }
-    else
-    {
-        std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;
-        return false;
-    }
+    return connect();
 };
+
+bool Socket::connect(int port)
+{
+    return connect("0.0.0.0",port);
+}
+
+bool Socket::connect()
+{
+    if(need_connect)
+    {
+        if(::connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
+        {
+            std::cerr<<"<id:"<<sock<<">Connected to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
+            return true;
+        }
+        else
+        {
+            std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;
+            return false;
+        }
+    }
+    return true;
+}
 
 void Socket::bind()
 {
@@ -89,7 +103,7 @@ void Socket::serverMode(int port,const int max_connexion,std::string host)
 
 Socket Socket::accept()
 {
-    Socket client;
+    Socket client(true);
     accept(client);
     return client;
 };

@@ -108,7 +108,18 @@ class Socket
          * \param host host adresse (ip or adresse)
          * \param port the port to use
          */
-        bool connect(std::string host,int port);
+        bool connect(const std::string& host,int port);
+
+        /**
+         * \brief connect the socket to the host
+         * \param port the port to use
+         */
+        bool connect(int port);
+
+        /**
+         * \brief connect the socket to the host
+         */
+        bool connect();
 
         /**
          * \brief Bind the socket
@@ -156,13 +167,44 @@ class Socket
         inline int send(const T* data,const size_t size,const int flags=0) const
         {
             int res;
-            if((res = ::send(sock,data,size,flags)) ==  SOCKET_ERROR)
+            if(need_connect)
+            {
+                res = ::send(sock,data,size,flags);
+            }
+            else
+            {
+                res = ::sendto(sock,data,size,flags,(SOCKADDR*)(&sock_cfg),sizeof(sock_cfg));
+            }
+
+            if(res ==  SOCKET_ERROR)
             {
                 perror("Send()");
                 throw SocketExeption("Sending message fail");
             }
             return res;
         }
+
+        /**
+         * \brief Send data
+         * \param data the buffer to send
+         * \param size the buffer size
+         * \param flags the flags to use (use 0 by default)
+         * \param other the host to send datas
+         */
+
+        template<typename T>
+        inline int send(const T* data,const size_t size,const int flags,const Socket& other) const
+        {
+            int res;
+            if((res = ::sendto(sock,data,size,flags,other.sock_cfg,sizeof(other.sock_cfg))) ==  SOCKET_ERROR)
+            {
+                perror("Send()");
+                throw SocketExeption("Sending message fail");
+            }
+            return res;
+        }
+
+
 
         /**
          * \brief receive data and stor it to the buffer
@@ -173,8 +215,33 @@ class Socket
         template<typename T>
         inline int receive(T* buffer,const size_t size,const int flags=0) const
         {
-            return ::recv(sock,buffer,size,flags);
+            int res;
+            if(need_connect)
+            {
+                res = ::recv(sock,buffer,size,flags);
+            }
+            else
+            {
+                socklen_t slen=sizeof(SOCKADDR_IN);
+                SOCKADDR_IN rem_cfg; ///< configuration struct
+                res = ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&rem_cfg),&slen);
+            }
+            return res;
         };
+
+        /**
+         * \brief receive data and store it to the buffer
+         * \param buffer the buffer to store the data receive
+         * \param size the size of data to receive
+         * \param flags the flags to use
+         * \param other the other socket mesg from
+         */
+        template<typename T>
+        inline int receive(T* buffer,const size_t size,const int flags,const Socket& other) const
+        {
+            socklen_t slen=sizeof(other.sock_cfg);
+            return ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&other.sock_cfg),&slen);
+        }
 
         /**
          * \return return the ip
@@ -189,13 +256,14 @@ class Socket
 
     protected:
         friend class SocketSerialized;
-        Socket();///< intern use only;
+        Socket(bool need_connect);///< intern use only;
         /**
          * \brief close the socket proprely
          */
         inline void _close(){if(sock != INVALID_SOCKET)closesocket(sock);};
         SOCKET sock; ///< C socket type
         SOCKADDR_IN sock_cfg; ///< configuration struct
+        const bool need_connect;
 };
 
 };

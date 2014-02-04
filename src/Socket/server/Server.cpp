@@ -6,12 +6,12 @@ namespace ntw
 namespace srv
 {
     Server::Server(unsigned int max_client,unsigned int min_client,float timeout) :
+        on_new_client(nullptr),
+        on_delete_client(nullptr),
         new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
         request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout),
-        broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout),
-        on_new_client(nullptr),
-        on_delete_client(nullptr)
+        broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
     {
         //request_recv.setDelete(false);
         //broadcast_sender.setDelete(false);
