@@ -38,9 +38,23 @@ class SocketSerialized : public Serializer, public Socket
         int send();
 
         /**
+         * \brief Send data in the buffer to a specifique dest
+         * \param dest the destination
+         */
+        int send(const Socket& dest);
+
+
+        /**
          * \brief store data into the internal buffer
          */
         int receive();
+
+        /**
+         * \brief store data into the internal buffer
+         * \param src set the IP / port of the source
+         */
+        int receive(Socket& src);
+
 
         /**
          * set the status code
@@ -72,6 +86,19 @@ class SocketSerialized : public Serializer, public Socket
     private:
         //bool is_send;
         short int status;///< status header default is 0
+
+        /**
+         * \brief init the buffer header
+         * \return the size to send
+         */
+        unsigned int init_send();
+
+
+        /**
+         * \brief init the size, status and buffer resize
+         * \return -1 if error, else the msg size
+         */
+        int init_receive();
 
 };
 

@@ -196,7 +196,7 @@ class Socket
         inline int send(const T* data,const size_t size,const int flags,const Socket& other) const
         {
             int res;
-            if((res = ::sendto(sock,data,size,flags,other.sock_cfg,sizeof(other.sock_cfg))) ==  SOCKET_ERROR)
+            if((res = ::sendto(sock,data,size,flags,(SOCKADDR*)(&other.sock_cfg),sizeof(other.sock_cfg))) ==  SOCKET_ERROR)
             {
                 perror("Send()");
                 throw SocketExeption("Sending message fail");
@@ -237,7 +237,7 @@ class Socket
          * \param other the other socket mesg from
          */
         template<typename T>
-        inline int receive(T* buffer,const size_t size,const int flags,const Socket& other) const
+        inline int receive(T* buffer,const size_t size,const int flags,Socket& other) const
         {
             socklen_t slen=sizeof(other.sock_cfg);
             return ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&other.sock_cfg),&slen);
