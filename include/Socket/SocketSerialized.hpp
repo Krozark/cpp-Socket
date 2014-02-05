@@ -41,7 +41,7 @@ class SocketSerialized : public Serializer, public Socket
          * \brief Send data in the buffer to a specifique dest
          * \param dest the destination
          */
-        int send(const Socket& dest);
+        //int send(const Socket& dest);
 
 
         /**
@@ -53,7 +53,7 @@ class SocketSerialized : public Serializer, public Socket
          * \brief store data into the internal buffer
          * \param src set the IP / port of the source
          */
-        int receive(Socket& src);
+        //int receive(Socket& src);
 
 
         /**
@@ -91,14 +91,14 @@ class SocketSerialized : public Serializer, public Socket
          * \brief init the buffer header
          * \return the size to send
          */
-        unsigned int init_send();
+        //int init_send();
 
 
         /**
          * \brief init the size, status and buffer resize
          * \return -1 if error, else the msg size
          */
-        int init_receive();
+        //int init_receive();
 
 };
 
