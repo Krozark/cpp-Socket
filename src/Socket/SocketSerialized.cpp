@@ -20,67 +20,8 @@ SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255), Socket(s.need_
     std::swap(s.sock_cfg,sock_cfg);
     _cursor_end =_cursor_begin = HEADER_SIZE;
 };
+
 /*
-int SocketSerialized::init_send()
-{
-    //écrire la taille dans les 2 premier oct
-    int size = _cursor_end - _cursor_begin;
-    {
-        //size
-        uint32_t s = (uint32_t) size;
-        uint8_t *d = (uint8_t *)&s;
-        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        _buffer[_cursor_begin - 6] = d[0];
-        _buffer[_cursor_begin - 5] = d[1];
-        _buffer[_cursor_begin - 4] = d[2];
-        _buffer[_cursor_begin - 3] = d[3];
-        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        _buffer[_cursor_begin - 6] = d[3];
-        _buffer[_cursor_begin - 5] = d[2];
-        _buffer[_cursor_begin - 4] = d[1];
-        _buffer[_cursor_begin - 3] = d[0];
-        #else
-        #error "byte orden not suported (PDP endian)"
-        #endif
-    }
-
-    {
-        //status
-        uint16_t st = status;
-        uint8_t* d = (uint8_t*)&st;
-        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        _buffer[_cursor_begin - 2] = d[0];
-        _buffer[_cursor_begin - 1] = d[1];
-        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        _buffer[_cursor_begin - 2] = d[1];
-        _buffer[_cursor_begin - 1] = d[0];
-        #else
-        #error "byte orden not suported (PDP endian)"
-        #endif
-    }
-    return size;
-}
-
-int SocketSerialized::send()
-{
-    int size = init_send();
-    //envoyer
-    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE,(int)HEADER_SIZE+size);
-    //reset
-    //clear();
-    return res;
-};
-
-int SocketSerialized::send(const Socket& dest)
-{
-    int size = init_send();
-    //envoyer
-    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size,0,dest);
-    //reset
-    //clear();
-    return res;
-}
-
 int SocketSerialized::init_receive()
 {
     //recuperer la taille dans les 6 premier oct
@@ -188,10 +129,10 @@ int SocketSerialized::receive(Socket& src)
     return res;
 }
 */
-int SocketSerialized::send()
+
+int SocketSerialized::init_send()
 {
-    //écrire la taille dans les 2 premier oct
-    uint32_t size = _cursor_end - _cursor_begin;
+    int size = _cursor_end - _cursor_begin;
     uint8_t *d = (uint8_t *)&size;
     #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
     _buffer[_cursor_begin - 6] = d[0];
@@ -220,20 +161,35 @@ int SocketSerialized::send()
         #error "byte orden not suported (PDP endian)"
         #endif
     }
+
+    return size;
+}
+
+int SocketSerialized::send()
+{
+    int size = init_send();
     //envoyer
-    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+(int)size);
+    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size);
     //reset
     //clear();
     return res;
 };
 
-int SocketSerialized::receive()
+int SocketSerialized::send(const Socket& dest)
 {
-    //recuperer la taille dans les 6 premier oct
+    int size = init_send();
+    //envoyer
+    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size,0,dest);
+    //reset
+    //clear();
+    return res;
+}
+
+int SocketSerialized::init_receive(uint32_t* size)
+{
     int res = Socket::receive(_buffer,HEADER_SIZE);
     if (res > 0)
     {
-        uint32_t size;
         {
             uint8_t d[4];
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
@@ -249,7 +205,7 @@ int SocketSerialized::receive()
             #else
             #error "byte orden not suported (PDP endian)"
             #endif
-            size = *(uint32_t*)&d;
+            *size = *(uint32_t*)&d;
         }
 
 
@@ -268,31 +224,60 @@ int SocketSerialized::receive()
         }
 
         //reset
-        if (int(_buffer_size) < (int)HEADER_SIZE+(int)size)
-            resize((int)HEADER_SIZE+(int)size);
+        if (int(_buffer_size) < (int)HEADER_SIZE+(int)*size)
+            resize((int)HEADER_SIZE+(int)*size);
         //else _buffer_size ne change pas
         _cursor_begin = (int)HEADER_SIZE;
-        _cursor_end = (int)HEADER_SIZE+(int)size;
-        //remplacer le buffer
-        if(size>0)
-        {
-            int recv_left = size;
-            int recv = 0;
-            while(recv_left > 0)
-            {
-                recv = Socket::receive(_buffer+res,recv_left);
-                if(recv<=0)
-                    //TODO ERROR
-                    break;
-                res+=recv;
-                recv_left -=recv;
-            }
-        }
+        _cursor_end = (int)HEADER_SIZE+(int)*size;
     }
     else
     {
         clear();
         setStatus(NTW_STOP_CONNEXION);
+    }
+    return res;
+}
+
+int SocketSerialized::receive()
+{
+    //recuperer la taille dans les 6 premier oct
+    uint32_t size = 0;
+    int res = init_receive(&size);
+    if(res > 0 and size>0)
+    {
+        int recv_left = size;
+        int recv = 0;
+        while(recv_left > 0)
+        {
+            recv = Socket::receive(_buffer+res,recv_left);
+            if(recv<=0)
+                //TODO ERROR
+                break;
+            res+=recv;
+            recv_left -=recv;
+        }
+    }
+    return res;
+};
+
+int SocketSerialized::receive(Socket& other)
+{
+    //recuperer la taille dans les 6 premier oct
+    uint32_t size = 0;
+    int res = init_receive(&size);
+    if(res > 0 and size>0)
+    {
+        int recv_left = size;
+        int recv = 0;
+        while(recv_left > 0)
+        {
+            recv = Socket::receive(_buffer+res,recv_left,0,other);
+            if(recv<=0)
+                //TODO ERROR
+                break;
+            res+=recv;
+            recv_left -=recv;
+        }
     }
     return res;
 };
