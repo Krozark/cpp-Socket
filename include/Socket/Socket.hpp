@@ -222,9 +222,9 @@ class Socket
             }
             else
             {
-                socklen_t slen=sizeof(SOCKADDR_IN);
-                SOCKADDR_IN rem_cfg; ///< configuration struct
-                res = ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&rem_cfg),&slen);
+                SOCKADDR_IN from = {0}; ///< configuration struct
+                socklen_t from_size=sizeof(from);
+                res = ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&from),&from_size);
             }
             return res;
         };
