@@ -119,7 +119,7 @@ namespace ntw
     * at the end, don't forget to call client.stop(), and client.wait() to stop the network thread.
 
 
-You can build the lib with "build.sh".
+You can build the lib with cmake.
 
 
 
