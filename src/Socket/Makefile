@@ -173,7 +173,6 @@ BalancingSelector.o: BalancingSelector.cpp.o
 # target to build an object file
 BalancingSelector.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/BalancingSelector.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/BalancingSelector.cpp.o
 .PHONY : BalancingSelector.cpp.o
 
 BalancingSelector.i: BalancingSelector.cpp.i
@@ -182,7 +181,6 @@ BalancingSelector.i: BalancingSelector.cpp.i
 # target to preprocess a source file
 BalancingSelector.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/BalancingSelector.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/BalancingSelector.cpp.i
 .PHONY : BalancingSelector.cpp.i
 
 BalancingSelector.s: BalancingSelector.cpp.s
@@ -191,7 +189,6 @@ BalancingSelector.s: BalancingSelector.cpp.s
 # target to generate assembly for a file
 BalancingSelector.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/BalancingSelector.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/BalancingSelector.cpp.s
 .PHONY : BalancingSelector.cpp.s
 
 Config.o: Config.cpp.o
@@ -200,7 +197,6 @@ Config.o: Config.cpp.o
 # target to build an object file
 Config.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Config.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Config.cpp.o
 .PHONY : Config.cpp.o
 
 Config.i: Config.cpp.i
@@ -209,7 +205,6 @@ Config.i: Config.cpp.i
 # target to preprocess a source file
 Config.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Config.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Config.cpp.i
 .PHONY : Config.cpp.i
 
 Config.s: Config.cpp.s
@@ -218,7 +213,6 @@ Config.s: Config.cpp.s
 # target to generate assembly for a file
 Config.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Config.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Config.cpp.s
 .PHONY : Config.cpp.s
 
 FuncWrapper.o: FuncWrapper.cpp.o
@@ -227,7 +221,6 @@ FuncWrapper.o: FuncWrapper.cpp.o
 # target to build an object file
 FuncWrapper.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/FuncWrapper.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/FuncWrapper.cpp.o
 .PHONY : FuncWrapper.cpp.o
 
 FuncWrapper.i: FuncWrapper.cpp.i
@@ -236,7 +229,6 @@ FuncWrapper.i: FuncWrapper.cpp.i
 # target to preprocess a source file
 FuncWrapper.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/FuncWrapper.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/FuncWrapper.cpp.i
 .PHONY : FuncWrapper.cpp.i
 
 FuncWrapper.s: FuncWrapper.cpp.s
@@ -245,7 +237,6 @@ FuncWrapper.s: FuncWrapper.cpp.s
 # target to generate assembly for a file
 FuncWrapper.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/FuncWrapper.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/FuncWrapper.cpp.s
 .PHONY : FuncWrapper.cpp.s
 
 SelectManager.o: SelectManager.cpp.o
@@ -254,7 +245,6 @@ SelectManager.o: SelectManager.cpp.o
 # target to build an object file
 SelectManager.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/SelectManager.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/SelectManager.cpp.o
 .PHONY : SelectManager.cpp.o
 
 SelectManager.i: SelectManager.cpp.i
@@ -263,7 +253,6 @@ SelectManager.i: SelectManager.cpp.i
 # target to preprocess a source file
 SelectManager.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/SelectManager.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/SelectManager.cpp.i
 .PHONY : SelectManager.cpp.i
 
 SelectManager.s: SelectManager.cpp.s
@@ -272,7 +261,6 @@ SelectManager.s: SelectManager.cpp.s
 # target to generate assembly for a file
 SelectManager.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/SelectManager.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/SelectManager.cpp.s
 .PHONY : SelectManager.cpp.s
 
 Serializer.o: Serializer.cpp.o
@@ -281,7 +269,6 @@ Serializer.o: Serializer.cpp.o
 # target to build an object file
 Serializer.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Serializer.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Serializer.cpp.o
 .PHONY : Serializer.cpp.o
 
 Serializer.i: Serializer.cpp.i
@@ -290,7 +277,6 @@ Serializer.i: Serializer.cpp.i
 # target to preprocess a source file
 Serializer.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Serializer.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Serializer.cpp.i
 .PHONY : Serializer.cpp.i
 
 Serializer.s: Serializer.cpp.s
@@ -299,7 +285,6 @@ Serializer.s: Serializer.cpp.s
 # target to generate assembly for a file
 Serializer.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Serializer.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Serializer.cpp.s
 .PHONY : Serializer.cpp.s
 
 Socket.o: Socket.cpp.o
@@ -308,7 +293,6 @@ Socket.o: Socket.cpp.o
 # target to build an object file
 Socket.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Socket.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Socket.cpp.o
 .PHONY : Socket.cpp.o
 
 Socket.i: Socket.cpp.i
@@ -317,7 +301,6 @@ Socket.i: Socket.cpp.i
 # target to preprocess a source file
 Socket.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Socket.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Socket.cpp.i
 .PHONY : Socket.cpp.i
 
 Socket.s: Socket.cpp.s
@@ -326,7 +309,6 @@ Socket.s: Socket.cpp.s
 # target to generate assembly for a file
 Socket.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/Socket.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/Socket.cpp.s
 .PHONY : Socket.cpp.s
 
 SocketSerialized.o: SocketSerialized.cpp.o
@@ -335,7 +317,6 @@ SocketSerialized.o: SocketSerialized.cpp.o
 # target to build an object file
 SocketSerialized.cpp.o:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/SocketSerialized.cpp.o
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/SocketSerialized.cpp.o
 .PHONY : SocketSerialized.cpp.o
 
 SocketSerialized.i: SocketSerialized.cpp.i
@@ -344,7 +325,6 @@ SocketSerialized.i: SocketSerialized.cpp.i
 # target to preprocess a source file
 SocketSerialized.cpp.i:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/SocketSerialized.cpp.i
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/SocketSerialized.cpp.i
 .PHONY : SocketSerialized.cpp.i
 
 SocketSerialized.s: SocketSerialized.cpp.s
@@ -353,7 +333,6 @@ SocketSerialized.s: SocketSerialized.cpp.s
 # target to generate assembly for a file
 SocketSerialized.cpp.s:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket.dir/build.make src/Socket/CMakeFiles/socket.dir/SocketSerialized.cpp.s
-	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/SocketSerialized.cpp.s
 .PHONY : SocketSerialized.cpp.s
 
 client/Client.o: client/Client.cpp.o
