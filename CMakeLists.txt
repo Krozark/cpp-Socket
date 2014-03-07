@@ -39,6 +39,7 @@ set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS} ${LIBS}")
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(LIB_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 # add the subdirectories
 add_subdirectory(src/Socket)
@@ -52,3 +53,4 @@ endif()
 if(BUILD_DOC)
     add_subdirectory(doc)
 endif()
+
