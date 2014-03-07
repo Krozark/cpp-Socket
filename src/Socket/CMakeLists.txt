@@ -82,7 +82,7 @@ INSTALL(TARGETS socket
 
 
 #static lib
-add_library(socket-static STATIC ${SRC} ${CLIENT_SRC} ${SERVER_SRC})
+add_library(socket-static STATIC ${FILES_HEADER} ${FILES_SRC})
 SET_TARGET_PROPERTIES(socket-static
     PROPERTIES
     VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
