@@ -165,6 +165,19 @@ socket-static/fast:
 	$(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/build
 .PHONY : socket-static/fast
 
+#=============================================================================
+# Target rules for targets named uninstall
+
+# Build rule for target.
+uninstall: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 uninstall
+.PHONY : uninstall
+
+# fast build rule for target.
+uninstall/fast:
+	$(MAKE) -f src/Socket/CMakeFiles/uninstall.dir/build.make src/Socket/CMakeFiles/uninstall.dir/build
+.PHONY : uninstall/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -179,6 +192,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... socket"
 	@echo "... socket-static"
+	@echo "... uninstall"
 .PHONY : help
 
 

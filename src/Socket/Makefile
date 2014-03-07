@@ -167,6 +167,20 @@ socket-static/fast:
 	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/build
 .PHONY : socket-static/fast
 
+# Convenience name for target.
+src/Socket/CMakeFiles/uninstall.dir/rule:
+	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f CMakeFiles/Makefile2 src/Socket/CMakeFiles/uninstall.dir/rule
+.PHONY : src/Socket/CMakeFiles/uninstall.dir/rule
+
+# Convenience name for target.
+uninstall: src/Socket/CMakeFiles/uninstall.dir/rule
+.PHONY : uninstall
+
+# fast build rule for target.
+uninstall/fast:
+	cd /home/maxime/Bureau/documents/git/cpp-Socket && $(MAKE) -f src/Socket/CMakeFiles/uninstall.dir/build.make src/Socket/CMakeFiles/uninstall.dir/build
+.PHONY : uninstall/fast
+
 BalancingSelector.o: BalancingSelector.cpp.o
 .PHONY : BalancingSelector.o
 
@@ -430,6 +444,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... socket"
 	@echo "... socket-static"
+	@echo "... uninstall"
 	@echo "... BalancingSelector.o"
 	@echo "... BalancingSelector.i"
 	@echo "... BalancingSelector.s"
