@@ -4,6 +4,8 @@ language: cpp
 
 compiler: gcc
 
-script : ./build.sh 
-        && sudo make install 
+script : cmake . 
+        && make
+        && sudo make install
+        && sudo make examples
         && sudo make uninstall
