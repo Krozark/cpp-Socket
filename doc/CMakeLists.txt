@@ -1,22 +1,9 @@
-
-find_package(Doxygen REQUIRED)
-
-# set the input and output documentation paths
-set(DOXYGEN_INPUT_DIR ${PROJECT_SOURCE_DIR})
-set(DOXYGEN_OUTPUT_DIR ${PROJECT_BINARY_DIR}/doc)
-
-# configure the source Doxyfile by copying it and replacing all @variables@
-set(DOXYGEN_CONFIGURED_INPUT ${DOXYGEN_OUTPUT_DIR}/doxyfile)
-configure_file(${DOXYGEN_INPUT_DIR}/doc/Doxyfile ${DOXYGEN_CONFIGURED_INPUT} @ONLY)
-
-# target setup
-add_custom_target(doc ALL
-                  COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
-                  COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIGURED_INPUT}
-                  COMMAND ${CMAKE_COMMAND} -E echo "Done."
-                  WORKING_DIRECTORY ${DOXYGEN_INPUT_DIR})
-
-# setup install rules
-install(DIRECTORY ${DOXYGEN_OUTPUT_DIR}/html
-        DESTINATION ${INSTALL_MISC_DIR}/doc
-        COMPONENT doc)
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+    add_custom_target(doc
+        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen" VERBATIM
+        )
+endif(DOXYGEN_FOUND)

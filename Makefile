@@ -124,6 +124,19 @@ socket-static/fast:
 	$(MAKE) -f src/Socket/CMakeFiles/socket-static.dir/build.make src/Socket/CMakeFiles/socket-static.dir/build
 .PHONY : socket-static/fast
 
+#=============================================================================
+# Target rules for targets named doc
+
+# Build rule for target.
+doc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 doc
+.PHONY : doc
+
+# fast build rule for target.
+doc/fast:
+	$(MAKE) -f doc/CMakeFiles/doc.dir/build.make doc/CMakeFiles/doc.dir/build
+.PHONY : doc/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -134,6 +147,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... socket"
 	@echo "... socket-static"
+	@echo "... doc"
 .PHONY : help
 
 
