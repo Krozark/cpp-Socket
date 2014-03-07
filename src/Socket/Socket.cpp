@@ -16,10 +16,6 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock
         throw SocketExeption("Invalid socket");
     }
 
-
-     //max_id = (sock>max_id)?sock:max_id;
-
-    //sin_family = Dommaine
     ::memset((char*)&sock_cfg,0,sizeof(sock_cfg)); // mise a 0
     sock_cfg.sin_family = dommaine;
 };
@@ -45,7 +41,12 @@ bool Socket::connect(const std::string& host,int port)
 
 bool Socket::connect(int port)
 {
-    return connect("0.0.0.0",port);
+    //sin_addr.s_addr =  adresse IP
+    sock_cfg.sin_addr.s_addr = htonl(INADDR_ANY);
+    //sin_port = port à utiliser
+    sock_cfg.sin_port = htons(port);
+
+    return connect();
 }
 
 bool Socket::connect()
