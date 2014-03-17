@@ -12,6 +12,7 @@ SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,i
     //reserver les 2 premier bits pour la taille
     _cursor_end =_cursor_begin = HEADER_SIZE;
     //is_send=false;
+    std::cout<<"[CONSTRUCTOR] SocketSerialized <"<<this<<">"<<std::endl;
 };
 
 SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255), Socket(s.need_connect)
@@ -19,7 +20,14 @@ SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255), Socket(s.need_
     std::swap(s.sock,sock);
     std::swap(s.sock_cfg,sock_cfg);
     _cursor_end =_cursor_begin = HEADER_SIZE;
+
+    std::cout<<"[CONSTRUCTOR&&] SocketSerialized <"<<this<<">"<<std::endl;
 };
+
+SocketSerialized::~SocketSerialized()
+{
+    std::cout<<"[DESTRUCTOR] SocketSerialized <"<<this<<">"<<std::endl;
+}
 
 /*
 int SocketSerialized::init_receive()

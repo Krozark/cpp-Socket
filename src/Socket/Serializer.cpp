@@ -2,14 +2,16 @@
 
 namespace ntw {
 
-Serializer::Serializer(unsigned int buffer_size) : _cursor_end(0),_cursor_begin(0), _buffer_size(buffer_size)
+Serializer::Serializer(const unsigned int buffer_size) : _cursor_end(0),_cursor_begin(0), _buffer_size(buffer_size)
 {
    _buffer = new unsigned char[buffer_size];
+    std::cout<<"[CONSTRUCTOR] Serializer <"<<this<<">"<<std::endl;
 };
 
 Serializer::~Serializer()
 {
     delete[] _buffer;
+    std::cout<<"[DESTRUCTOR] Serializer <"<<this<<">"<<std::endl;
     /*_buffer = 0;
     _cursor_end = 0;
     _buffer_size = 0;*/

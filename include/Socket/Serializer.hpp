@@ -30,12 +30,12 @@ class Serializer
          * \brief Constructor
          * \param buffer_size the internal initial buffer size
          */
-        explicit Serializer(unsigned int buffer_size=255);
+        explicit Serializer(const unsigned int buffer_size=255);
 
         /**
          * \brief Destructor
          */
-        ~Serializer();
+        virtual ~Serializer();
 
         /**
          * \brief clear the buffe, but nor free it
@@ -102,11 +102,11 @@ class Serializer
          */
         inline void resize(const unsigned int buffer_cursor_end)
         {
-            unsigned char* buffer = new unsigned char[buffer_cursor_end];
-            buffer = (unsigned char*)memcpy(buffer,_buffer,_buffer_size);
+            unsigned char* tmp = new unsigned char[buffer_cursor_end];
+            memcpy(tmp,_buffer,_buffer_size);
 
             delete[] _buffer;
-            _buffer = buffer;
+            _buffer = tmp;
             _buffer_size = buffer_cursor_end;
         };
 

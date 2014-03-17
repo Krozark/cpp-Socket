@@ -20,6 +20,7 @@ namespace ntw
                 broadcast_recv.onSelect = onBroadcastRecv;
                 broadcast_recv.data = this;
             }
+            std::cout<<"[CONSTRUCTOR] cli::Client <"<<this<<">"<<std::endl;
         }
 
         Client::~Client()
@@ -31,6 +32,7 @@ namespace ntw
                 new_broadcast_sock.shutdown();
                 broadcast_recv_sock.shutdown();
             }
+            std::cout<<"[DESTRUCTOR] cli::Client <"<<this<<">"<<std::endl;
         }
 
         int Client::connect(const std::string& host,int port)

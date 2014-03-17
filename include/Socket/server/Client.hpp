@@ -23,6 +23,7 @@ namespace ntw
                  * \brief constructor
                  */
                 explicit Client();
+                ~Client();
                 Client(const Client&) = delete;
                 Client& operator=(const Client&) = delete;
                 

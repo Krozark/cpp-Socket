@@ -94,7 +94,7 @@ class Socket
         /**
          * \brief Destructor
          */
-        ~Socket();
+        virtual ~Socket();
 
         Socket& operator=(const Socket&) = delete;
 

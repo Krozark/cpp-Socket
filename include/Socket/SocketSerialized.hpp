@@ -25,7 +25,8 @@ class SocketSerialized : public Serializer, public Socket
          * \brief Move constructor
          */
         explicit SocketSerialized(Socket&& s);
-        //~SocketSerialized();
+
+        virtual ~SocketSerialized();
 
         /// SOCKET
         //inline void Connect(std::string host,int port=PORT){Socket::Connect(host,port);};
