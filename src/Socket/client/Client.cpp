@@ -20,7 +20,6 @@ namespace ntw
                 broadcast_recv.onSelect = onBroadcastRecv;
                 broadcast_recv.data = this;
             }
-            std::cout<<"[CONSTRUCTOR] cli::Client <"<<this<<">"<<std::endl;
         }
 
         Client::~Client()
@@ -32,7 +31,6 @@ namespace ntw
                 new_broadcast_sock.shutdown();
                 broadcast_recv_sock.shutdown();
             }
-            std::cout<<"[DESTRUCTOR] cli::Client <"<<this<<">"<<std::endl;
         }
 
         int Client::connect(const std::string& host,int port)
@@ -42,7 +40,6 @@ namespace ntw
 
             if(Config::broadcast)
             {
-                std::cout<<"waiting for server connexion"<<std::endl;
                 fd_set readfds;
 
                 timeval timeout;
@@ -78,12 +75,10 @@ namespace ntw
                 }
             }
 
-            std::cout<<"Verify connexion"<<std::endl;
             if (ntw::FuncWrapper::cli::verifyIsConnected(request_sock) != NTW_ERROR_NO)
             {
                 return NTW_ERROR_CONNEXION;
             }
-            std::cout<<"Ready"<<std::endl;
             return NTW_ERROR_NO;
         }
 
@@ -104,7 +99,6 @@ namespace ntw
         {
             if(sock.receive() >0)
             {
-                std::cout<<"RECV : "<<sock<<std::endl;
                 sock.clear();
             }
             else

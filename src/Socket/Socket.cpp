@@ -19,18 +19,15 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock
     ::memset((char*)&sock_cfg,0,sizeof(sock_cfg)); // mise a 0
     sock_cfg.sin_family = dommaine;
 
-    std::cout<<"[CONSTRUCTOR] Socket <"<<this<<">"<<std::endl;
 };
 
 Socket::Socket(bool need_conn) : sock(INVALID_SOCKET), need_connect(need_conn)
 {
-    std::cout<<"[CONSTRUCTOR] Socket <"<<this<<">"<<std::endl;
 }
 
 Socket::~Socket()
 {
     _close();
-    std::cout<<"[DESTRUCTOR] Socket <"<<this<<">"<<std::endl;
 };
 
 bool Socket::connect(const std::string& host,int port)

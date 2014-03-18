@@ -35,6 +35,8 @@
 
 #include <Socket/Config.hpp>
 
+#include <iostream>
+
 
 namespace ntw {
 
@@ -164,7 +166,7 @@ class Socket
          * \param flags the flags to use
          */
         template<typename T>
-        inline int send(const T* data,const size_t size,const int flags=0) const
+        inline int send(const T* data,const size_t size,const int flags=MSG_NOSIGNAL) const
         {
             int res;
             if(need_connect)
@@ -176,7 +178,7 @@ class Socket
                 res = ::sendto(sock,data,size,flags,(SOCKADDR*)(&sock_cfg),sizeof(sock_cfg));
             }
 
-            if(res ==  SOCKET_ERROR)
+            if(res <0)
             {
                 perror("Send()");
                 throw SocketExeption("Sending message fail");

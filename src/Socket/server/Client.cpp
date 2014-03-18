@@ -8,12 +8,10 @@ namespace ntw
         Client::Client() : request_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
             broadcast_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP)
         {
-            std::cout<<"[CONSTRUCTOR] srv::Client <"<<this<<">"<<std::endl;
         }
 
         Client::~Client()
         {
-            std::cout<<"[DESTRUCTOR] srv::Client <"<<this<<">"<<std::endl;
         }
 
         bool Client::operator==(const Client& other)

@@ -25,14 +25,12 @@ namespace srv
         //add sock
         new_connexion_recv.add(&new_connexion_sock);
 
-        std::cout<<"[CONSTRUCTOR] srv::Server <"<<this<<">"<<std::endl;
     }
 
     Server::~Server()
     {
         new_connexion_sock.shutdown();
         clients.clear();
-        std::cout<<"[DESTRUCTOR] srv::Server <"<<this<<">"<<std::endl;
     }
 
     void Server::start()
@@ -161,7 +159,6 @@ namespace srv
         {
             if(&(*begin) == client_ptr)
             {
-                std::cout<<"delete client"<<std::endl;
                 res = true;
                 Client& client = *client_ptr;
 

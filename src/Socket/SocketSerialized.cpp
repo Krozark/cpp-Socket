@@ -12,7 +12,6 @@ SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,i
     //reserver les 2 premier bits pour la taille
     _cursor_end =_cursor_begin = HEADER_SIZE;
     //is_send=false;
-    std::cout<<"[CONSTRUCTOR] SocketSerialized <"<<this<<">"<<std::endl;
 };
 
 SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255), Socket(s.need_connect)
@@ -21,12 +20,10 @@ SocketSerialized::SocketSerialized(Socket&& s) : Serializer(255), Socket(s.need_
     std::swap(s.sock_cfg,sock_cfg);
     _cursor_end =_cursor_begin = HEADER_SIZE;
 
-    std::cout<<"[CONSTRUCTOR&&] SocketSerialized <"<<this<<">"<<std::endl;
 };
 
 SocketSerialized::~SocketSerialized()
 {
-    std::cout<<"[DESTRUCTOR] SocketSerialized <"<<this<<">"<<std::endl;
 }
 
 /*
@@ -177,7 +174,16 @@ int SocketSerialized::send()
 {
     int size = init_send();
     //envoyer
-    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size);
+    int res;
+    try
+    {
+        res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size);
+    }
+    catch (ntw::SocketExeption& e)
+    {
+        res = NTW_STOP_CONNEXION;
+    }
+
     //reset
     //clear();
     return res;
@@ -187,7 +193,15 @@ int SocketSerialized::send(const Socket& dest)
 {
     int size = init_send();
     //envoyer
-    int res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size,0,dest);
+    int res;
+    try
+    {
+        res = Socket::send(_buffer+_cursor_begin-(int)HEADER_SIZE, (int)HEADER_SIZE+size,0,dest);
+    }
+    catch (ntw::SocketExeption& e)
+    {
+        res = NTW_STOP_CONNEXION;
+    }
     //reset
     //clear();
     return res;
