@@ -316,6 +316,7 @@ short int SocketSerialized::getStatus()const
 
 void SocketSerialized::clear()
 {
+    Serializer::clear();
     _cursor_begin = _cursor_end = HEADER_SIZE;
 }
 
