@@ -73,16 +73,16 @@ void SelectManager::clear()
         for(auto& tuple : datas)
         {
             delete std::get<0>(tuple);//soket
-            delete std::get<2>(tuple);//bool*
+            //delete std::get<2>(tuple);//bool*
         }
     }
-    else //delete the bool
+    /*else //delete the bool
     {
         for(auto& tuple : datas)
         {
             delete std::get<2>(tuple);//bool*
         }
-    }
+    }*/
 
     datas.clear();
 
@@ -193,9 +193,9 @@ void SelectManager::run(SocketSerialized* sock_ptr,bool* run_ptr)
     bool& run = *run_ptr;
 
     int res;
-    fd_set* read = readfds?new fd_set:0; ///< flag for select
-    fd_set* write = writefds?new fd_set:0; ///< flag for select
-    fd_set* except = exceptfds?new fd_set:0; ///< flag for select
+    fd_set* read = readfds?new fd_set:nullptr; ///< flag for select
+    fd_set* write = writefds?new fd_set:nullptr; ///< flag for select
+    fd_set* except = exceptfds?new fd_set:nullptr; ///< flag for select
 
     const int id = sock.id();
     const int max_id = id + 1;
@@ -233,20 +233,12 @@ void SelectManager::run(SocketSerialized* sock_ptr,bool* run_ptr)
     }
 
 
-    if(read)
-    {
-        delete read;
-    }
-    if(write)
-    {
-        delete write;
-    }
-    if(except)
-    {
-        delete except;
-    }
+    delete read;
+    delete write;
+    delete except;
 
     delete run_ptr;
+
     if(do_delete)
         delete sock_ptr;
 };

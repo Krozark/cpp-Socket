@@ -47,6 +47,7 @@ namespace ntw {
             /**
              * \brief Remove all the sokets
              * If do_delete is true, delete all of them
+             * need to be call after a wait() to avoid leak.
              */
             void clear();
 
