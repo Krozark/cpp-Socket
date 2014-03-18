@@ -28,9 +28,9 @@ class Serializer
     public:
         /**
          * \brief Constructor
-         * \param buffer_size the internal initial buffer size
+         * \param buffer_size the internal initial buffer size (must be >0)
          */
-        explicit Serializer(const unsigned int buffer_size=255);
+        explicit Serializer(const unsigned int buffer_size=256);
 
         /**
          * \brief Destructor
@@ -38,9 +38,10 @@ class Serializer
         virtual ~Serializer();
 
         /**
-         * \brief clear the buffe, but nor free it
+         * \brief clear the buffer, and resize it, but nor free it
+         * \param buffer_size the initial buffer size
          */
-        void clear();
+        void clear(const unsigned int buffer_size=256);
         
         Serializer(const Serializer&) = delete;
         Serializer& operator=(const Serializer&) = delete;
@@ -50,6 +51,11 @@ class Serializer
          * \return The number of byts stored
          */
         const unsigned int size()const;
+
+        /**
+         * \return the current buffer capacity
+         */
+        const unsigned int capacity()const;
 
         /********* SERIALIZE *************/
         Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
@@ -119,7 +125,7 @@ class Serializer
          */
         inline void push(const uint8_t& a){
             if(_buffer_size < _cursor_end + 1)
-                resize(_buffer_size+128);
+                resize(_buffer_size*2);
 
             _buffer[_cursor_end++] = a;
         };
@@ -131,7 +137,7 @@ class Serializer
          */
         inline void push(const uint16_t& a) {
             if(_buffer_size < _cursor_end + 2)
-                resize(_buffer_size+128);
+                resize(_buffer_size*2);
 
             const uint8_t *d = (const uint8_t *)&a;
 
@@ -154,7 +160,7 @@ class Serializer
          */
         inline void push(const uint32_t& a){
             if(_buffer_size < _cursor_end + 4)
-                resize(_buffer_size+128);
+                resize(_buffer_size*2);
 
             const uint8_t *d = (const uint8_t *)&a;
 
@@ -181,7 +187,7 @@ class Serializer
          */
         inline void push(const uint64_t& a){
             if(_buffer_size < _cursor_end + 8)
-                resize(_buffer_size+128);
+                resize(_buffer_size*2);
 
             const uint8_t *d = (const uint8_t *)&a;
 
