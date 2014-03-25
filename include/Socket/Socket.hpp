@@ -5,7 +5,10 @@
 
     #include <winsock2.h>
 
-#elif __linux //|| __unix //or __APPLE__ 
+    #define MSG_NOSIGNAL 0
+    typedef int socklen_t;
+
+#elif __linux //|| __unix //or __APPLE__
 
     #include <sys/types.h>
     #include <sys/socket.h>
@@ -20,6 +23,7 @@
     typedef struct sockaddr_in SOCKADDR_IN;
     typedef struct sockaddr SOCKADDR;
     typedef struct in_addr IN_ADDR;
+
 
 #else
 
@@ -171,11 +175,11 @@ class Socket
             int res;
             if(need_connect)
             {
-                res = ::send(sock,data,size,flags);
+                res = ::send(sock,(const char*)data,size,flags);
             }
             else
             {
-                res = ::sendto(sock,data,size,flags,(SOCKADDR*)(&sock_cfg),sizeof(sock_cfg));
+                res = ::sendto(sock,(const char*)data,size,flags,(SOCKADDR*)(&sock_cfg),sizeof(sock_cfg));
             }
 
             if(res <0)
@@ -198,7 +202,7 @@ class Socket
         inline int send(const T* data,const size_t size,const int flags,const Socket& other) const
         {
             int res;
-            if((res = ::sendto(sock,data,size,flags,(SOCKADDR*)(&other.sock_cfg),sizeof(other.sock_cfg))) ==  SOCKET_ERROR)
+            if((res = ::sendto(sock,(const char*)data,size,flags,(SOCKADDR*)(&other.sock_cfg),sizeof(other.sock_cfg))) ==  SOCKET_ERROR)
             {
                 perror("Send()");
                 throw SocketExeption("Sending message fail");
@@ -220,13 +224,13 @@ class Socket
             int res;
             if(need_connect)
             {
-                res = ::recv(sock,buffer,size,flags);
+                res = ::recv(sock,(char*)buffer,size,flags);
             }
             else
             {
                 SOCKADDR_IN from = {0}; ///< configuration struct
                 socklen_t from_size=sizeof(from);
-                res = ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&from),&from_size);
+                res = ::recvfrom(sock,(char*)buffer,size,flags,(SOCKADDR*)(&from),&from_size);
             }
             return res;
         };
@@ -242,7 +246,7 @@ class Socket
         inline int receive(T* buffer,const size_t size,const int flags,Socket& other) const
         {
             socklen_t slen=sizeof(other.sock_cfg);
-            return ::recvfrom(sock,buffer,size,flags,(SOCKADDR*)(&other.sock_cfg),&slen);
+            return ::recvfrom(sock,(char*)buffer,size,flags,(SOCKADDR*)(&other.sock_cfg),&slen);
         }
 
         /**

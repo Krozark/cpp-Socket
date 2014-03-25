@@ -32,7 +32,13 @@ set_option(BUILD_DOC TRUE BOOL "TRUE to generate the API documentation, FALSE to
 
 #set(includepath "-I${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(DEFINES "")
-set(LIBS "-lpthread")
+
+if(UNIX)
+	set(LIBS "-lpthread")
+elseif(WIN32)
+	set(LIBS "-lwinpthreads -lws2_32")
+endif()
+
 set(WARNING "-Wall")
 set(FLAGS "-o3 -std=c++0x")
 set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS} ${LIBS}")

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="Socket" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;CMake Files\src\;CMake Files\src\Socket\;CMake Files\cmake\;CMake Files\doc\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="edit_cache">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 edit_cache" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="install">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 install" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="install/local">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 install/local" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="install/strip">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 install/strip" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="list_install_components">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 list_install_components" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="rebuild_cache">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 rebuild_cache" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="socket">
+         <Option output="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/libsocket.dll" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket" />
+         <Option object_output="./" />
+         <Option type="3" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/../../../../include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include-fixed" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/backward" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/mingw32" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 socket" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="socket/fast">
+         <Option output="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/libsocket.dll" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket" />
+         <Option object_output="./" />
+         <Option type="3" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/../../../../include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include-fixed" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/backward" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/mingw32" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 socket/fast" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="socket-static">
+         <Option output="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/lib/libsocket-static.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/../../../../include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include-fixed" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/backward" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/mingw32" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 socket-static" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="socket-static/fast">
+         <Option output="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/lib/libsocket-static.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add directory="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/../../../../include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include-fixed" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/backward" />
+            <Add directory="c:\program files\codeblocks\mingw\bin\../lib/gcc/mingw32/4.8.1/include/c++/mingw32" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 socket-static/fast" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="uninstall">
+         <Option working_dir="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 uninstall" />
+            <CompileFile command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="C:/PROGRA~1/CODEBL~1/MinGW/bin/mingw32-make.exe -f &quot;C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/build/src/Socket/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/BalancingSelector.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/Config.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/FuncWrapper.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/SelectManager.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/Serializer.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/Socket.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/SocketSerialized.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/client/Client.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/server/Client.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/server/Server.cpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/BalancingSelector.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/Config.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/FuncWrapper.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/FuncWrapper.tpl">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/SelectManager.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/Serializer.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/Socket.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/SocketSerialized.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/client/Client.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/client/Client.tpl">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/define.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/server/Client.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/include/Socket/server/Server.hpp">
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/src/Socket/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\src\Socket\" />
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/cmake/cmake_uninstall.cmake.in">
+          <Option virtualFolder="CMake Files\cmake\" />
+      </Unit>
+      <Unit filename="C:/Documents and Settings/user/Mes documents/GitHub/cpp-Socket/doc/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\doc\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>
