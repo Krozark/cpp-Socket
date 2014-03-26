@@ -10,8 +10,6 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
-*.exe
 *.vim
 
 CMakeCache.txt
@@ -22,3 +20,7 @@ install_manifest.txt
 doc/html
 build/
 lib/
+/examples/libsocket-dispatch.dll
+/examples/Socket-client.exe
+/examples/Socket-server.exe
+/examples/libsocket.dll
