@@ -21,7 +21,7 @@ namespace ntw
     {
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
-        
+
         if(ntw::dispatch(id,request) == Status::st::wrong_id)
         {
             request.clear();
@@ -33,7 +33,7 @@ namespace ntw
 
     int FuncWrapper::cli::verifyIsConnected(SocketSerialized& sock)
     {
-        short int code; 
+        short int code;
         if(sock.receive() > 0)
         {
             std::string msg;

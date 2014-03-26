@@ -68,7 +68,7 @@ namespace ntw
             /**
              * \brief Regroup function for build a TCP server
              */
-            class srv 
+            class srv
             {
                 public:
                     enum FUNCTONS_ID{UNKNOW=-1}; ///< Function namespace
@@ -89,11 +89,11 @@ namespace ntw
                     srv() = delete;
                     srv& operator=(const srv&)=delete;
             };
-            
+
             /**
              * \brief A class to help to build a TCP client
              */
-            class cli 
+            class cli
             {
                 public:
                     /**
