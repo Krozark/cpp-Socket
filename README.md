@@ -4,6 +4,13 @@ cpp-Socket
 Current build status : 
 [![Build Status](https://travis-ci.org/Krozark/cpp-Socket.png?branch=master)](https://travis-ci.org/Krozark/cpp-Socket)
 
+Testing
+=======
+
+Ubuntu 12.04+ x86/64
+Windows xp x86
+
+
 Version : 0.2
 
 Some class to help to construct client/server with soket and serilized datas.
