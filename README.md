@@ -40,15 +40,20 @@ You have to define your function dispatch. See the doc for more detail.
 
 ```C++
 
-namespace ntw
+int dispatch(int id,ntw::SocketSerialized& request) //this function have to be made for a server, unless it will crash on first request. Not use by clients.
 {
-    class SocketSerialized;
+    //your code
+    return 0;
+};
 
-    int dispatch(int id,SocketSerialized& request)
-    {
-        return 0;
-    };
+int main(int argc,char* argv[])
+{
+    ntw::Socketinit(dispatch); //init for windows and the server callback
+    //code
+    //ntw::Socket::close(); //clean the context
+    return 0;
 }
+
 
 ```
 
