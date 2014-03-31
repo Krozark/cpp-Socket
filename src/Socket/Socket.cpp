@@ -7,6 +7,10 @@
 namespace ntw {
 //int Socket::max_id = 0;
 
+#if __WIN32
+WSADATA Socket::WSAData;
+#endif
+
 Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock(INVALID_SOCKET), need_connect(type == Socket::Type::TCP)
 {
     //déclaration de la socket
@@ -135,6 +139,20 @@ std::string Socket::getIp() const
 unsigned int Socket::getPort() const
 {
     return htons(sock_cfg.sin_port);
+}
+
+void Socket::init()
+{
+     #if __WIN32
+    WSAStartup(MAKEWORD(2,0),&Socket::WSAData);
+    #endif // __WIN32
+}
+
+void Socket::close()
+{
+     #if __WIN32
+    WSACleanup();
+    #endif // __WIN32
 }
 
 };

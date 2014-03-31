@@ -260,6 +260,10 @@ class Socket
         unsigned int getPort() const;
 
 
+        static void init();
+        static void close();
+
+
     protected:
         friend class SocketSerialized;
         Socket(bool need_connect);///< intern use only;
@@ -270,6 +274,11 @@ class Socket
         SOCKET sock; ///< C socket type
         SOCKADDR_IN sock_cfg; ///< configuration struct
         const bool need_connect;
+
+    private:
+        #if __WIN32
+        static WSADATA WSAData;
+        #endif
 };
 
 };

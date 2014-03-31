@@ -68,26 +68,26 @@ set(FILES_SRC
     ${SERVER_SRC}
 )
 
-if(WIN32)
-	add_library(socket-dispatch SHARED ${SRCROOT}/Win/dispatch.cpp)
-	SET_TARGET_PROPERTIES(socket-dispatch
-		PROPERTIES
-		VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-		SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
-	)
-	INSTALL(TARGETS socket-dispatch
-		DESTINATION lib
-	)
-	add_library(socket-dispatch-static STATIC ${SRCROOT}/Win/dispatch.cpp)
-	SET_TARGET_PROPERTIES(socket-dispatch-static
-		PROPERTIES
-		VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-		SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
-	)
-	INSTALL(TARGETS socket-dispatch-static
-		DESTINATION lib
-	)
-endif()
+#if(WIN32)
+	#add_library(socket-dispatch SHARED ${SRCROOT}/Win/dispatch.cpp)
+	#SET_TARGET_PROPERTIES(socket-dispatch
+	#	PROPERTIES
+	#	VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+	#	SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
+	#)
+	#INSTALL(TARGETS socket-dispatch
+	#	DESTINATION lib
+	#)
+	#add_library(socket-dispatch-static STATIC ${SRCROOT}/Win/dispatch.cpp)
+	#SET_TARGET_PROPERTIES(socket-dispatch-static
+	#	PROPERTIES
+	#	VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+	#	SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
+	#)
+	#INSTALL(TARGETS socket-dispatch-static
+	#	DESTINATION lib
+	#)
+#endif()
 
 #SHARED lib
 add_library(socket SHARED ${FILES_HEADER} ${FILES_SRC})
@@ -97,9 +97,9 @@ SET_TARGET_PROPERTIES(socket
     SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
 )
 target_link_libraries(socket ${LIBS})
-if(WIN32)
-	target_link_libraries(socket socket-dispatch)
-endif()
+#if(WIN32)
+#	target_link_libraries(socket socket-dispatch)
+#endif()
 INSTALL(TARGETS socket
     DESTINATION lib
 )
@@ -113,9 +113,9 @@ SET_TARGET_PROPERTIES(socket-static
 	SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
 )
 target_link_libraries(socket-static ${LIBS})
-if(WIN32)
-	target_link_libraries(socket-static socket-dispatch-static)
-endif()
+#if(WIN32)
+#	target_link_libraries(socket-static socket-dispatch-static)
+#endif()
 INSTALL(TARGETS socket-static
 	DESTINATION lib
 )

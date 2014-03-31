@@ -98,7 +98,7 @@ namespace srv
             if(self.on_new_client)
                 self.on_new_client(self,client);
             ntw::FuncWrapper::msg(client.request_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
-        }            
+        }
     }
 
     void Server::onRequestRecv(ntw::SelectManager& request_recv,void* data, ntw::SocketSerialized& sock)
@@ -116,13 +116,13 @@ namespace srv
                 //rm = true;
             }
         }
-        
+
         if(rm)
         {
-            std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl; 
+            std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl;
             Server& self = *(Server*)data;
             Client* client = ((ntw::srv::Client*)((long int)(&sock) - (long int)(&((ntw::srv::Client*)NULL)->request_sock)));
-            
+
             self.remove (client);
         }
     }
@@ -137,7 +137,7 @@ namespace srv
         }
         else
         {
-            std::cerr<<"[SERVER] onBroadCastRecv connexion lost <id:"<<sock.id()<<">"<<std::endl; 
+            std::cerr<<"[SERVER] onBroadCastRecv connexion lost <id:"<<sock.id()<<">"<<std::endl;
 
 
             Server& self = *(ntw::srv::Server*)data;

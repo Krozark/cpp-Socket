@@ -15,16 +15,18 @@ int main(int argc,char* argv[])
         std::cout<<"Usage are: "<<argv[0]<<" <server-host> <server-port>"<<std::endl;
         return 1;
     }
-    
+
     //// inti config
     ntw::Config::default_timeout = 5.f;
     ntw::Config::broadcast = false;
     ntw::Config::port_server = atoi(argv[SERVER_PORT]);
 
+    ntw::Socket::init();
     ntw::cli::Client client;
-    client.connect(argv[SERVER_HOST],ntw::Config::port_server);
+    if(client.connect(argv[SERVER_HOST],ntw::Config::port_server) != NTW_ERROR_CONNEXION)
+        run(client);
 
-    run(client);
+    ntw::Socket::close();
 
     return 0;
 }

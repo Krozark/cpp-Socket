@@ -21,7 +21,7 @@ void stop_server_handler(int sig)
 
 int main(int argc,char* argv[])
 {
-    if(argc < SERVER_PORT +1)
+        if(argc < SERVER_PORT +1)
     {
         std::cout<<"Usage are: "<<argv[0]<<"[server-port]"<<std::endl;
         return 1;
@@ -44,6 +44,7 @@ int main(int argc,char* argv[])
 
     try
     {
+        ntw::Socket::init();
         server = new ntw::srv::Server(max_client);
         server->on_new_client = register_client;
         server->on_delete_client = unregister_client;
@@ -51,6 +52,7 @@ int main(int argc,char* argv[])
         server->start();
         server->wait();
         delete server;
+        ntw::Socket::close();
     }
     catch(ntw::SocketExeption& e)
     {
