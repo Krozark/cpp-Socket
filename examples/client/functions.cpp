@@ -7,14 +7,6 @@
 
 #include <sstream>
 
-namespace ntw
-{
-    int dispatch(int id,SocketSerialized& request)
-    {
-        return 0;
-    }
-}
-
 void run(ntw::cli::Client& client)
 {
     bool run = true;

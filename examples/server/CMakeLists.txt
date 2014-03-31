@@ -1,10 +1,8 @@
 set(HEADERS
-    dispatch.hpp
     functions.hpp
 )
 
 set(SRC
-    dispatch.cpp
     functions.cpp
     server.cpp
 )

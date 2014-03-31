@@ -31,6 +31,8 @@ namespace ntw {
     }
 }
 
+int dispatch(int id,ntw::SocketSerialized& request);
+
 void recv_msg(ntw::SocketSerialized& sock,std::string msg);
 
 /**

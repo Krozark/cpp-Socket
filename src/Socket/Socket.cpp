@@ -2,7 +2,10 @@
 #include <iostream>
 
 #include <Socket/Socket.hpp>
+#include <Socket/FuncWrapper.hpp>
+
 #include <string.h>
+
 
 namespace ntw {
 //int Socket::max_id = 0;
@@ -141,15 +144,17 @@ unsigned int Socket::getPort() const
     return htons(sock_cfg.sin_port);
 }
 
-void Socket::init()
+void Socket::init(int (*callback_dispatch)(int id,SocketSerialized& request))
 {
-     #if __WIN32
+    FuncWrapper::srv::callback_dispatch = callback_dispatch;
+    #if __WIN32
     WSAStartup(MAKEWORD(2,0),&Socket::WSAData);
     #endif // __WIN32
 }
 
 void Socket::close()
 {
+    FuncWrapper::srv::callback_dispatch = nullptr;
      #if __WIN32
     WSACleanup();
     #endif // __WIN32

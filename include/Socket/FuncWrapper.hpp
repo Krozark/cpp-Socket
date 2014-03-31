@@ -7,15 +7,7 @@
 
 namespace ntw
 {
-    /**
-     * \brief the external function to call whene recv a message
-     * \param id the function id
-     * \param request the request who send the request
-     * \return error code. if the value is Status::st::wrong_id, send error message to client
-     */
-    extern int dispatch(int id,SocketSerialized& request);
-
-    /**
+        /**
      * \brief Regroup somme helper function for TCP client server call
      */
     class FuncWrapper
@@ -84,6 +76,14 @@ namespace ntw
                      */
                     template<typename Ret,typename ... Args>
                     static int exec(Ret(*func)(SocketSerialized&,Args ...),SocketSerialized& sock);
+
+                    /**
+                    * \brief the external function to call whene recv a message
+                    * \param id the function id
+                    * \param request the request who send the request
+                    * \return error code. if the value is Status::st::wrong_id, send error message to client
+                    */
+                    static int (*callback_dispatch)(int id,SocketSerialized& request);
 
                 private:
                     srv() = delete;

@@ -6,7 +6,6 @@
  */
 namespace ntw
 {
-    class SocketSerialized;
     namespace cli
     {
         class Client;

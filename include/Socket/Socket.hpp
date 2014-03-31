@@ -259,8 +259,16 @@ class Socket
          */
         unsigned int getPort() const;
 
+        /**
+        * \brief initialise the context
+        * \param callback_dispatch the call back for the dispatch function (used by server)
+        */
+        static void init(int (*callback_dispatch)(int id,SocketSerialized& request)= nullptr);
 
-        static void init();
+        /**
+        * \brief close the context
+        *  put FuncWrapper::srv::callback_dispatch to nullptr.
+        */
         static void close();
 
 

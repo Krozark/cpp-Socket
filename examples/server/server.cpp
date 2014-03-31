@@ -44,7 +44,7 @@ int main(int argc,char* argv[])
 
     try
     {
-        ntw::Socket::init();
+        ntw::Socket::init(dispatch);
         server = new ntw::srv::Server(max_client);
         server->on_new_client = register_client;
         server->on_delete_client = unregister_client;

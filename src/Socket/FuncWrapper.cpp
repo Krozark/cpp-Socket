@@ -2,6 +2,8 @@
 
 namespace ntw
 {
+    int (*FuncWrapper::srv::callback_dispatch)(int id,SocketSerialized& request) = nullptr;
+
     int FuncWrapper::msg(SocketSerialized& sock,const std::string message,unsigned int code)
     {
         sock.clear();
@@ -22,13 +24,12 @@ namespace ntw
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
 
-        if(ntw::dispatch(id,request) == Status::st::wrong_id)
+        if((*ntw::FuncWrapper::srv::callback_dispatch)(id,request) == Status::st::wrong_id)
         {
             request.clear();
             request.setStatus(Status::st::wrong_id);
             request.sendCl();
         }
-
     }
 
     int FuncWrapper::cli::verifyIsConnected(SocketSerialized& sock)
