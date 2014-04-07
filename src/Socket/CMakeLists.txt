@@ -20,6 +20,7 @@ set(ROOT_HEADER
     ${INCROOT}/define.hpp
     ${INCROOT}/SelectManager.hpp
     ${INCROOT}/Serializer.hpp
+    ${INCROOT}/Serializer.tpl
     ${INCROOT}/Socket.hpp
     ${INCROOT}/SocketSerialized.hpp
 )

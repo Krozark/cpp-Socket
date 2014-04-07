@@ -7,6 +7,10 @@
 
 #include <stdio.h>
 
+#include <array>
+#include <vector>
+#include <list>
+
 /*
  * Se base sur .. pour les fonction en interne
 __BYTE_ORDER__
@@ -74,6 +78,12 @@ class Serializer
         
         Serializer& operator<<(const char* const c);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
         Serializer& operator<<(const std::string& str);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
+        
+        //containers
+        template<typename T,size_t N> Serializer& operator<<(const std::array<T,N>& containers);///< Overload operator to store a array of T
+        template<typename T> Serializer& operator<<(const std::vector<T>& container);///< Overload operator to store a vector of T
+        template<typename T> Serializer& operator<<(const std::list<T>& container);///< Overload operator to store a list of T
+
 
 
         /********** UNSERIALIZE ***********/
@@ -106,15 +116,7 @@ class Serializer
          * \brief realoc the buffer
          * \param buffer_cursor_end the size to alloc
          */
-        inline void resize(const unsigned int buffer_cursor_end)
-        {
-            unsigned char* tmp = new unsigned char[buffer_cursor_end];
-            memcpy(tmp,_buffer,_buffer_size);
-
-            delete[] _buffer;
-            _buffer = tmp;
-            _buffer_size = buffer_cursor_end;
-        };
+        inline void resize(const unsigned int buffer_cursor_end);
 
 
         /************ ADD DATAs ***************/
@@ -123,96 +125,28 @@ class Serializer
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(const uint8_t& a){
-            if(_buffer_size < _cursor_end + 1)
-                resize(_buffer_size*2);
-
-            _buffer[_cursor_end++] = a;
-        };
+        inline void push(const uint8_t& a);
 
         /**
          * \brief Helper function to add datas
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(const uint16_t& a) {
-            if(_buffer_size < _cursor_end + 2)
-                resize(_buffer_size*2);
-
-            const uint8_t *d = (const uint8_t *)&a;
-
-            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-            _buffer[_cursor_end++] = d[0];
-            _buffer[_cursor_end++] = d[1];
-            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            _buffer[_cursor_end++] = d[1];
-            _buffer[_cursor_end++] = d[0];
-            #else
-            #error "byte orden not suported (PDP endian)"
-            #endif
-
-        }
+        inline void push(const uint16_t& a);
 
         /**
          * \brief Helper function to add datas
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(const uint32_t& a){
-            if(_buffer_size < _cursor_end + 4)
-                resize(_buffer_size*2);
-
-            const uint8_t *d = (const uint8_t *)&a;
-
-            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-            _buffer[_cursor_end++] = d[0];
-            _buffer[_cursor_end++] = d[1];
-            _buffer[_cursor_end++] = d[2];
-            _buffer[_cursor_end++] = d[3];
-            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            _buffer[_cursor_end++] = d[3];
-            _buffer[_cursor_end++] = d[2];
-            _buffer[_cursor_end++] = d[1];
-            _buffer[_cursor_end++] = d[0];
-            #else
-            #error "byte orden not suported (PDP endian)"
-            #endif
-
-        }
+        inline void push(const uint32_t& a);
 
         /**
          * \brief Helper function to add datas
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(const uint64_t& a){
-            if(_buffer_size < _cursor_end + 8)
-                resize(_buffer_size*2);
-
-            const uint8_t *d = (const uint8_t *)&a;
-
-            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-            _buffer[_cursor_end++] = d[0];
-            _buffer[_cursor_end++] = d[1];
-            _buffer[_cursor_end++] = d[2];
-            _buffer[_cursor_end++] = d[3];
-            _buffer[_cursor_end++] = d[4];
-            _buffer[_cursor_end++] = d[5];
-            _buffer[_cursor_end++] = d[6];
-            _buffer[_cursor_end++] = d[7];
-            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            _buffer[_cursor_end++] = d[7];
-            _buffer[_cursor_end++] = d[6];
-            _buffer[_cursor_end++] = d[5];
-            _buffer[_cursor_end++] = d[4];
-            _buffer[_cursor_end++] = d[3];
-            _buffer[_cursor_end++] = d[2];
-            _buffer[_cursor_end++] = d[1];
-            _buffer[_cursor_end++] = d[0];
-            #else
-            #error "byte orden not suported (PDP endian)"
-            #endif
-        }
+        inline void push(const uint64_t& a);
 
         /***************** GET DATAs ****************/
         /**
@@ -220,93 +154,31 @@ class Serializer
          * and convert it from big endian to local encoding
          * \param a data to get
          */
-        inline void pop(uint8_t& a){
-            if(_cursor_begin +1 <= _cursor_end )
-            {
-                a= _buffer[_cursor_begin++];
-            }
-        };
+        inline void pop(uint8_t& a);
 
         /**
          * \brief Helper function to get datas
          * and convert it from big endian to local encoding
          * \param a data to get
          */
-        inline void pop(uint16_t& a){
-            if(_cursor_begin +2 <= _cursor_end)
-            {
-                uint8_t *d = (uint8_t *)&a;
-                #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                d[0]= _buffer[_cursor_begin++];
-                d[1]= _buffer[_cursor_begin++];
-                #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                d[1]= _buffer[_cursor_begin++];
-                d[0]= _buffer[_cursor_begin++];
-                #else
-                #error "byte orden not suported (PDP endian)"
-                #endif
-            }
-        };
+        inline void pop(uint16_t& a);
 
         /**
          * \brief Helper function to get datas
          * and convert it from big endian to local encoding
          * \param a data to get
          */
-        inline void pop(uint32_t& a){
-            if(_cursor_begin +4 <= _cursor_end)
-            {
-                uint8_t *d = (uint8_t *)&a;
-                #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                d[0]= _buffer[_cursor_begin++];
-                d[1]= _buffer[_cursor_begin++];
-                d[2]= _buffer[_cursor_begin++];
-                d[3]= _buffer[_cursor_begin++];
-                #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                d[3]= _buffer[_cursor_begin++];
-                d[2]= _buffer[_cursor_begin++];
-                d[1]= _buffer[_cursor_begin++];
-                d[0]= _buffer[_cursor_begin++];
-                #else
-                #error "byte orden not suported (PDP endian)"
-                #endif
-            }
-        };
+        inline void pop(uint32_t& a);
 
         /**
          * \brief Helper function to get datas
          * and convert it from big endian to local encoding
          * \param a data to get
          */
-        inline void pop(uint64_t& a){
-            if(_cursor_begin +8 <= _cursor_end)
-            {
-                uint8_t *d = (uint8_t *)&a;
-                #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                d[0]= _buffer[_cursor_begin++];
-                d[1]= _buffer[_cursor_begin++];
-                d[2]= _buffer[_cursor_begin++];
-                d[3]= _buffer[_cursor_begin++];
-                d[4]= _buffer[_cursor_begin++];
-                d[5]= _buffer[_cursor_begin++];
-                d[6]= _buffer[_cursor_begin++];
-                d[7]= _buffer[_cursor_begin++];
-                #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                d[7]= _buffer[_cursor_begin++];
-                d[6]= _buffer[_cursor_begin++];
-                d[5]= _buffer[_cursor_begin++];
-                d[4]= _buffer[_cursor_begin++];
-                d[3]= _buffer[_cursor_begin++];
-                d[2]= _buffer[_cursor_begin++];
-                d[1]= _buffer[_cursor_begin++];
-                d[0]= _buffer[_cursor_begin++];
-                #else
-                #error "byte orden not suported (PDP endian)"
-                #endif
-            }
-        };
+        inline void pop(uint64_t& a);
+};
 };
 
-};
+#include <Socket/Serializer.tpl>
 #endif
 
