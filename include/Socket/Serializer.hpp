@@ -101,7 +101,12 @@ class Serializer
         Serializer& operator>>(char*& c); ///< Oveload operator to extract datas. 1 oct | 8 bit []
         Serializer& operator>>(std::string& str); ///< Oveload operator to extract datas. 1 oct | 8 bit []
 
+        //containers
+        template<typename T> Serializer& operator>>(std::vector<T>& container);///< Overload operator to store a vector of T
+        template<typename T> Serializer& operator>>(std::list<T>& container);///< Overload operator to store a list of T
 
+
+        //debug
         friend std::ostream& operator<<(std::ostream& output,const Serializer& self); ///<print each byt by his int value between <>
 
 
