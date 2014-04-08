@@ -62,8 +62,22 @@ class Serializer
          */
         const unsigned int capacity()const;
 
+        /**
+        * \brief write datas as-it
+        * Note : only the data are append to the internal buffer
+        * \param buffer the buffer to write
+        * \param the number of bits to write
+        * \return *this
+        */
         Serializer& write(const void* buffer,unsigned int size);
 
+        /**
+        * \brief get datas as-it
+        * Note : you need to know the exact size you want to exctract.
+        * \param buffer the buffer to write in
+        * \param the number of bits to get
+        * \return *this
+        */
         Serializer& read(void* buffer,unsigned int size);
 
         /********* SERIALIZE *************/
