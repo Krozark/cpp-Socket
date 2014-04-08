@@ -144,9 +144,8 @@ unsigned int Socket::getPort() const
     return htons(sock_cfg.sin_port);
 }
 
-void Socket::init(int (*callback_dispatch)(int id,SocketSerialized& request))
+void Socket::init()
 {
-    FuncWrapper::srv::callback_dispatch = callback_dispatch;
     #if __WIN32
     WSAStartup(MAKEWORD(2,0),&Socket::WSAData);
     #endif // __WIN32
@@ -154,7 +153,6 @@ void Socket::init(int (*callback_dispatch)(int id,SocketSerialized& request))
 
 void Socket::close()
 {
-    FuncWrapper::srv::callback_dispatch = nullptr;
      #if __WIN32
     WSACleanup();
     #endif // __WIN32

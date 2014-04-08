@@ -5,13 +5,14 @@ namespace ntw
 {
 namespace srv
 {
-    Server::Server(unsigned int port,unsigned int max_client,unsigned int min_client,float timeout) :
+    Server::Server(unsigned int port,int (*c_dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int min_client,float timeout) :
         on_new_client(nullptr),
         on_delete_client(nullptr),
         new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
-        request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout)
+        request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout),
         //broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
+        dispatch(c_dispatch)
     {
         //request_recv.setDelete(false);
         //broadcast_sender.setDelete(false);
@@ -104,11 +105,12 @@ namespace srv
     void Server::onRequestRecv(ntw::SelectManager& request_recv,void* data, ntw::SocketSerialized& sock)
     {
         bool rm = true;
+        Server& self = *(Server*)data;
         if(sock.receive() >0)
         {
             try
             {
-                ntw::FuncWrapper::srv::dispatch(sock);
+                ntw::FuncWrapper::srv::dispatch(sock,self.dispatch);
                 rm = false;
             }
             catch (ntw::SocketExeption& e)
@@ -120,7 +122,6 @@ namespace srv
         if(rm)
         {
             std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl;
-            Server& self = *(Server*)data;
             Client* client = ((ntw::srv::Client*)((long int)(&sock) - (long int)(&((ntw::srv::Client*)NULL)->request_sock)));
 
             self.remove (client);

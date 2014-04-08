@@ -21,11 +21,12 @@ namespace ntw
                 /**
                  * \brief constructor
                  * \param port the server port
+                 * \param dispatch the dispatch callback function
                  * \param max_client the number of max client
                  * \param min_client the minimal client number
                  * \param timeout the timeout for the select operation
                  */
-                Server(unsigned int port,unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
+                Server(unsigned int port,int (*dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 
@@ -51,6 +52,7 @@ namespace ntw
 
                 void (*on_new_client)(ntw::srv::Server& self,ntw::srv::Client& client);
                 void (*on_delete_client)(ntw::srv::Server& self,ntw::srv::Client& client);
+
 
 
             protected:
@@ -82,6 +84,8 @@ namespace ntw
 
                 std::list<Client> clients; ///< internal clients
                 std::mutex client_mutex; ///< client mutex
+
+                int (*dispatch)(int id,SocketSerialized& request);
         };
     }
 }

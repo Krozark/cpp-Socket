@@ -2,7 +2,7 @@
 
 namespace ntw
 {
-    int (*FuncWrapper::srv::callback_dispatch)(int id,SocketSerialized& request) = nullptr;
+    //int (*FuncWrapper::srv::callback_dispatch)(int id,SocketSerialized& request) = nullptr;
 
     int FuncWrapper::msg(SocketSerialized& sock,const std::string message,unsigned int code)
     {
@@ -19,12 +19,12 @@ namespace ntw
     }
 
     /*********** SERVER ******************/
-    void FuncWrapper::srv::dispatch(SocketSerialized& request)
+    void FuncWrapper::srv::dispatch(SocketSerialized& request,int(*callback_dispatch)(int id,SocketSerialized&))
     {
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
 
-        if((*ntw::FuncWrapper::srv::callback_dispatch)(id,request) == Status::st::wrong_id)
+        if(callback_dispatch(id,request) == Status::st::wrong_id)
         {
             request.clear();
             request.setStatus(Status::st::wrong_id);

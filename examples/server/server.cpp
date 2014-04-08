@@ -40,8 +40,8 @@ int main(int argc,char* argv[])
 
     try
     {
-        ntw::Socket::init(dispatch);
-        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),max_client);
+        ntw::Socket::init();
+        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),dispatch,max_client);
         server->on_new_client = register_client;
         server->on_delete_client = unregister_client;
 

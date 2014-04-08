@@ -64,7 +64,14 @@ namespace ntw
             {
                 public:
                     enum FUNCTONS_ID{UNKNOW=-1}; ///< Function namespace
-                    static void dispatch(SocketSerialized& request); ///< call the dispatch(int,sock) function with the extracted id of function
+                    /**
+                     * \brief dispatch function. it call callback_dispatch
+                     * Not callback_dispatch must return error code. if the value is Status::st::wrong_id, it send error message to client
+                     * \param callback_dispatch the callback to call
+                     * \param id the function id
+                     * \param request the request who send the request
+                     */
+                    static void dispatch(SocketSerialized& request,int (*callback_dispatch)(int id,SocketSerialized& request));
 
                     /***
                      * \brief shortcut function to call a function.
@@ -77,13 +84,6 @@ namespace ntw
                     template<typename Ret,typename ... Args>
                     static int exec(Ret(*func)(SocketSerialized&,Args ...),SocketSerialized& sock);
 
-                    /**
-                    * \brief the external function to call whene recv a message
-                    * \param id the function id
-                    * \param request the request who send the request
-                    * \return error code. if the value is Status::st::wrong_id, send error message to client
-                    */
-                    static int (*callback_dispatch)(int id,SocketSerialized& request);
 
                 private:
                     srv() = delete;
