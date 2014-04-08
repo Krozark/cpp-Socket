@@ -85,7 +85,7 @@ class Serializer
         template<typename T> Serializer& operator<<(const std::vector<T>& container);///< Overload operator to store a vector of T
         template<typename T> Serializer& operator<<(const std::list<T>& container);///< Overload operator to store a list of T
         //file
-        Serializer& operator<<(const std::fstream& datas);
+        //Serializer& operator<<(const std::fstream& datas);
 
 
         /********** UNSERIALIZE ***********/

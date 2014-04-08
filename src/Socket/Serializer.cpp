@@ -91,10 +91,10 @@ Serializer& Serializer::operator<<(const std::string& str)
     return (*this<<str.c_str());
 }
 
-Serializer& Serializer::operator<<(const std::fstream& datas)
+/*Serializer& Serializer::operator<<(const std::fstream& datas)
 {
     return *this;
-}
+}*/
 
 /********** UNSERIALIZE ***********/
 //1 oct | 8 bit
