@@ -76,7 +76,7 @@ namespace ntw
 
     void Serializer::push(const uint8_t& a)
     {
-        if(_buffer_size < _cursor_end + 1)
+        while(_buffer_size < _cursor_end + 1)
             resize(_buffer_size*2);
 
         _buffer[_cursor_end++] = a;
@@ -84,7 +84,7 @@ namespace ntw
 
     void Serializer::push(const uint16_t& a)
     {
-        if(_buffer_size < _cursor_end + 2)
+        while(_buffer_size < _cursor_end + 2)
             resize(_buffer_size*2);
 
         const uint8_t *d = (const uint8_t *)&a;
@@ -103,7 +103,7 @@ namespace ntw
 
     void Serializer::push(const uint32_t& a)
     {
-        if(_buffer_size < _cursor_end + 4)
+        while(_buffer_size < _cursor_end + 4)
             resize(_buffer_size*2);
 
         const uint8_t *d = (const uint8_t *)&a;
@@ -126,7 +126,7 @@ namespace ntw
 
     void Serializer::push(const uint64_t& a)
     {
-        if(_buffer_size < _cursor_end + 8)
+        while(_buffer_size < _cursor_end + 8)
             resize(_buffer_size*2);
 
         const uint8_t *d = (const uint8_t *)&a;

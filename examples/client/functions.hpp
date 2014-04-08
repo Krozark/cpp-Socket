@@ -21,6 +21,7 @@ namespace harpe
 }
 
 #define RECV_MSG 1 ///< the function id in the server
+#define TEST_INPUT 2 ///< the testing input
 /**
  * \brief start the client
  * \param client the client to start

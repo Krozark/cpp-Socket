@@ -10,6 +10,7 @@
 enum FUNCTION_ID
 {
     RECV_MSG=1,
+    TEST_INPUT=2,
 };
 
 /**
@@ -34,6 +35,8 @@ namespace ntw {
 int dispatch(int id,ntw::SocketSerialized& request);
 
 void recv_msg(ntw::SocketSerialized& sock,std::string msg);
+
+void testinput(ntw::SocketSerialized& sock);
 
 /**
  * \brief call back on new client recv

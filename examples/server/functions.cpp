@@ -12,6 +12,10 @@ int dispatch(int id,ntw::SocketSerialized& request)
         {
             res = ntw::FuncWrapper::srv::exec(recv_msg,request);
         }break;
+        case FUNCTION_ID::TEST_INPUT:
+        {
+            res = ntw::FuncWrapper::srv::exec(testinput,request);
+        }break;
         default:
         {
             std::cout<<"[dispatch] Function id not found"<<std::endl;
@@ -23,6 +27,10 @@ int dispatch(int id,ntw::SocketSerialized& request)
 void recv_msg(ntw::SocketSerialized& sock,std::string msg)
 {
     std::cout<<"[RECV_MSG<"<<sock.id()<<">]"<<msg<<std::endl;
+}
+
+void testinput(ntw::SocketSerialized& sock)
+{
 }
 
 

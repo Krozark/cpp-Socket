@@ -62,6 +62,10 @@ class Serializer
          */
         const unsigned int capacity()const;
 
+        Serializer& write(const void* buffer,unsigned int size);
+
+        Serializer& read(void* buffer,unsigned int size);
+
         /********* SERIALIZE *************/
         Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
 

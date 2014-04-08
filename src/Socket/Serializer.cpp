@@ -33,6 +33,26 @@ const unsigned int Serializer::capacity()const
     return _buffer_size;
 };
 
+
+Serializer& Serializer::write(const void* buffer,unsigned int size)
+{
+    while(_buffer_size < _cursor_end + size)
+        resize(_buffer_size*2);
+    ::memcpy(_buffer+_cursor_end,buffer,size);
+    _cursor_end +=size;
+    return *this;
+}
+
+Serializer& Serializer::read(void* buffer,unsigned int size)
+{
+    if(_cursor_begin + size <= _cursor_end)
+    {
+        ::memcpy(buffer,_buffer+_cursor_begin,size);
+        _cursor_begin += size;
+    }
+    return *this;
+}
+
 /********* SERIALIZE *************/
 //1 oct | 8 bit
 Serializer& Serializer::operator<<(const char c)
