@@ -5,7 +5,6 @@
 #include <Socket/BalancingSelector.hpp>
 #include <Socket/server/Client.hpp>
 
-#include <Socket/Config.hpp>
 
 #include <list>
 
@@ -25,7 +24,7 @@ namespace ntw
                  * \param min_client the minimal client number
                  * \param timeout the timeout for the select operation
                  */
-                Server(unsigned int max_client,unsigned int port=Config::port_server,unsigned int min_client=1,float timeout=Config::default_timeout);
+                Server(unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 

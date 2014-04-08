@@ -1,10 +1,11 @@
 #include <Socket/server/Server.hpp>
+#include <Socket/Config.hpp>
 
 namespace ntw
 {
 namespace srv
 {
-    Server::Server(unsigned int max_client,unsigned int port,unsigned int min_client,float timeout) :
+    Server::Server(unsigned int max_client,unsigned int min_client,float timeout) :
         on_new_client(nullptr),
         on_delete_client(nullptr),
         new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
@@ -16,7 +17,7 @@ namespace srv
         //broadcast_sender.setDelete(false);
         //new_connexion_recv.setDelete(false);
         //init sock
-        new_connexion_sock.serverMode((port=<0)?Config::port_server:port);
+        new_connexion_sock.serverMode(Config::port_server);
         //init selector
         new_connexion_recv.setRead(true);
         new_connexion_recv.onSelect = onNewClientRecv;
