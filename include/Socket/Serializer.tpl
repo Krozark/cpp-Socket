@@ -32,6 +32,7 @@ namespace ntw
         return *this;
     }
 
+
     //remove
     template<typename T>
     Serializer& Serializer::operator>>(std::vector<T>& container)

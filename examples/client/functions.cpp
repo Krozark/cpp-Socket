@@ -22,18 +22,22 @@ void run(ntw::cli::Client& client)
             break;
         }
 
-        //client.call<void>(RECV_MSG,input);
+        client.call<void>(RECV_MSG,input);
 
-        client.request_sock.clear();
-        client.request_sock.setStatus(ntw::FuncWrapper::Status::ok);
-        //set the function id
-        client.request_sock<<(int)RECV_MSG
-            <<input;
-        client.request_sock.send();
-        std::cout<<"send data"<<std::endl;
-        if(client.request_sock.receive() > 0)
-            std::cout<<client.request_sock<<std::endl;
-        std::cout<<"recv data"<<std::endl;
+        /*
+        ///client.call<void>(RECV_MSG,input); make this:
+        {
+            client.request_sock.clear();
+            client.request_sock.setStatus(ntw::FuncWrapper::Status::ok);
+            //set the function id
+            client.request_sock<<(int)RECV_MSG
+                <<input;
+            client.request_sock.send();
+            std::cout<<"send data"<<std::endl;
+            if(client.request_sock.receive() > 0)
+                std::cout<<client.request_sock<<std::endl;
+        }
+        */
 
         short int status = client.request_sock.getStatus();
         switch(status)

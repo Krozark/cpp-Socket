@@ -18,12 +18,10 @@ int main(int argc,char* argv[])
 
     //// inti config
     ntw::Config::default_timeout = 5.f;
-    ntw::Config::broadcast = false;
-    ntw::Config::port_server = atoi(argv[SERVER_PORT]);
 
     ntw::Socket::init();
     ntw::cli::Client client;
-    if(client.connect(argv[SERVER_HOST],ntw::Config::port_server) != NTW_ERROR_CONNEXION)
+    if(client.connect(argv[SERVER_HOST],atoi(argv[SERVER_PORT])) != NTW_ERROR_CONNEXION)
         run(client);
 
     ntw::Socket::close();

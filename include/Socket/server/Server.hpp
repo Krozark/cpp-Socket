@@ -20,11 +20,12 @@ namespace ntw
             public:
                 /**
                  * \brief constructor
+                 * \param port the server port
                  * \param max_client the number of max client
                  * \param min_client the minimal client number
                  * \param timeout the timeout for the select operation
                  */
-                Server(unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
+                Server(unsigned int port,unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 
@@ -57,7 +58,7 @@ namespace ntw
                 ntw::SelectManager new_connexion_recv; ///< manager for nex connextion
                 ntw::BalancingSelector request_recv; ///< socket managaer for request (TCP)
 
-                ntw::BalancingSelector broadcast_sender; ///< manager for broadcast
+                //ntw::BalancingSelector broadcast_sender; ///< manager for broadcast
 
                 /**
                  * \brief callback for new client
@@ -72,7 +73,7 @@ namespace ntw
                 /**
                  * \brief callback on datat receive on broadcast
                  */
-                static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, void* data,ntw::SocketSerialized& sock);
+                //static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, void* data,ntw::SocketSerialized& sock);
 
                 /**
                  * \brief remove a client

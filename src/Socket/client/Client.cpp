@@ -6,12 +6,12 @@ namespace ntw
 {
     namespace cli
     {
-        Client::Client() :  request_sock(Socket::Dommaine::IP,Socket::Type::TCP),
-        new_broadcast_sock(Socket::Dommaine::IP,Socket::Type::TCP),
-        broadcast_recv_sock(Socket::Dommaine::IP,Socket::Type::TCP)
+        Client::Client() :  request_sock(Socket::Dommaine::IP,Socket::Type::TCP)
+        //new_broadcast_sock(Socket::Dommaine::IP,Socket::Type::TCP),
+        //broadcast_recv_sock(Socket::Dommaine::IP,Socket::Type::TCP)
         {
             //init broadcast
-            if(Config::broadcast)
+            /*if(Config::broadcast)
             {
                 new_broadcast_sock.serverMode(Config::port_client);
 
@@ -19,18 +19,18 @@ namespace ntw
                 //broadcast_recv.setDelete(false);
                 broadcast_recv.onSelect = onBroadcastRecv;
                 broadcast_recv.data = this;
-            }
+            }*/
         }
 
         Client::~Client()
         {
             request_sock.shutdown();
 
-            if(Config::broadcast)
+            /*if(Config::broadcast)
             {
                 new_broadcast_sock.shutdown();
                 broadcast_recv_sock.shutdown();
-            }
+            }*/
         }
 
         int Client::connect(const std::string& host,int port)
@@ -38,7 +38,7 @@ namespace ntw
             //init request sock
             request_sock.connect(host,port);
 
-            if(Config::broadcast)
+            /*if(Config::broadcast)
             {
                 fd_set readfds;
 
@@ -73,7 +73,7 @@ namespace ntw
                 {
                     return NTW_ERROR_CONNEXION;
                 }
-            }
+            }*/
 
             if (ntw::FuncWrapper::cli::verifyIsConnected(request_sock) != NTW_ERROR_NO)
             {
@@ -82,7 +82,7 @@ namespace ntw
             return NTW_ERROR_NO;
         }
 
-        void Client::stop()
+        /*void Client::stop()
         {
 
             if(Config::broadcast)
@@ -105,6 +105,6 @@ namespace ntw
             {
                 std::cerr<<"[SERVER] onBroadcastRecv connexion lost <id:"<<sock.id()<<">"<<std::endl;
             }
-        }
+        }*/
     }
 }

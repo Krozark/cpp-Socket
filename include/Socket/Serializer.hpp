@@ -10,6 +10,7 @@
 #include <array>
 #include <vector>
 #include <list>
+#include <fstream>
 
 /*
  * Se base sur .. pour les fonction en interne
@@ -83,7 +84,8 @@ class Serializer
         template<typename T,size_t N> Serializer& operator<<(const std::array<T,N>& containers);///< Overload operator to store a array of T
         template<typename T> Serializer& operator<<(const std::vector<T>& container);///< Overload operator to store a vector of T
         template<typename T> Serializer& operator<<(const std::list<T>& container);///< Overload operator to store a list of T
-
+        //file
+        Serializer& operator<<(const std::fstream& datas);
 
 
         /********** UNSERIALIZE ***********/

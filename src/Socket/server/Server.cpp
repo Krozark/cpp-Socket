@@ -5,19 +5,19 @@ namespace ntw
 {
 namespace srv
 {
-    Server::Server(unsigned int max_client,unsigned int min_client,float timeout) :
+    Server::Server(unsigned int port,unsigned int max_client,unsigned int min_client,float timeout) :
         on_new_client(nullptr),
         on_delete_client(nullptr),
         new_connexion_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
-        request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout),
-        broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
+        request_recv(true,false,false,onRequestRecv,this,min_client,max_client,0,timeout)
+        //broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
     {
         //request_recv.setDelete(false);
         //broadcast_sender.setDelete(false);
         //new_connexion_recv.setDelete(false);
         //init sock
-        new_connexion_sock.serverMode(Config::port_server);
+        new_connexion_sock.serverMode(port);
         //init selector
         new_connexion_recv.setRead(true);
         new_connexion_recv.onSelect = onNewClientRecv;
@@ -39,8 +39,8 @@ namespace srv
         new_connexion_recv.start();
         request_recv.start();
 
-        if(Config::broadcast)
-            broadcast_sender.start();
+        /*if(Config::broadcast)
+            broadcast_sender.start();*/
 
     }
 
@@ -49,8 +49,8 @@ namespace srv
         new_connexion_recv.stop();
         request_recv.stop();
 
-        if(Config::broadcast)
-            broadcast_sender.stop();
+        /*if(Config::broadcast)
+            broadcast_sender.stop();*/
 
     }
 
@@ -59,8 +59,8 @@ namespace srv
         new_connexion_recv.wait();
         request_recv.wait();
 
-        if(Config::broadcast)
-            broadcast_sender.wait();
+        /*if(Config::broadcast)
+            broadcast_sender.wait();*/
     }
     void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock)
     {
@@ -79,7 +79,7 @@ namespace srv
             ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
         }
 
-        if(Config::broadcast)
+        /*if(Config::broadcast)
         {
             if(ok and not (self.broadcast_sender.add(&client.broadcast_sock,client.request_sock.getIp(),Config::port_client)))
             {
@@ -87,7 +87,7 @@ namespace srv
                 self.request_recv.remove(&client.request_sock);
                 ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_BROADCAST_ADD_MSG,NTW_ERROR_BROADCAST_ADD);
             }
-        }
+        }*/
 
         if(not ok)
         {
@@ -127,7 +127,7 @@ namespace srv
         }
     }
 
-    void Server::onBroadCastRecv(ntw::SelectManager& broadcast_sender, void* data,ntw::SocketSerialized& sock)
+    /*void Server::onBroadCastRecv(ntw::SelectManager& broadcast_sender, void* data,ntw::SocketSerialized& sock)
     {
         if(sock.receive() >0)
         {
@@ -145,7 +145,7 @@ namespace srv
 
             self.remove(client);
         }
-    }
+    }*/
 
     bool Server::remove(Client* client_ptr)
     {
@@ -165,11 +165,11 @@ namespace srv
                 request_recv.remove(&client.request_sock);
                 client.request_sock.shutdown();
 
-                if(Config::broadcast)
+                /*if(Config::broadcast)
                 {
                     broadcast_sender.remove(&client.broadcast_sock);
                     client.broadcast_sock.shutdown();
-                }
+                }*/
 
                 begin = clients.erase(begin);
             }

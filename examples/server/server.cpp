@@ -27,17 +27,13 @@ int main(int argc,char* argv[])
         return 1;
     }
 
-    ntw::Config::port_server = atoi(argv[SERVER_PORT]);
-    //ntw::Config::port_client = 3988;
     ntw::Config::max_connexion = 10;
     ntw::Config::default_timeout = 5.f;
-    ntw::Config::broadcast = false;
     const unsigned int max_client = 100;
 
 
     std::cout<<"[Server start] on:"
-        <<"\n\tPort : "<<ntw::Config::port_server
-        //<<"\n\tclient port : "<<ntw::Config::port_client
+        <<"\n\tPort : "<<argv[SERVER_PORT]
         <<std::endl;
 
     std::signal(SIGINT, stop_server_handler);
@@ -45,7 +41,7 @@ int main(int argc,char* argv[])
     try
     {
         ntw::Socket::init(dispatch);
-        server = new ntw::srv::Server(max_client);
+        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),max_client);
         server->on_new_client = register_client;
         server->on_delete_client = unregister_client;
 

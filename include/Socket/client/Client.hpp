@@ -40,16 +40,17 @@ namespace ntw
                  * \param port the server port to connect to
                  * \return NTW_ERROR_NO if ok
                  */
-                int connect(const std::string& host,int port=Config::port_server);
+                int connect(const std::string& host,int port);
+
                 /**
                  * \brief stop the broadcast reciver
                  */
-                void stop();
+                //void stop();
 
                 /**
                  * \broadcast waite for the end of the broadcast reciver
                  */
-                void wait();
+                //void wait();
 
                 /**
                  * \brief Call a function on the server.
@@ -77,10 +78,10 @@ namespace ntw
                 SocketSerialized request_sock; ///< internal socket for communication
             private:
 
-                SocketSerialized new_broadcast_sock; ///< internal socket for broadcast listener
-                SocketSerialized broadcast_recv_sock; ///< internal Soket for broadcast reciver
-                SelectManager broadcast_recv; ///< manage the broadcast
-                static void onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock); ///< callback of the broadcast
+                //SocketSerialized new_broadcast_sock; ///< internal socket for broadcast listener
+                //SocketSerialized broadcast_recv_sock; ///< internal Soket for broadcast reciver
+                //SelectManager broadcast_recv; ///< manage the broadcast
+                //static void onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock); ///< callback of the broadcast
         };
     }
 }

@@ -14,10 +14,10 @@ namespace ntw
             Config& operator=(const Config&) = delete;
 
             static int max_connexion; ///< number of clients connected
-            static int port_server; ///< port of the Server
-            static int port_client; ///< port of the Client
+            //static int port_server; ///< port of the Server
+            //static int port_client; ///< port of the Client
             static double default_timeout; ///< default timeout for SelectManager
-            static bool broadcast; ///< broadcast server?
+            //static bool broadcast; ///< broadcast server?
 
     };
 }
