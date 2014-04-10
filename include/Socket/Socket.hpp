@@ -37,8 +37,6 @@
 #include <string>
 #include <exception>
 
-#include <Socket/Config.hpp>
-
 #include <iostream>
 
 
@@ -143,7 +141,7 @@ class Socket
          * \param max_connexion the number of client
          * \param host the host to use. default is INADDR_ANY
          */
-        void serverMode(int port,const int max_connexion=Config::max_connexion,std::string host="");
+        void serverMode(int port,const int max_connexion,std::string host="");
 
         /**
          * \brief Creat a new soket and call accept(Socket&) on it

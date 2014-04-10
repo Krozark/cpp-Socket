@@ -3,7 +3,6 @@
 
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/SelectManager.hpp>
-#include <Socket/Config.hpp>
 #include <string>
 
 namespace ntw

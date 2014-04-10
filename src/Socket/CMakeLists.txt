@@ -5,7 +5,6 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src/Socket)
 #ROOT files
 set(ROOT_SRC
     ${SRCROOT}/BalancingSelector.cpp
-    ${SRCROOT}/Config.cpp
     ${SRCROOT}/FuncWrapper.cpp
     ${SRCROOT}/SelectManager.cpp
     ${SRCROOT}/Serializer.cpp
@@ -14,7 +13,6 @@ set(ROOT_SRC
 )
 set(ROOT_HEADER
     ${INCROOT}/BalancingSelector.hpp
-    ${INCROOT}/Config.hpp
     ${INCROOT}/FuncWrapper.hpp
     ${INCROOT}/FuncWrapper.tpl
     ${INCROOT}/define.hpp

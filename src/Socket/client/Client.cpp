@@ -1,6 +1,5 @@
 #include <Socket/client/Client.hpp>
 #include <Socket/FuncWrapper.hpp>
-#include <Socket/Config.hpp>
 
 namespace ntw
 {

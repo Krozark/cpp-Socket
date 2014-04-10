@@ -8,7 +8,6 @@
 
 #include <Socket/define.hpp>
 #include <Socket/SocketSerialized.hpp>
-#include <Socket/Config.hpp>
 
 namespace ntw {
 
@@ -25,7 +24,7 @@ namespace ntw {
              * \brief Constructor
              * \param timeout the time for the select function
              */
-            explicit SelectManager(float timeout=Config::default_timeout);
+            explicit SelectManager(float timeout=5.f);
 
             /**
              * \brief Destructor
@@ -72,7 +71,7 @@ namespace ntw {
              * \param except call setExcept with except as param
              * \param timout_sec call setTimout with timout_sec as param
              */
-            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=Config::default_timeout);
+            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=5.f);
 
             /**
              * \brief Set the Read mode for selection
@@ -92,7 +91,7 @@ namespace ntw {
             /**
              * \brief Set the maximum time during 2 selection
              */
-            void setTimout(float timout_sec=Config::default_timeout);
+            void setTimout(float timout_sec=5.f);
 
             /**
              * \brief create a thread and lunch Run() a loop while(run); ie while Stop() is not called

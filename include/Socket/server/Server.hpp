@@ -21,12 +21,13 @@ namespace ntw
                 /**
                  * \brief constructor
                  * \param port the server port
+                 * \param host the host to use. set it empty for default INADDR_ANY
                  * \param dispatch the dispatch callback function
                  * \param max_client the number of max client
                  * \param min_client the minimal client number
                  * \param timeout the timeout for the select operation
                  */
-                Server(unsigned int port,int (*dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int min_client=1,float timeout=Config::default_timeout);
+                Server(unsigned int port,std::string host,int (*dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int min_client=1,float timeout=5.f);
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 

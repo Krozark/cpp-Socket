@@ -3,7 +3,6 @@
 
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/client/Client.hpp>
-#include <Socket/Config.hpp>
 
 #include <sstream>
 

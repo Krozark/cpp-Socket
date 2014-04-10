@@ -26,7 +26,7 @@ namespace ntw
              * \param nb_selector_max the maximun number of selectors
              * \param timeout the timeout select flag
              */
-            BalancingSelector(bool read, bool write, bool except,void (*onSelect)(SelectManager&,void*,SocketSerialized&),void* data,unsigned int min_per_selector=50,unsigned int max_per_selector=100,unsigned int nb_selector_max=0,float timeout=Config::default_timeout);
+            BalancingSelector(bool read, bool write, bool except,void (*onSelect)(SelectManager&,void*,SocketSerialized&),void* data,unsigned int min_per_selector=50,unsigned int max_per_selector=100,unsigned int nb_selector_max=0,float timeout=5.f);
 
             BalancingSelector(const BalancingSelector&) = delete;
             BalancingSelector& operator=(const BalancingSelector&) = delete;
@@ -92,7 +92,7 @@ namespace ntw
              * \param except call setExcept with except as param
              * \param timout_sec call setTimout with timout_sec as param
              */
-            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=Config::default_timeout);
+            void setArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=5.f);
 
             /**
              * \brief Set the maximum time during 2 selection
@@ -112,7 +112,7 @@ namespace ntw
             /**
              * \brief Set the maximum time during 2 selection
              */
-            void setTimout(float timeout_sec=Config::default_timeout);
+            void setTimout(float timeout_sec=5.f);
 
             /**
              * \brief if true, delete soket on destruction and when clear id call

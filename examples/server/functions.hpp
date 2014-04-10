@@ -1,7 +1,6 @@
 #ifndef FUNCTION_HPP
 #define FUNCTION_HPP
 
-#include <Socket/Config.hpp>
 #include <Socket/SocketSerialized.hpp>
 
 /**

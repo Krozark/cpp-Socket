@@ -1,5 +1,4 @@
 #include <Socket/server/Server.hpp>
-#include <Socket/Config.hpp>
 
 #include <csignal>
 #include <iostream>
@@ -27,8 +26,6 @@ int main(int argc,char* argv[])
         return 1;
     }
 
-    ntw::Config::max_connexion = 10;
-    ntw::Config::default_timeout = 5.f;
     const unsigned int max_client = 100;
 
 
@@ -41,7 +38,7 @@ int main(int argc,char* argv[])
     try
     {
         ntw::Socket::init();
-        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),dispatch,max_client);
+        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),"",dispatch,max_client);
         server->on_new_client = register_client;
         server->on_delete_client = unregister_client;
 

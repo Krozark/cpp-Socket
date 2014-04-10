@@ -1,7 +1,6 @@
 #include "defines.hpp"
 #include "functions.hpp"
 ///data base
-#include <Socket/Config.hpp>
 #include <Socket/client/Client.hpp>
 
 
@@ -16,8 +15,6 @@ int main(int argc,char* argv[])
         return 1;
     }
 
-    //// inti config
-    ntw::Config::default_timeout = 5.f;
 
     ntw::Socket::init();
     ntw::cli::Client client;
