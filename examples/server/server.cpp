@@ -38,7 +38,7 @@ int main(int argc,char* argv[])
     try
     {
         ntw::Socket::init();
-        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),"",dispatch,max_client);
+        server = new ntw::srv::Server(atoi(argv[SERVER_PORT]),"127.0.0.1",dispatch,max_client);
         server->on_new_client = register_client;
         server->on_delete_client = unregister_client;
 
