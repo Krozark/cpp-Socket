@@ -50,7 +50,8 @@ namespace ntw
                 SelectManager& selector = newSelector();
                 selector.add(s);
             }
-            return false;
+            else
+                return false;
         }
         return true;
     }
