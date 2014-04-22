@@ -80,6 +80,21 @@ class Serializer
         */
         Serializer& read(void* buffer,unsigned int size);
 
+
+        /**
+        * \todo save the serializer as a file
+        * \param filname the folder destination must exist
+        * \return true if no error
+        */
+        bool save(std::string filename);
+
+        /**
+        * \todo Load a serializer from file
+        * \param filname the file to use as source
+        * \return true if no error
+        */
+        bool load(std::string filename);
+
         /********* SERIALIZE *************/
         Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
 
