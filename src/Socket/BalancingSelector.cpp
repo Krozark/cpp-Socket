@@ -31,7 +31,7 @@ namespace ntw
 
         for(SelectManager& selector : selectors)
         {
-            unsigned int s = selectors.size();
+            unsigned int s = selector.size();
             if(s <min_charge)
             {
                 min_charge = s;
