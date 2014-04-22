@@ -82,18 +82,20 @@ class Serializer
 
 
         /**
-        * \todo save the serializer as a file
+        * \brief save the serializer as a file
+        * Note : do not clean the buffer.
         * \param filname the folder destination must exist
         * \return true if no error
         */
-        bool save(std::string filename);
+        bool save(const std::string& filename)const;
 
         /**
-        * \todo Load a serializer from file
+        * \brief Load a serializer from file
+        * Note : this append the file data to the internal buffer.
         * \param filname the file to use as source
         * \return true if no error
         */
-        bool load(std::string filename);
+        bool load(const std::string& filename);
 
         /********* SERIALIZE *************/
         Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
