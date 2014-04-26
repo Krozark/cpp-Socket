@@ -55,9 +55,13 @@ Serializer& Serializer::read(void* buffer,unsigned int size)
     return *this;
 }
 
-bool Serializer::save(const std::string& filename)const
+bool Serializer::save(const std::string& filename,bool append)const
 {
-    FILE* file = ::fopen(filename.c_str(),"wb");
+    FILE* file = nullptr;
+    if(append)
+        file = ::fopen(filename.c_str(),"ab");
+    else
+        file = ::fopen(filename.c_str(),"wb");
 
     if(file == NULL)
         return false;

@@ -85,9 +85,10 @@ class Serializer
         * \brief save the serializer as a file
         * Note : do not clean the buffer.
         * \param filname the folder destination must exist
+        * \bool append if true, the content is append to the local file
         * \return true if no error
         */
-        bool save(const std::string& filename)const;
+        bool save(const std::string& filename,bool append=false)const;
 
         /**
         * \brief Load a serializer from file
