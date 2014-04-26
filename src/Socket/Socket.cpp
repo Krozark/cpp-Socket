@@ -146,8 +146,8 @@ unsigned int Socket::getPort() const
 
 bool Socket::setBroadcast(bool enable)
 {
-    int tpm = enable;
-    return ::setsockopt(sock_cfg,SOL_SOCKET,SO_BROADCAST,&tmp,sizeof(tmp)) == 0;
+    int tmp = enable;
+    return ::setsockopt(sock,SOL_SOCKET,SO_BROADCAST,&tmp,sizeof(tmp)) == 0;
 }
 
 void Socket::init()
