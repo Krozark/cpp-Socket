@@ -144,6 +144,12 @@ unsigned int Socket::getPort() const
     return htons(sock_cfg.sin_port);
 }
 
+bool Socket::setBroadcast(bool enable)
+{
+    int tmp = enable;
+    return ::setsockopt(sock,SOL_SOCKET,SO_BROADCAST,&tmp,sizeof(tmp)) == 0;
+}
+
 void Socket::init()
 {
     #if __WIN32

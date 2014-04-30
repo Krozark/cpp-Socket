@@ -23,11 +23,11 @@ namespace ntw
                  * \param port the server port
                  * \param host the host to use. set it empty for default INADDR_ANY
                  * \param dispatch the dispatch callback function
-                 * \param max_client the number of max client
-                 * \param min_client the minimal client number
+                 * \param max_client the number of max client per thread
+                 * \param max_threads the number of threads, 0 is infinite
                  * \param timeout the timeout for the select operation
                  */
-                Server(unsigned int port,std::string host,int (*dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int min_client=1,float timeout=5.f);
+                Server(unsigned int port,std::string host,int (*dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int max_threads=0,float timeout=5.f);
                 Server(const Server&) = delete;
                 Server& operator=(const Server&) = delete;
 

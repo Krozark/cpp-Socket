@@ -258,6 +258,11 @@ class Socket
         unsigned int getPort() const;
 
         /**
+        * \brief send 
+        */
+        bool setBroadcast(bool enable=true);
+
+        /**
         * \brief initialise the context
         */
         static void init();

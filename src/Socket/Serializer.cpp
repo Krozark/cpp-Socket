@@ -1,4 +1,6 @@
 #include <Socket/Serializer.hpp>
+#include <cstdio>
+#include <sys/stat.h>
 
 namespace ntw {
 
@@ -51,6 +53,61 @@ Serializer& Serializer::read(void* buffer,unsigned int size)
         _cursor_begin += size;
     }
     return *this;
+}
+
+bool Serializer::save(const std::string& filename,bool append)const
+{
+    FILE* file = nullptr;
+    if(append)
+        file = ::fopen(filename.c_str(),"ab");
+    else
+        file = ::fopen(filename.c_str(),"wb");
+
+    if(file == NULL)
+        return false;
+    unsigned int begin = _cursor_begin;
+
+    while(begin + BUFSIZ < _cursor_end)
+    {
+        ::fwrite(_buffer+begin,BUFSIZ,1,file);
+        begin+=BUFSIZ;
+    }
+
+    int size = _cursor_end - begin;
+    if(size>0)
+    {
+        ::fwrite(_buffer+begin,size,1,file);
+    }
+
+    ::fclose(file);
+    return true;
+}
+
+bool Serializer::load(const std::string& filename)
+{
+    FILE* file = ::fopen(filename.c_str(),"rb");
+
+    if(file == NULL)
+        return false;
+
+    struct stat st;
+    if(stat(filename.c_str(), &st) != 0)
+        return false;
+
+    int size = st.st_size;
+
+    while(_buffer_size < _cursor_end + size)
+        this->resize(_buffer_size*2);
+
+    if(::fread(_buffer+_cursor_end,size,1,file) !=0)
+    {
+        _cursor_end+=size;
+    }
+    else
+        return 0;
+
+    ::fclose(file);
+    return true;
 }
 
 /********* SERIALIZE *************/
