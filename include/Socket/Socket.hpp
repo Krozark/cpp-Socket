@@ -273,6 +273,10 @@ class Socket
         */
         static void close();
 
+        inline void _close(){
+            if(sock != INVALID_SOCKET)
+                closesocket(sock);
+        };
 
     protected:
         friend class SocketSerialized;
@@ -280,7 +284,6 @@ class Socket
         /**
          * \brief close the socket proprely
          */
-        inline void _close(){if(sock != INVALID_SOCKET)closesocket(sock);};
         SOCKET sock; ///< C socket type
         SOCKADDR_IN sock_cfg; ///< configuration struct
         const bool need_connect;

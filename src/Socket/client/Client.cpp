@@ -81,6 +81,11 @@ namespace ntw
             return NTW_ERROR_NO;
         }
 
+        void Client::disconnect()
+        {
+            request_sock.close();
+        }
+
         /*void Client::stop()
         {
 
