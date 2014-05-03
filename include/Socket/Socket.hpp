@@ -258,9 +258,14 @@ class Socket
         unsigned int getPort() const;
 
         /**
-        * \brief send 
+        * \brief set sock option for broadcast
         */
         bool setBroadcast(bool enable=true);
+
+        /**
+        * \brief set sock option for reuse
+        */
+        bool setReusable(bool enable=true);
 
         /**
         * \brief initialise the context

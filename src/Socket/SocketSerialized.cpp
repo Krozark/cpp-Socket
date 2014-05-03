@@ -207,9 +207,9 @@ int SocketSerialized::send(const Socket& dest)
     return res;
 }
 
-int SocketSerialized::init_receive(uint32_t* size)
+int SocketSerialized::init_receive(uint32_t* size,int flags)
 {
-    int res = Socket::receive(_buffer,HEADER_SIZE);
+    int res = Socket::receive(_buffer,HEADER_SIZE,flags);
     if (res > 0)
     {
         {
@@ -264,19 +264,36 @@ int SocketSerialized::receive()
 {
     //recuperer la taille dans les 6 premier oct
     uint32_t size = 0;
-    int res = init_receive(&size);
-    if(res > 0 and size>0)
+    int res;
+    if(need_connect)
     {
-        int recv_left = size;
-        int recv = 0;
-        while(recv_left > 0)
+        res = init_receive(&size);
+
+        if(res > 0 and size>0)
         {
-            recv = Socket::receive(_buffer+res,recv_left);
-            if(recv<=0)
+            int recv_left = size;
+            int recv = 0;
+            while(recv_left > 0)
+            {
+                recv = Socket::receive(_buffer+res,recv_left);
+                if(recv<=0)
+                    //TODO ERROR
+                    break;
+                res+=recv;
+                recv_left -=recv;
+            }
+        }
+    }
+    else
+    {
+        res = init_receive(&size,MSG_PEEK);
+        if(res > 0 and size>0)
+        {
+            char buffer[HEADER_SIZE + size];
+            res = Socket::receive(buffer,HEADER_SIZE + size);
+            //if(res <= 0)
                 //TODO ERROR
-                break;
-            res+=recv;
-            recv_left -=recv;
+            ::memcpy(_buffer+_cursor_begin,buffer+HEADER_SIZE,size);
         }
     }
     return res;
@@ -286,19 +303,36 @@ int SocketSerialized::receive(Socket& other)
 {
     //recuperer la taille dans les 6 premier oct
     uint32_t size = 0;
-    int res = init_receive(&size);
-    if(res > 0 and size>0)
+    int res;
+    if(need_connect)
     {
-        int recv_left = size;
-        int recv = 0;
-        while(recv_left > 0)
+        res = init_receive(&size);
+
+        if(res > 0 and size>0)
         {
-            recv = Socket::receive(_buffer+res,recv_left,0,other);
-            if(recv<=0)
+            int recv_left = size;
+            int recv = 0;
+            while(recv_left > 0)
+            {
+                recv = Socket::receive(_buffer+res,recv_left,0,other);
+                if(recv<=0)
+                    //TODO ERROR
+                    break;
+                res+=recv;
+                recv_left -=recv;
+            }
+        }
+    }
+    else
+    {
+        res = init_receive(&size,MSG_PEEK);
+        if(res > 0 and size>0)
+        {
+            char buffer[HEADER_SIZE + size];
+            res = Socket::receive(buffer,HEADER_SIZE + size,0,other);
+            //if(res <= 0)
                 //TODO ERROR
-                break;
-            res+=recv;
-            recv_left -=recv;
+            ::memcpy(_buffer+_cursor_begin,buffer+HEADER_SIZE,size);
         }
     }
     return res;

@@ -99,7 +99,7 @@ class SocketSerialized : public Serializer, public Socket
          * \brief init the size, status and buffer resize
          * \return -1 if error, else the msg size
          */
-        int init_receive(uint32_t* size);
+        int init_receive(uint32_t* size,int flags=0);
 
 };
 
