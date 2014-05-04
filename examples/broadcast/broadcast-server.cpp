@@ -4,15 +4,19 @@
 
 int main(int argc, char* argv[])
 {
+    int port = 5001;
+
     ntw::SocketSerialized sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::UDP,IPPROTO_UDP);
-    sock.connect(5001);
+    sock.connect(port);
     sock.setReusable(true);
     sock.bind();
 
     while(true)
     {
-        int nbBytes = sock.receive();
-        std::cout<<"recv msg of size "<<sock.size()<<"/"<<nbBytes<<std::endl;
+        ntw::SocketSerialized from(ntw::Socket::Dommaine::IP,ntw::Socket::Type::UDP);
+        from.connect(port);
+        int nbBytes = sock.receive(from);
+        std::cout<<"recv msg of size "<<sock.size()<<"/"<<nbBytes<<"From ip: "<<from.getIp()<<std::endl;
         std::cout<<sock<<std::endl;
     }
 
