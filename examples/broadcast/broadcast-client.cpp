@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
         std::cout<<"Usage is:\n"<<argv[0]<<" <msg>"<<std::endl;
     ntw::SocketSerialized sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::UDP,IPPROTO_UDP);
 
-    sock.connect("255.255.255.255",port);
+    sock.connect("127.255.255.255",port);
     sock.setBroadcast(true);
 
     sock<<argv[1];
