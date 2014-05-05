@@ -240,7 +240,7 @@ Serializer& Serializer::operator>>(std::string& str)
 {
     unsigned int size = _cursor_begin;
     for(;size<_cursor_end && _buffer[size] != '\0';++size){}
-    size -= _cursor_begin-1;
+    size -= _cursor_begin;//-1 for \0
 
     str = std::string((char *)(_buffer+_cursor_begin),size);
 
