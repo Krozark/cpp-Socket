@@ -41,6 +41,11 @@ namespace ntw
                  */
                 int connect(const std::string& host,int port);
 
+                /***
+                 * \brief close all open socket
+                 */
+                void disconnect();
+
                 /**
                  * \brief stop the broadcast reciver
                  */
