@@ -28,51 +28,30 @@ namespace ntw
     {
         addPackage(id,sock,args ...);
         sock.sendCl();
-        return FuncWrapper::cli::send_helper<Ret>()(sock);
+        return send_f<Ret>(sock);
     }
 
-    template<>
-    struct FuncWrapper::cli::send_helper<void>
-    {
-    
-        void operator()(SocketSerialized& sock) const
-        {
-            if (sock.receive() > 0)
-            {
-                if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
-                {
-                }
-                else
-                {
-                    std::cerr<<"Recive Status different \"ok\""<<std::endl;
-                }
-            }
-            return;
-        }
-    };
+    template <>
+    void FuncWrapper::cli::send_f<void>(SocketSerialized& sock);
 
     template<typename Ret>
-    struct FuncWrapper::cli::send_helper
+    Ret FuncWrapper::cli::send_f(SocketSerialized& sock)
     {
-        Ret operator()(SocketSerialized& sock) const
+        Ret ret;
+        if (sock.receive() > 0)
         {
-            Ret ret;
-            if (sock.receive() > 0)
+            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
             {
-                if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
-                {
-                    sock>>ret;
-                }
-                else
-                {
-                    std::cerr<<"Recive Status different \"ok\""<<std::endl;
-                }
+                sock>>ret;
             }
-            return ret;
+            else
+            {
+                std::cerr<<"Recive Status different \"ok\""<<std::endl;
+            }
         }
-    };
+        return ret;
+    }
 
-    
 // ------------- UTILITY---------------
     template<int...> struct index_tuple{};
 

@@ -142,7 +142,8 @@ namespace ntw
                     cli() = delete;
                     cli& operator=(const cli&) = delete;
 
-                    template<typename Ret> struct send_helper;
+                    template <typename Ret>
+                    static Ret send_f(SocketSerialized& sock);
 
             };
     };

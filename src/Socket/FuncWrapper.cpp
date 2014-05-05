@@ -58,4 +58,20 @@ namespace ntw
         return code;
     }
 
+    template<>
+    void FuncWrapper::cli::send_f<void>(SocketSerialized& sock)
+    {
+        if (sock.receive() > 0)
+        {
+            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+            {
+            }
+            else
+            {
+                std::cerr<<"Recive Status different \"ok\""<<std::endl;
+            }
+        }
+        return;
+    }
+
 }
