@@ -17,7 +17,7 @@ namespace ntw
         Ret Client::call(int id,Args&& ... args)
         {
             request_sock.setStatus(ntw::FuncWrapper::Status::st::ok);
-            ntw::FuncWrapper::cli::send(request_sock,id,std::forward<Args>(args)...);
+            return ntw::FuncWrapper::cli::send<Ret,Args...>(request_sock,id,std::forward<Args>(args)...);
         }
     }
 }

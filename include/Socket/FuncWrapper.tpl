@@ -22,46 +22,57 @@ namespace ntw
         addPackage(sock,args...);
     }
 
-    template<typename ... Args>
-    void FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
-    {
-        addPackage(id,sock,args ...);
-        sock.sendCl();
-        if (sock.receive() > 0)
-        {
-            /*if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
-            {
-            }
-            else*/
-            {
-                std::cerr<<"[Send] Recive Status: "<<sock.getStatus()<<std::endl;
-            }
-        }
-        return;
-    }
 
     template<typename Ret,typename ... Args>
     Ret FuncWrapper::cli::send(SocketSerialized& sock,int id,Args&& ... args)
     {
-        Ret ret;
         addPackage(id,sock,args ...);
         sock.sendCl();
-        if (sock.receive() > 0)
-        {
-            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
-            {
-                sock>>ret;
-            }
-            else
-            {
-                std::cerr<<"Recive Status different \"ok\""<<std::endl;
-            }
-        }
-        return ret;
+        return FuncWrapper::cli::send_helper<Ret>()(sock);
     }
 
+    template<>
+    struct FuncWrapper::cli::send_helper<void>
+    {
+    
+        void operator()(SocketSerialized& sock) const
+        {
+            if (sock.receive() > 0)
+            {
+                if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+                {
+                }
+                else
+                {
+                    std::cerr<<"Recive Status different \"ok\""<<std::endl;
+                }
+            }
+            return;
+        }
+    };
 
+    template<typename Ret>
+    struct FuncWrapper::cli::send_helper
+    {
+        Ret operator()(SocketSerialized& sock) const
+        {
+            Ret ret;
+            if (sock.receive() > 0)
+            {
+                if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+                {
+                    sock>>ret;
+                }
+                else
+                {
+                    std::cerr<<"Recive Status different \"ok\""<<std::endl;
+                }
+            }
+            return ret;
+        }
+    };
 
+    
 // ------------- UTILITY---------------
     template<int...> struct index_tuple{};
 

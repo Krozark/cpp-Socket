@@ -129,15 +129,6 @@ namespace ntw
                     template<typename Ret,typename ... Args>
                     static Ret send(SocketSerialized& sock,int id,Args&& ... args);
 
-                    /**
-                     * \brief call the function of id id on the server with param ... args
-                     * \param sock the socket to use
-                     * \param id the id function to call on the server
-                     * \param args the args of the function to call
-                     * \return Verify the status value before use it.
-                     */
-                    template<typename ... Args>
-                    static void send(SocketSerialized& sock,int id,Args&& ... args);
 
                     /**
                      * \brief receive data from sock and check if
@@ -150,6 +141,9 @@ namespace ntw
                 private:
                     cli() = delete;
                     cli& operator=(const cli&) = delete;
+
+                    template<typename Ret> struct send_helper;
+
             };
     };
 };
