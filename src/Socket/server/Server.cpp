@@ -121,7 +121,7 @@ namespace srv
         if(rm)
         {
             std::cerr<<"[SERVER] onRequest connexion lost <id:"<<sock.id()<<">"<<std::endl;
-            Client* client = ((ntw::srv::Client*)((long int)(&sock) - (long int)(&((ntw::srv::Client*)NULL)->request_sock)));
+            Client* client = ((ntw::srv::Client*)((long long int)(&sock) - (long long int)(&((ntw::srv::Client*)NULL)->request_sock)));
 
             self.remove (client);
         }

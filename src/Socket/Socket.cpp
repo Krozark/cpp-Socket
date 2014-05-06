@@ -147,13 +147,13 @@ unsigned int Socket::getPort() const
 bool Socket::setBroadcast(bool enable)
 {
     int tmp = enable;
-    return ::setsockopt(sock,SOL_SOCKET,SO_BROADCAST,&tmp,sizeof(tmp)) == 0;
+    return ::setsockopt(sock,SOL_SOCKET,SO_BROADCAST,(const char*)&tmp,sizeof(tmp)) == 0;
 }
 
 bool Socket::setReusable(bool enable)
 {
     int tmp = enable;
-    return ::setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&tmp,sizeof(int)) == 0;
+    return ::setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,(const char*)&tmp,sizeof(int)) == 0;
 }
 
 void Socket::init()
