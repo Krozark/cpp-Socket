@@ -81,18 +81,18 @@ INSTALL(TARGETS socket
 )
 
 #static lib
-#if(UNIX)
-add_library(socket-static STATIC ${FILES_HEADER} ${FILES_SRC})
-SET_TARGET_PROPERTIES(socket-static
-	PROPERTIES
-	VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-	SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
-)
-target_link_libraries(socket-static ${LIBS})
-INSTALL(TARGETS socket-static
-	DESTINATION lib
-)
-#endif()
+if(UNIX)
+	add_library(socket-static STATIC ${FILES_HEADER} ${FILES_SRC})
+	SET_TARGET_PROPERTIES(socket-static
+		PROPERTIES
+		VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+		SOVERSION ${VERSION_MAJOR}.${VERSION_MINOR}
+	)
+	target_link_libraries(socket-static ${LIBS})
+	INSTALL(TARGETS socket-static
+		DESTINATION lib
+	)
+endif()
 
 #header
 #INSTALL(FILES ${INCROOT}

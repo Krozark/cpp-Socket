@@ -39,7 +39,7 @@ if(UNIX)
 elseif(WIN32)
 	find_library(PTHREAD_LIBS "winpthread-1")
 	find_library(SOCKET_LIBS ws2_32)
-	#find_library(PTHREAD_LIBS setupapi)
+	#find_library(SETUP_LIBS setupapi)
 	set(LIBS ${PTHREAD_LIBS} ${SOCKET_LIBS})
 endif()
 
