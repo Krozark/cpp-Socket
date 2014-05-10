@@ -68,7 +68,7 @@ namespace ntw
             }
             else
             {
-                std::cerr<<"Recive Status different \"ok\""<<std::endl;
+                std::cerr<<"Recive Status different of \"ntw::FuncWrapper::Status::st::ok\""<<std::endl;
             }
         }
         return;

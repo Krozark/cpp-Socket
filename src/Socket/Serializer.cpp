@@ -244,7 +244,7 @@ Serializer& Serializer::operator>>(std::string& str)
 
     str = std::string((char *)(_buffer+_cursor_begin),size);
 
-    _cursor_begin += size;
+    _cursor_begin += size +1;
 
     return *this;
 };
