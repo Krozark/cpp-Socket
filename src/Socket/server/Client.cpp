@@ -5,8 +5,8 @@ namespace ntw
 {
     namespace srv
     {
-        Client::Client() : request_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP),
-            broadcast_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP)
+        Client::Client() : request_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP)
+            //broadcast_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP)
         {
         }
 

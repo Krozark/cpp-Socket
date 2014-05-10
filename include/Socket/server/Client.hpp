@@ -37,7 +37,7 @@ namespace ntw
                 friend class Server;
 
                 SocketSerialized request_sock; ///< the request to communicate
-                SocketSerialized broadcast_sock; ///< the request to send broadcast data
+                //SocketSerialized broadcast_sock; ///< the request to send broadcast data
         };
     }
 }
