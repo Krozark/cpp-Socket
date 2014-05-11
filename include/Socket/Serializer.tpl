@@ -62,6 +62,43 @@ namespace ntw
         return *this;
     }
 
+    template <> struct Serializer::Size<char> {
+        enum {value = 1};
+    };
+    template <> struct Serializer::Size<uint8_t> {
+        enum {value = 1};
+    };
+
+    template <> struct Serializer::Size<short int>{
+        enum {value = 2};
+    };
+    template <> struct Serializer::Size<uint16_t> {
+        enum {value = 2};
+    };
+
+    template <> struct Serializer::Size<int>{
+        enum {value = 4};
+    };
+    template <> struct Serializer::Size<unsigned int>{
+        enum {value = 4};
+    };
+    template <> struct Serializer::Size<float>{
+        enum {value = 4};
+    };
+    /*template <> struct Serializer::Size<uint32_t>{
+        enum {value = 4};
+    };*/
+
+    template <> struct Serializer::Size<double>{
+        enum {value = 8};
+    };
+    template <> struct Serializer::Size<long int>{
+        enum {value = 8};
+    };
+    template <> struct Serializer::Size<uint64_t>{
+        enum {value = 8};
+    };
+
 
     //////////// utility //////////////////
     void Serializer::resize(const unsigned int buffer_cursor_end)

@@ -147,6 +147,17 @@ class Serializer
         //debug
         friend std::ostream& operator<<(std::ostream& output,const Serializer& self); ///<print each byt by his int value between <>
 
+        //\todo TODO add  some  T hton<T>(T& value) and T ntoh<T>(T& value) functions;
+
+        /**
+         * \brief a template stuct with a ::value attr.
+         * This struct hold the internal size of a type in the buffer.
+         * You can use it if you need to use read() and write() function to know the size.
+         * You can use it with primitive type only
+         * (char,short int,int, unsigned int,float,double, long int)
+         */
+        template <typename T> struct Size;
+
 
     protected:
 
