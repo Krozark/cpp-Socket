@@ -99,6 +99,39 @@ namespace ntw
         enum {value = 8};
     };
 
+    template <typename T>
+    void Serializer::convert(const T& value,char* buffer)
+    {
+        const char *d = reinterpret_cast<const char*>(&value);
+        int cursor = 0;
+
+        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        for(int i = 0; i< Serializer::Size<T>::value; ++i)
+            buffer[cursor++] = d[i];
+        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        for(int i = Serializer::Size<T>::value -1; i>=0; --i)
+            buffer[cursor++] = d[i];
+        #else
+        #error "byte orden not suported (PDP endian)"
+        #endif
+    }
+
+    template <typename T>
+    void Serializer::convert(const char* buffer,T& res)
+    {
+        char *d = reinterpret_cast<char*>(&res);
+        int cursor = 0;
+
+        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        for(int i = 0; i<Serializer::Size<T>::value; ++i)
+            d[i]= buffer[cursor++];
+        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        for(int i =Serializer::Size<T>::value-1;i>=0;--i)
+            d[i]= buffer[cursor++];
+        #else
+        #error "byte orden not suported (PDP endian)"
+        #endif
+    }
 
     //////////// utility //////////////////
     void Serializer::resize(const unsigned int buffer_cursor_end)
@@ -111,155 +144,38 @@ namespace ntw
         _buffer_size = buffer_cursor_end;
     }
 
-    void Serializer::push(const uint8_t& a)
+    template <typename T>
+    void Serializer::push(const T& a)
     {
-        while(_buffer_size < _cursor_end + 1)
+        while(_buffer_size < _cursor_end + Serializer::Size<T>::value)
             resize(_buffer_size*2);
 
-        _buffer[_cursor_end++] = a;
-    }
-
-    void Serializer::push(const uint16_t& a)
-    {
-        while(_buffer_size < _cursor_end + 2)
-            resize(_buffer_size*2);
-
-        const uint8_t *d = (const uint8_t *)&a;
+        const char *d = reinterpret_cast<const char*>(&a);
 
         #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        _buffer[_cursor_end++] = d[0];
-        _buffer[_cursor_end++] = d[1];
+        for(int i = 0; i< Serializer::Size<T>::value; ++i)
+            _buffer[_cursor_end++] = d[i];
         #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        _buffer[_cursor_end++] = d[1];
-        _buffer[_cursor_end++] = d[0];
+        for(int i = Serializer::Size<T>::value -1; i>=0; --i)
+            _buffer[_cursor_end++] = d[i];
         #else
         #error "byte orden not suported (PDP endian)"
         #endif
 
     }
 
-    void Serializer::push(const uint32_t& a)
+    template <typename T>
+    void Serializer::pop(T& a)
     {
-        while(_buffer_size < _cursor_end + 4)
-            resize(_buffer_size*2);
-
-        const uint8_t *d = (const uint8_t *)&a;
-
-        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        _buffer[_cursor_end++] = d[0];
-        _buffer[_cursor_end++] = d[1];
-        _buffer[_cursor_end++] = d[2];
-        _buffer[_cursor_end++] = d[3];
-        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        _buffer[_cursor_end++] = d[3];
-        _buffer[_cursor_end++] = d[2];
-        _buffer[_cursor_end++] = d[1];
-        _buffer[_cursor_end++] = d[0];
-        #else
-        #error "byte orden not suported (PDP endian)"
-        #endif
-
-    }
-
-    void Serializer::push(const uint64_t& a)
-    {
-        while(_buffer_size < _cursor_end + 8)
-            resize(_buffer_size*2);
-
-        const uint8_t *d = (const uint8_t *)&a;
-
-        #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        _buffer[_cursor_end++] = d[0];
-        _buffer[_cursor_end++] = d[1];
-        _buffer[_cursor_end++] = d[2];
-        _buffer[_cursor_end++] = d[3];
-        _buffer[_cursor_end++] = d[4];
-        _buffer[_cursor_end++] = d[5];
-        _buffer[_cursor_end++] = d[6];
-        _buffer[_cursor_end++] = d[7];
-        #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        _buffer[_cursor_end++] = d[7];
-        _buffer[_cursor_end++] = d[6];
-        _buffer[_cursor_end++] = d[5];
-        _buffer[_cursor_end++] = d[4];
-        _buffer[_cursor_end++] = d[3];
-        _buffer[_cursor_end++] = d[2];
-        _buffer[_cursor_end++] = d[1];
-        _buffer[_cursor_end++] = d[0];
-        #else
-        #error "byte orden not suported (PDP endian)"
-        #endif
-    }
-
-    void Serializer::pop(uint8_t& a)
-    {
-        if(_cursor_begin +1 <= _cursor_end )
+        if(_cursor_begin +Serializer::Size<T>::value <= _cursor_end)
         {
-            a= _buffer[_cursor_begin++];
-        }
-    }
-
-    void Serializer::pop(uint16_t& a)
-    {
-        if(_cursor_begin +2 <= _cursor_end)
-        {
-            uint8_t *d = (uint8_t *)&a;
+            char *d = reinterpret_cast<char*>(&a);
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-            d[0]= _buffer[_cursor_begin++];
-            d[1]= _buffer[_cursor_begin++];
+            for(int i = 0; i<Serializer::Size<T>::value; ++i)
+                d[i]= _buffer[_cursor_begin++];
             #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            d[1]= _buffer[_cursor_begin++];
-            d[0]= _buffer[_cursor_begin++];
-            #else
-            #error "byte orden not suported (PDP endian)"
-            #endif
-        }
-    }
-
-    void Serializer::pop(uint32_t& a)
-    {
-        if(_cursor_begin +4 <= _cursor_end)
-        {
-            uint8_t *d = (uint8_t *)&a;
-            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-            d[0]= _buffer[_cursor_begin++];
-            d[1]= _buffer[_cursor_begin++];
-            d[2]= _buffer[_cursor_begin++];
-            d[3]= _buffer[_cursor_begin++];
-            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            d[3]= _buffer[_cursor_begin++];
-            d[2]= _buffer[_cursor_begin++];
-            d[1]= _buffer[_cursor_begin++];
-            d[0]= _buffer[_cursor_begin++];
-            #else
-            #error "byte orden not suported (PDP endian)"
-            #endif
-        }
-    }
-
-    void Serializer::pop(uint64_t& a)
-    {
-        if(_cursor_begin +8 <= _cursor_end)
-        {
-            uint8_t *d = (uint8_t *)&a;
-            #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-            d[0]= _buffer[_cursor_begin++];
-            d[1]= _buffer[_cursor_begin++];
-            d[2]= _buffer[_cursor_begin++];
-            d[3]= _buffer[_cursor_begin++];
-            d[4]= _buffer[_cursor_begin++];
-            d[5]= _buffer[_cursor_begin++];
-            d[6]= _buffer[_cursor_begin++];
-            d[7]= _buffer[_cursor_begin++];
-            #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            d[7]= _buffer[_cursor_begin++];
-            d[6]= _buffer[_cursor_begin++];
-            d[5]= _buffer[_cursor_begin++];
-            d[4]= _buffer[_cursor_begin++];
-            d[3]= _buffer[_cursor_begin++];
-            d[2]= _buffer[_cursor_begin++];
-            d[1]= _buffer[_cursor_begin++];
-            d[0]= _buffer[_cursor_begin++];
+            for(int i =Serializer::Size<T>::value-1;i>=0;--i)
+                d[i]= _buffer[_cursor_begin++];
             #else
             #error "byte orden not suported (PDP endian)"
             #endif

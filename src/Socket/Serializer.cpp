@@ -114,42 +114,42 @@ bool Serializer::load(const std::string& filename)
 //1 oct | 8 bit
 Serializer& Serializer::operator<<(const char c)
 {
-    push(*reinterpret_cast<const uint8_t*>(&c));
+    push(c);
     return *this;
 };
 //2 oct | 16 bit
 Serializer& Serializer::operator<<(const short int s)
 {
-    push(*reinterpret_cast<const uint16_t*>(&s));
+    push(s);
     return *this;
 };
 //4 oct | 32 bit
 Serializer& Serializer::operator<<(const int i)
 {
-    push(*reinterpret_cast<const uint32_t*>(&i));
+    push(i);
     return *this;
 };
 
 Serializer& Serializer::operator<<(const unsigned int i)
 {
-    push(*reinterpret_cast<const uint32_t*>(&i));
+    push(i);
     return *this;
 };
 
 Serializer& Serializer::operator<<(const float f)
 {
-    push(*reinterpret_cast<const uint32_t*>(&f));
+    push(f);
     return *this;
 };
 //8 oct | 64 bit
 Serializer& Serializer::operator<<(const double d)
 {
-    push(*reinterpret_cast<const uint64_t*>(&d));
+    push(d);
     return *this;
 };
 Serializer& Serializer::operator<<(const long int l)
 {
-    push(*reinterpret_cast<const uint64_t*>(&l));
+    push(l);
     return *this;
 };
 //1 oct | 8 bit []
@@ -177,42 +177,42 @@ Serializer& Serializer::operator<<(const std::string& str)
 //1 oct | 8 bit
 Serializer& Serializer::operator>>(char& c)
 {
-    pop(*reinterpret_cast<uint8_t*>(&c));
+    pop(c);
     return *this;
 }
 //2 oct | 16 bit
-Serializer& Serializer::operator>>(short int s)
+Serializer& Serializer::operator>>(short int& s)
 {
-    pop(*reinterpret_cast<uint16_t*>(&s));
+    pop(s);
     return *this;
 };
 //4 oct | 32 bit
 Serializer& Serializer::operator>>(int& i)
 {
-    pop(*reinterpret_cast<uint32_t*>(&i));
+    pop(i);
     return *this;
 };
 
 Serializer& Serializer::operator>>(unsigned int& i)
 {
-    pop(*reinterpret_cast<uint32_t*>(&i));
+    pop(i);
     return *this;
 };
 
 Serializer& Serializer::operator>>(float& f)
 {
-    pop(*reinterpret_cast<uint32_t*>(&f));
+    pop(f);
     return *this;
 };
 //8 oct | 64 bit
 Serializer& Serializer::operator>>(double& d)
 {
-    pop(*reinterpret_cast<uint64_t*>(&d));
+    pop(d);
     return *this;
 };
 Serializer& Serializer::operator>>(long int& l)
 {
-    pop(*reinterpret_cast<uint64_t*>(&l));
+    pop(l);
     return *this;
 };
 //1 oct | 8 bit []

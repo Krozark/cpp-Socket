@@ -26,7 +26,7 @@ int main(int argc,char* argv[])
 
     auto f_unser = [&](){
         std::cout<<"=== unserialize ==="<<std::endl;
-
+        
         i= 0;
         str="";
         for(int i=0;i<255;++i)
@@ -51,5 +51,27 @@ int main(int argc,char* argv[])
         std::cout<<stream<<std::endl;
     }
     f_unser();
+
+    {
+        std::cout<<"=== Serializer::convert ==="<<std::endl;
+        const int bufsize = 512;
+        char buffer[bufsize] = {0};
+
+        long int i = 1234567890123450;;
+        ntw::Serializer::convert(i,buffer);
+
+        std::cout<<i<< ": ";
+        for(int i =0; i<bufsize;++i)
+            std::cout<<"<"<<buffer[i]<<">";
+        std::cout<<std::endl;
+
+        i = 0;
+        ntw::Serializer::convert(buffer,i);
+
+        std::cout<<i<< ": ";
+        for(int i =0; i<bufsize;++i)
+            std::cout<<"<"<<buffer[i]<<">";
+        std::cout<<std::endl;
+    }
 
 }

@@ -127,7 +127,7 @@ class Serializer
         /********** UNSERIALIZE ***********/
         Serializer& operator>>(char& c); ///< Oveload operator to extract datas. 1 oct | 8 bit
 
-        Serializer& operator>>(short int s); ///< Oveload operator to extract datas. 2 oct | 16 bit
+        Serializer& operator>>(short int& s); ///< Oveload operator to extract datas. 2 oct | 16 bit
 
         Serializer& operator>>(int& i); ///< Oveload operator to extract datas. 4 oct | 32 bit
         Serializer& operator>>(unsigned int& i); ///< Oveload operator to extract datas. 4 oct | 32 bit
@@ -147,8 +147,6 @@ class Serializer
         //debug
         friend std::ostream& operator<<(std::ostream& output,const Serializer& self); ///<print each byt by his int value between <>
 
-        //\todo TODO add  some  T hton<T>(T& value) and T ntoh<T>(T& value) functions;
-
         /**
          * \brief a template stuct with a ::value attr.
          * This struct hold the internal size of a type in the buffer.
@@ -157,6 +155,20 @@ class Serializer
          * (char,short int,int, unsigned int,float,double, long int)
          */
         template <typename T> struct Size;
+
+        /**
+         * \brief Convert T into BIG ENDIAN, and store the result into the buffer.
+         * the buffer need to have a minimal size of Serializer::Size<T>::value.
+         */
+        template <typename T>
+        static void convert(const T& value,char* buffer);
+
+        /**
+         * \brief Convert value in buffer from BIG ENDIAN, and store the result into the result.
+         * the buffer need to have a minimal size of Serializer::Size<T>::value.
+         */
+        template <typename T>
+        static void convert(const char* buffer,T& res);
 
 
     protected:
@@ -179,28 +191,8 @@ class Serializer
          * and convert it in big endian
          * \param a data to add
          */
-        inline void push(const uint8_t& a);
-
-        /**
-         * \brief Helper function to add datas
-         * and convert it in big endian
-         * \param a data to add
-         */
-        inline void push(const uint16_t& a);
-
-        /**
-         * \brief Helper function to add datas
-         * and convert it in big endian
-         * \param a data to add
-         */
-        inline void push(const uint32_t& a);
-
-        /**
-         * \brief Helper function to add datas
-         * and convert it in big endian
-         * \param a data to add
-         */
-        inline void push(const uint64_t& a);
+        template <typename T>
+        inline void push(const T& a);
 
         /***************** GET DATAs ****************/
         /**
@@ -208,28 +200,8 @@ class Serializer
          * and convert it from big endian to local encoding
          * \param a data to get
          */
-        inline void pop(uint8_t& a);
-
-        /**
-         * \brief Helper function to get datas
-         * and convert it from big endian to local encoding
-         * \param a data to get
-         */
-        inline void pop(uint16_t& a);
-
-        /**
-         * \brief Helper function to get datas
-         * and convert it from big endian to local encoding
-         * \param a data to get
-         */
-        inline void pop(uint32_t& a);
-
-        /**
-         * \brief Helper function to get datas
-         * and convert it from big endian to local encoding
-         * \param a data to get
-         */
-        inline void pop(uint64_t& a);
+        template <typename T>
+        inline void pop(T& a);
 };
 };
 
