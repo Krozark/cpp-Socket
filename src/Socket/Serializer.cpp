@@ -112,6 +112,11 @@ bool Serializer::load(const std::string& filename)
 
 /********* SERIALIZE *************/
 //1 oct | 8 bit
+Serializer& Serializer::operator<<(const bool c)
+{
+    push(c);
+    return *this;
+};
 Serializer& Serializer::operator<<(const char c)
 {
     push(c);
@@ -175,6 +180,12 @@ Serializer& Serializer::operator<<(const std::string& str)
 
 /********** UNSERIALIZE ***********/
 //1 oct | 8 bit
+Serializer& Serializer::operator>>(bool& c)
+{
+    pop(c);
+    return *this;
+}
+
 Serializer& Serializer::operator>>(char& c)
 {
     pop(c);

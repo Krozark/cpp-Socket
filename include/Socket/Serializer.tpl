@@ -62,6 +62,9 @@ namespace ntw
         return *this;
     }
 
+    template <> struct Serializer::Size<bool> {
+        enum {value = 1};
+    };
     template <> struct Serializer::Size<char> {
         enum {value = 1};
     };

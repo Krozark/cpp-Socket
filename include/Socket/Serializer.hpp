@@ -99,6 +99,7 @@ class Serializer
         bool load(const std::string& filename);
 
         /********* SERIALIZE *************/
+        Serializer& operator<<(const bool c); ///< Oveload operator to stor data. 1 oct | 8 bit
         Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
 
         Serializer& operator<<(const short int s);///< Oveload operator to stor data. 2 oct | 16 bit
@@ -125,6 +126,7 @@ class Serializer
 
 
         /********** UNSERIALIZE ***********/
+        Serializer& operator>>(bool& c); ///< Oveload operator to extract datas. 1 oct | 8 bit
         Serializer& operator>>(char& c); ///< Oveload operator to extract datas. 1 oct | 8 bit
 
         Serializer& operator>>(short int& s); ///< Oveload operator to extract datas. 2 oct | 16 bit
