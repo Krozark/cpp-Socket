@@ -83,7 +83,7 @@ namespace ntw
 
         void Client::disconnect()
         {
-            request_sock.close();
+            request_sock.shutdown();
         }
 
         /*void Client::stop()

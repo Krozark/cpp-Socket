@@ -12,6 +12,7 @@ namespace ntw
 
         Client::~Client()
         {
+            request_sock.shutdown();
         }
 
         bool Client::operator==(const Client& other)
