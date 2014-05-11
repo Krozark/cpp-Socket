@@ -41,7 +41,7 @@ void run(ntw::cli::Client& client)
         short int status = client.request_sock.getStatus();
         switch(status)
         {
-            case ERRORS::STOP :
+            case ntw::Status::stop :
             {
                 std::cerr<<" : The server is probably down."<<std::endl;
                 std::cout<<"[Recv] Stop"<<std::endl

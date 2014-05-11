@@ -4,7 +4,7 @@
 
 int dispatch(int id,ntw::SocketSerialized& request)
 {
-    int res= ntw::FuncWrapper::Status::st::wrong_id;
+    int res= ntw::Status::wrong_id;
     std::cout<<"[dispatch] id:"<<id<<std::endl<<std::flush;
     switch(id)
     {

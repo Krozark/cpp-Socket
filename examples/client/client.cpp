@@ -2,6 +2,7 @@
 #include "functions.hpp"
 ///data base
 #include <Socket/client/Client.hpp>
+#include <Socket/Status.hpp>
 
 
 #define SERVER_HOST 1
@@ -18,7 +19,7 @@ int main(int argc,char* argv[])
 
     ntw::Socket::init();
     ntw::cli::Client client;
-    if(client.connect(argv[SERVER_HOST],atoi(argv[SERVER_PORT])) != NTW_ERROR_CONNEXION)
+    if(client.connect(argv[SERVER_HOST],atoi(argv[SERVER_PORT])) != ntw::Status::connexion)
         run(client);
 
     ntw::Socket::close();

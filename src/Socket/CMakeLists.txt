@@ -10,6 +10,7 @@ set(ROOT_SRC
     ${SRCROOT}/Serializer.cpp
     ${SRCROOT}/Socket.cpp
     ${SRCROOT}/SocketSerialized.cpp
+    ${SRCROOT}/Status.cpp
 )
 set(ROOT_HEADER
     ${INCROOT}/BalancingSelector.hpp
@@ -21,6 +22,7 @@ set(ROOT_HEADER
     ${INCROOT}/Serializer.tpl
     ${INCROOT}/Socket.hpp
     ${INCROOT}/SocketSerialized.hpp
+    ${INCROOT}/Status.hpp
 )
 set(ROOT_FILES
     ${ROOT_HEADER}

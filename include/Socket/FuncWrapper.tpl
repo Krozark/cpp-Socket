@@ -40,13 +40,13 @@ namespace ntw
         Ret ret;
         if (sock.receive() > 0)
         {
-            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+            if(sock.getStatus() != ntw::Status::wrong_id)
             {
                 sock>>ret;
             }
             else
             {
-                std::cerr<<"Recive Status different of \"ntw::FuncWrapper::Status::st::ok\""<<std::endl;
+                std::cerr<<"Recive Status different of \"ntw::Status::ok\""<<std::endl;
             }
         }
         return ret;
@@ -81,7 +81,7 @@ namespace ntw
         int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
         (void)ctx;
         sock.clear();
-        sock.setStatus(ntw::FuncWrapper::Status::ok);
+        sock.setStatus(ntw::Status::ok);
         Ret res = pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
         sock<<res;
         sock.sendCl();
@@ -94,7 +94,7 @@ namespace ntw
         int ctx[] = {((sock>>std::get<Indexes>(args)), void(), 0)... };
         (void)ctx;
         sock.clear();
-        sock.setStatus(ntw::FuncWrapper::Status::ok);
+        sock.setStatus(ntw::Status::ok);
         pf(sock,std::forward<Args>(std::get<Indexes>(args))...);
         sock.sendCl();
         return sock.getStatus();

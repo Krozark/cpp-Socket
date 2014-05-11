@@ -1,4 +1,6 @@
 #include <Socket/FuncWrapper.hpp>
+#include <Socket/define.hpp>
+
 
 namespace ntw
 {
@@ -10,7 +12,7 @@ namespace ntw
         sock.setStatus(code);
         sock<<message;
         sock.sendCl();
-        return NTW_ERROR_NO;
+        return Status::ok;
     }
 
     /********** CLIENT ********************/
@@ -24,10 +26,10 @@ namespace ntw
         int id = FUNCTONS_ID::UNKNOW;
         request>>id;
 
-        if(callback_dispatch(id,request) == Status::st::wrong_id)
+        if(callback_dispatch(id,request) == Status::wrong_id)
         {
             request.clear();
-            request.setStatus(Status::st::wrong_id);
+            request.setStatus(Status::wrong_id);
             request.sendCl();
         }
     }
@@ -41,7 +43,7 @@ namespace ntw
             sock>>msg;
             code = sock.getStatus();
 
-            if(std::string(msg) == std::string(NTW_WELCOM_MSG) and code == NTW_ERROR_NO)
+            if(std::string(msg) == std::string(NTW_WELCOM_MSG) and code == Status::ok)
             {
                 std::cerr<<"verifyIsConnected <"<<code<<":"<<msg<<">"<<std::endl;
             }
@@ -63,12 +65,12 @@ namespace ntw
     {
         if (sock.receive() > 0)
         {
-            if(sock.getStatus() != ntw::FuncWrapper::Status::st::wrong_id)
+            if(sock.getStatus() != ntw::Status::wrong_id)
             {
             }
             else
             {
-                std::cerr<<"Recive Status different of \"ntw::FuncWrapper::Status::st::ok\""<<std::endl;
+                std::cerr<<"Recive Status different of \"ntw::Status::ok\""<<std::endl;
             }
         }
         return;

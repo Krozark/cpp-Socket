@@ -1,5 +1,6 @@
 #include <Socket/SocketSerialized.hpp>
 #include <Socket/define.hpp>
+#include <Socket/Status.hpp>
 
 #include <thread>
 
@@ -7,7 +8,7 @@ namespace ntw {
 
 #define HEADER_SIZE (4+2)
 
-SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole): Serializer(255), Socket(dommaine,type,protocole), status(0)
+SocketSerialized::SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole): Serializer(255), Socket(dommaine,type,protocole), status(Status::ok)
 {
     //reserver les 2 premier bits pour la taille
     _cursor_end =_cursor_begin = HEADER_SIZE;
@@ -181,7 +182,7 @@ int SocketSerialized::send()
     }
     catch (ntw::SocketExeption& e)
     {
-        res = NTW_STOP_CONNEXION;
+        res = Status::stop;
     }
 
     //reset
@@ -200,7 +201,7 @@ int SocketSerialized::send(const Socket& dest)
     }
     catch (ntw::SocketExeption& e)
     {
-        res = NTW_STOP_CONNEXION;
+        res = Status::stop;
     }
     //reset
     //clear();
@@ -255,7 +256,7 @@ int SocketSerialized::init_receive(uint32_t* size,int flags)
     else
     {
         clear();
-        setStatus(NTW_STOP_CONNEXION);
+        setStatus(Status::stop);
     }
     return res;
 }

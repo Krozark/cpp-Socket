@@ -59,7 +59,7 @@ namespace ntw
     bool BalancingSelector::add(SocketSerialized* sock,std::string host,int port)
     {
         bool res = sock->connect(host,port);
-        if(not res or ntw::FuncWrapper::cli::verifyIsConnected(*sock) != NTW_ERROR_NO);
+        if(not res or ntw::FuncWrapper::cli::verifyIsConnected(*sock) != Status::ok);
             remove(sock);
 
         if(res)

@@ -1,4 +1,5 @@
 #include <Socket/server/Server.hpp>
+#include <Socket/define.hpp>
 
 namespace ntw
 {
@@ -76,7 +77,7 @@ namespace srv
         if(not (self.request_recv.add(&client.request_sock)))
         {
             ok = false;
-            ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_REQUEST_ADD_MSG,NTW_ERROR_REQUEST_ADD);
+            ntw::FuncWrapper::msg(client.request_sock,NTW_ERROR_REQUEST_ADD_MSG,Status::request_add);
         }
 
         /*if(Config::broadcast)
@@ -97,7 +98,7 @@ namespace srv
         {
             if(self.on_new_client)
                 self.on_new_client(self,client);
-            ntw::FuncWrapper::msg(client.request_sock,NTW_WELCOM_MSG,NTW_ERROR_NO);
+            ntw::FuncWrapper::msg(client.request_sock,NTW_WELCOM_MSG,Status::ok);
         }
     }
 

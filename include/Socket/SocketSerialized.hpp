@@ -86,7 +86,7 @@ class SocketSerialized : public Serializer, public Socket
 
     private:
         //bool is_send;
-        short int status;///< status header default is 0
+        short int status;///< status header default is Status::ok
 
         /**
          * \brief init the buffer header

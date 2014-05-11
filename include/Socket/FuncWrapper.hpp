@@ -2,8 +2,7 @@
 #define NTW_FUNCWRAPPER
 
 #include <Socket/SocketSerialized.hpp>
-#include <Socket/define.hpp>
-
+#include <Socket/Status.hpp>
 
 namespace ntw
 {
@@ -27,35 +26,6 @@ namespace ntw
             static int msg(SocketSerialized& sock,const std::string message,unsigned int code);
 
 
-            /**
-             * \brief A class to handle status response
-             */
-            class Status
-            {
-                public:
-                    Status(short int c):code(c){}; ///< constructor
-
-                    /*friend Serializer& operator<<(Serializer& stream,const Status& self)
-                    {
-                        stream<<self.code;
-                        return stream;
-                    }
-
-                    friend Serializer& operator>>(Serializer& stream,const Status& self)
-                    {
-                        stream>>self.code;
-                        return stream;
-                    }*/
-                    short int code; ///< code
-
-                    /**
-                     * \brief code values
-                     */
-                    enum st{stop=NTW_STOP_CONNEXION,
-                        wrong_id=-2,
-                        ok=0,
-                    };
-            };
 
             /**
              * \brief Regroup function for build a TCP server

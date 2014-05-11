@@ -74,11 +74,11 @@ namespace ntw
                 }
             }*/
 
-            if (ntw::FuncWrapper::cli::verifyIsConnected(request_sock) != NTW_ERROR_NO)
+            if (ntw::FuncWrapper::cli::verifyIsConnected(request_sock) != Status::ok)
             {
-                return NTW_ERROR_CONNEXION;
+                return Status::connexion;
             }
-            return NTW_ERROR_NO;
+            return Status::ok;
         }
 
         void Client::disconnect()
