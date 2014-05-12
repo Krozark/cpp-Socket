@@ -126,6 +126,11 @@ class Socket
         bool connect();
 
         /**
+         * \brief disconnect the socket
+         */
+        void disconnect();
+
+        /**
          * \brief Bind the socket
          */
         void bind();
@@ -274,14 +279,9 @@ class Socket
 
         /**
         * \brief close the context
-        *  put FuncWrapper::srv::callback_dispatch to nullptr.
         */
         static void close();
 
-        inline void _close(){
-            if(sock != INVALID_SOCKET)
-                closesocket(sock);
-        };
 
     protected:
         friend class SocketSerialized;
@@ -292,7 +292,7 @@ class Socket
         SOCKET sock; ///< C socket type
         SOCKADDR_IN sock_cfg; ///< configuration struct
         const bool need_connect;
-
+        
     private:
         #if __WIN32
         static WSADATA WSAData;

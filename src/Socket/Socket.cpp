@@ -34,7 +34,8 @@ Socket::Socket(bool need_conn) : sock(INVALID_SOCKET), need_connect(need_conn)
 
 Socket::~Socket()
 {
-    _close();
+    shutdown();
+    disconnect();
 };
 
 bool Socket::connect(const std::string& host,int port)
@@ -73,6 +74,12 @@ bool Socket::connect()
         }
     }
     return true;
+}
+
+void Socket::disconnect()
+{
+    if(sock != INVALID_SOCKET)
+        closesocket(sock);
 }
 
 void Socket::bind()
