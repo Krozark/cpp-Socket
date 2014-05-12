@@ -68,7 +68,7 @@ bool Socket::connect()
         }
         else
         {
-            std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;
+            std::cerr<<"<id:"<<sock<<">Unable to connect"<<std::endl;
             return false;
         }
     }
@@ -80,7 +80,7 @@ void Socket::bind()
     if(::bind(sock,(SOCKADDR*)&sock_cfg,sizeof(sock_cfg)) == SOCKET_ERROR)
     {
         perror("bind()");
-        throw SocketExeption("Ennable to bind soket");
+        throw SocketExeption("Unable to bind soket");
     }
 }
 
@@ -89,7 +89,7 @@ void Socket::listen(const int max_connexion)
     if(::listen(sock,max_connexion) == SOCKET_ERROR)
     {
         perror("listen()");
-        throw SocketExeption("Ennable to listen");
+        throw SocketExeption("Unable to listen");
     }
 }
 
