@@ -52,7 +52,7 @@ namespace ntw
              * \brief create a socket, and add
              * \return true if ok
              */
-            bool add(Socket::Dommaine dommaine,Socket::Type type,std::string host,int port);
+            bool add(Socket::Domaine domaine,Socket::Type type,std::string host,int port);
 
             /**
              * \brief remove a socket py is adresse

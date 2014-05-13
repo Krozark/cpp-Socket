@@ -19,7 +19,7 @@ class SocketSerialized : public Serializer, public Socket
          * \param type socket type
          * \param protocole socket protocol
          */
-        SocketSerialized(Socket::Dommaine dommaine,Socket::Type type,int protocole=0);
+        SocketSerialized(Socket::Domaine dommaine,Socket::Type type,int protocole=0);
 
         /**
          * \brief Move constructor

@@ -14,28 +14,28 @@ namespace ntw {
 WSADATA Socket::WSAData;
 #endif
 
-Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock(INVALID_SOCKET), need_connect(type == Socket::Type::TCP)
+Socket::Socket(Socket::Domaine domaine,Socket::Type type,int protocole) : sock(INVALID_SOCKET), need_connect(type == Socket::Type::TCP), proto(protocole)
 {
     //déclaration de la socket
-    if((sock = ::socket(dommaine,type,protocole)) == INVALID_SOCKET)
+    if((sock = ::socket(domaine,type,proto)) == INVALID_SOCKET)
     {
         ::perror("socket()");
         throw SocketExeption("Invalid socket");
     }
 
     ::memset((char*)&sock_cfg,0,sizeof(sock_cfg)); // mise a 0
-    sock_cfg.sin_family = dommaine;
+    sock_cfg.sin_family = domaine;
 
 };
 
-Socket::Socket(bool need_conn) : sock(INVALID_SOCKET), need_connect(need_conn)
+Socket::Socket(bool need_conn) : sock(INVALID_SOCKET), need_connect(need_conn),proto(0)
 {
 }
 
 Socket::~Socket()
 {
-    shutdown();
-    disconnect();
+    _close();
+
 };
 
 bool Socket::connect(const std::string& host,int port)
@@ -76,10 +76,31 @@ bool Socket::connect()
     return true;
 }
 
-void Socket::disconnect()
+bool Socket::disconnect()
 {
-    if(sock != INVALID_SOCKET)
-        closesocket(sock);
+    int domaine;
+    int type;
+    socklen_t length = sizeof( int );
+    bool res = true;
+
+    domaine = sock_cfg.sin_family;
+    if(::getsockopt(sock, SOL_SOCKET, SO_TYPE, &type, &length )==0)
+    {
+        _close();
+
+        if((sock = ::socket(domaine,type,proto)) == INVALID_SOCKET)
+        {
+            ::perror("socket()");
+            throw SocketExeption("Invalid socket");
+        }
+
+        ::memset((char*)&sock_cfg,0,sizeof(sock_cfg)); // mise a 0
+        sock_cfg.sin_family = domaine;
+    }
+    else
+        res = false;
+
+    return res;
 }
 
 void Socket::bind()
@@ -175,6 +196,12 @@ void Socket::close()
      #if __WIN32
     WSACleanup();
     #endif // __WIN32
+}
+
+void Socket::_close()
+{
+    if(sock != INVALID_SOCKET)
+        closesocket(sock);
 }
 
 };

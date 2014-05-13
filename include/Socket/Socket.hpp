@@ -75,7 +75,7 @@ class Socket
         /**
          * \brief Named Dommaine type. Others can be used
          */
-        enum Dommaine {IP=AF_INET, LOCAL=AF_UNIX};
+        enum Domaine {IP=AF_INET, LOCAL=AF_UNIX};
 
         /**
          * \brief named Type of socket. Others can be used
@@ -93,7 +93,7 @@ class Socket
          * \param type the type of socket
          * \param protocole the protocal to use default is 0
          */
-        Socket(Dommaine dommaine,Type type,int protocole=0);
+        Socket(Domaine dommaine,Type type,int protocole=0);
 
         /**
          * \brief Destructor
@@ -128,7 +128,7 @@ class Socket
         /**
          * \brief disconnect the socket
          */
-        void disconnect();
+        bool disconnect();
 
         /**
          * \brief Bind the socket
@@ -292,11 +292,14 @@ class Socket
         SOCKET sock; ///< C socket type
         SOCKADDR_IN sock_cfg; ///< configuration struct
         const bool need_connect;
+        const int proto;
         
     private:
         #if __WIN32
         static WSADATA WSAData;
         #endif
+
+        void _close();
 };
 
 };
