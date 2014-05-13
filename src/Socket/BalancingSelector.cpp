@@ -71,9 +71,9 @@ namespace ntw
     }
 
 
-    bool BalancingSelector::add(Socket::Domaine domaine,Socket::Type type,std::string host,int port)
+    bool BalancingSelector::add(Socket::Domain domain,Socket::Type type,std::string host,int port)
     {
-        SocketSerialized* sock = new SocketSerialized(domaine,type);
+        SocketSerialized* sock = new SocketSerialized(domain,type);
         bool res = add(sock,host,port);
         if(not res)
         {

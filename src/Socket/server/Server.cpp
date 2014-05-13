@@ -8,7 +8,7 @@ namespace srv
     Server::Server(unsigned int port,std::string host,int (*c_dispatch)(int id,SocketSerialized&),unsigned int max_client,unsigned int max_threads,float timeout) :
         on_new_client(nullptr),
         on_delete_client(nullptr),
-        new_connexion_sock(ntw::Socket::Domaine::IP,ntw::Socket::Type::TCP),
+        new_connexion_sock(ntw::Socket::Domain::IP,ntw::Socket::Type::TCP),
         new_connexion_recv(timeout),
         request_recv(true,false,false,onRequestRecv,this,0,max_client,max_threads,timeout),
         //broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)

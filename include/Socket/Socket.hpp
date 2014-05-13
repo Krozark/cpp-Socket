@@ -75,7 +75,7 @@ class Socket
         /**
          * \brief Named Dommaine type. Others can be used
          */
-        enum Domaine {IP=AF_INET, LOCAL=AF_UNIX};
+        enum Domain {IP=AF_INET, LOCAL=AF_UNIX};
 
         /**
          * \brief named Type of socket. Others can be used
@@ -93,7 +93,7 @@ class Socket
          * \param type the type of socket
          * \param protocole the protocal to use default is 0
          */
-        Socket(Domaine dommaine,Type type,int protocole=0);
+        Socket(Domain dommaine,Type type,int protocole=0);
 
         /**
          * \brief Destructor

@@ -5,7 +5,7 @@ namespace ntw
 {
     namespace cli
     {
-        Client::Client() :  request_sock(Socket::Domaine::IP,Socket::Type::TCP)
+        Client::Client() :  request_sock(Socket::Domain::IP,Socket::Type::TCP)
         //new_broadcast_sock(Socket::Dommaine::IP,Socket::Type::TCP),
         //broadcast_recv_sock(Socket::Dommaine::IP,Socket::Type::TCP)
         {

@@ -8,7 +8,7 @@ namespace ntw {
 
 #define HEADER_SIZE (4+2)
 
-SocketSerialized::SocketSerialized(Socket::Domaine dommaine,Socket::Type type,int protocole): Serializer(255), Socket(dommaine,type,protocole), status(Status::ok)
+SocketSerialized::SocketSerialized(Socket::Domain dommaine,Socket::Type type,int protocole): Serializer(255), Socket(dommaine,type,protocole), status(Status::ok)
 {
     //reserver les 2 premier bits pour la taille
     _cursor_end =_cursor_begin = HEADER_SIZE;
