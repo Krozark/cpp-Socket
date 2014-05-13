@@ -12,13 +12,14 @@ namespace srv
         new_connexion_recv(timeout),
         request_recv(true,false,false,onRequestRecv,this,0,max_client,max_threads,timeout),
         //broadcast_sender(true,false,false,onBroadCastRecv,this,min_client,max_client,0,timeout)
-        dispatch(c_dispatch)
+        dispatch(c_dispatch),
+        _port(port)
     {
         //request_recv.setDelete(false);
         //broadcast_sender.setDelete(false);
         //new_connexion_recv.setDelete(false);
         //init sock
-        new_connexion_sock.serverMode(port,max_client,host);
+        new_connexion_sock.serverMode(_port,max_client,host);
         //init selector
         new_connexion_recv.setRead(true);
         new_connexion_recv.onSelect = onNewClientRecv;
@@ -63,6 +64,12 @@ namespace srv
         /*if(Config::broadcast)
             broadcast_sender.wait();*/
     }
+
+    int Server::port()const
+    {
+        return _port;
+    }
+
     void Server::onNewClientRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock)
     {
         Server& self = *(ntw::srv::Server*)data;

@@ -54,7 +54,7 @@ namespace ntw
                 void (*on_new_client)(ntw::srv::Server& self,ntw::srv::Client& client);
                 void (*on_delete_client)(ntw::srv::Server& self,ntw::srv::Client& client);
 
-
+                int port()const;
 
             protected:
                 ntw::SocketSerialized new_connexion_sock; ///< socket tha manage new connextion
@@ -87,6 +87,8 @@ namespace ntw
                 std::mutex client_mutex; ///< client mutex
 
                 int (*dispatch)(int id,SocketSerialized& request);
+
+                const int _port;
         };
     }
 }
