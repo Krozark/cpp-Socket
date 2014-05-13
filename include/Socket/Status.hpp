@@ -29,6 +29,7 @@ namespace ntw
                 select = 4,
                 connexion = 5,///< set with sock.connect()
                 unknow = 404,
+                todo, ///< set for todo func
                 user_define ///< the maximal value use by the module. You can define yours after this one
             };
     };
