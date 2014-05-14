@@ -99,28 +99,28 @@ class Serializer
         bool load(const std::string& filename);
 
         /********* SERIALIZE *************/
-        Serializer& operator<<(const bool c); ///< Oveload operator to stor data. 1 oct | 8 bit
-        Serializer& operator<<(const char c); ///< Oveload operator to stor data. 1 oct | 8 bit
+        Serializer& operator<<(const bool& c); ///< Oveload operator to stor data. 1 oct | 8 bit
+        Serializer& operator<<(const char& c); ///< Oveload operator to stor data. 1 oct | 8 bit
 
-        Serializer& operator<<(const short int s);///< Oveload operator to stor data. 2 oct | 16 bit
+        Serializer& operator<<(const short int& s);///< Oveload operator to stor data. 2 oct | 16 bit
 
-        Serializer& operator<<(const int i);///< Oveload operator to stor data. 4 oct | 32 bit
-        Serializer& operator<<(const unsigned int i);///< Oveload operator to stor data.  4 oct | 32 bit
-        Serializer& operator<<(const float f);///< Oveload operator to stor data.  4 oct | 32 bit
+        Serializer& operator<<(const int& i);///< Oveload operator to stor data. 4 oct | 32 bit
+        Serializer& operator<<(const unsigned int& i);///< Oveload operator to stor data.  4 oct | 32 bit
+        Serializer& operator<<(const float& f);///< Oveload operator to stor data.  4 oct | 32 bit
 
-        Serializer& operator<<(const double d);///< Oveload operator to stor data. 8 oct | 64 bit
-        Serializer& operator<<(const long int l);///< Oveload operator to stor data. 8 oct | 64 bit
+        Serializer& operator<<(const double& d);///< Oveload operator to stor data. 8 oct | 64 bit
+        Serializer& operator<<(const long int& l);///< Oveload operator to stor data. 8 oct | 64 bit
         
         //16 oct | 124 bit
         //Serializer& operator<<(long double ld){push(*reinterpret_cast<uint128_t*>(&ld);};
         
-        Serializer& operator<<(const char* const c);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
+        Serializer& operator<<(const char* const& c);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
         Serializer& operator<<(const std::string& str);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
         
-        Serializer& operator<<(const uint8_t l);///< Oveload operator to stor data. 1 oct
-        Serializer& operator<<(const uint16_t l);///< Oveload operator to stor data. 2 oct
+        Serializer& operator<<(const uint8_t& l);///< Oveload operator to stor data. 1 oct
+        Serializer& operator<<(const uint16_t& l);///< Oveload operator to stor data. 2 oct
         //Serializer& operator<<(const uint32_t l);///< Oveload operator to stor data. 4 oct
-        Serializer& operator<<(const uint64_t l);///< Oveload operator to stor data. 8 oct
+        Serializer& operator<<(const uint64_t& l);///< Oveload operator to stor data. 8 oct
         //containers
         template<typename T,size_t N> Serializer& operator<<(const std::array<T,N>& containers);///< Overload operator to store a array of T
         template<typename T> Serializer& operator<<(const std::vector<T>& container);///< Overload operator to store a vector of T
@@ -149,10 +149,10 @@ class Serializer
         template<typename T> Serializer& operator>>(std::vector<T>& container);///< Overload operator to store a vector of T
         template<typename T> Serializer& operator>>(std::list<T>& container);///< Overload operator to store a list of T
 
-        Serializer& operator>>(const uint8_t l);///< Oveload operator to stor data. 1 oct
-        Serializer& operator>>(const uint16_t l);///< Oveload operator to stor data. 2 oct
+        Serializer& operator>>(uint8_t& l);///< Oveload operator to stor data. 1 oct
+        Serializer& operator>>(uint16_t& l);///< Oveload operator to stor data. 2 oct
         //Serializer& operator>>(const uint32_t l);///< Oveload operator to stor data. 4 oct
-        Serializer& operator>>(const uint64_t l);///< Oveload operator to stor data. 8 oct
+        Serializer& operator>>(uint64_t& l);///< Oveload operator to stor data. 8 oct
 
 
         //debug

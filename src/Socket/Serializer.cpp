@@ -112,53 +112,53 @@ bool Serializer::load(const std::string& filename)
 
 /********* SERIALIZE *************/
 //1 oct | 8 bit
-Serializer& Serializer::operator<<(const bool c)
+Serializer& Serializer::operator<<(const bool& c)
 {
     push(c);
     return *this;
 };
-Serializer& Serializer::operator<<(const char c)
+Serializer& Serializer::operator<<(const char& c)
 {
     push(c);
     return *this;
 };
 //2 oct | 16 bit
-Serializer& Serializer::operator<<(const short int s)
+Serializer& Serializer::operator<<(const short int& s)
 {
     push(s);
     return *this;
 };
 //4 oct | 32 bit
-Serializer& Serializer::operator<<(const int i)
+Serializer& Serializer::operator<<(const int& i)
 {
     push(i);
     return *this;
 };
 
-Serializer& Serializer::operator<<(const unsigned int i)
+Serializer& Serializer::operator<<(const unsigned int& i)
 {
     push(i);
     return *this;
 };
 
-Serializer& Serializer::operator<<(const float f)
+Serializer& Serializer::operator<<(const float& f)
 {
     push(f);
     return *this;
 };
 //8 oct | 64 bit
-Serializer& Serializer::operator<<(const double d)
+Serializer& Serializer::operator<<(const double& d)
 {
     push(d);
     return *this;
 };
-Serializer& Serializer::operator<<(const long int l)
+Serializer& Serializer::operator<<(const long int& l)
 {
     push(l);
     return *this;
 };
 //1 oct | 8 bit []
-Serializer& Serializer::operator<<(const char* const c)
+Serializer& Serializer::operator<<(const char* const& c)
 {
     const uint8_t* data = (const uint8_t*)c;
     for(int i=0;c[i];++i) //exit when \0
@@ -172,12 +172,12 @@ Serializer& Serializer::operator<<(const std::string& str)
 {
     return (*this<<str.c_str());
 }
-Serializer& Serializer::operator<<(const uint8_t l)
+Serializer& Serializer::operator<<(const uint8_t& l)
 {
     push(l);
     return *this;
 } 
-Serializer& Serializer::operator<<(const uint16_t l)
+Serializer& Serializer::operator<<(const uint16_t& l)
 {
     push(l);
     return *this;
@@ -187,7 +187,7 @@ Serializer& Serializer::operator<<(const uint16_t l)
     push(l);
     return *this;
 }*/
-Serializer& Serializer::operator<<(const uint64_t l)
+Serializer& Serializer::operator<<(const uint64_t& l)
 {
     push(l);
     return *this;
@@ -280,12 +280,12 @@ Serializer& Serializer::operator>>(std::string& str)
     return *this;
 };
 
-Serializer& Serializer::operator>>(const uint8_t l)
+Serializer& Serializer::operator>>(uint8_t& l)
 {
     pop(l);
     return *this;
 } 
-Serializer& Serializer::operator>>(const uint16_t l)
+Serializer& Serializer::operator>>(uint16_t& l)
 {
     pop(l);
     return *this;
@@ -295,7 +295,7 @@ Serializer& Serializer::operator>>(const uint16_t l)
     pop(l);
     return *this;
 }*/
-Serializer& Serializer::operator>>(const uint64_t l)
+Serializer& Serializer::operator>>(uint64_t& l)
 {
     pop(l);
     return *this;
