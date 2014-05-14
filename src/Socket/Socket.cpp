@@ -64,12 +64,12 @@ bool Socket::connect()
     {
         if(::connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
         {
-            std::cerr<<"[Socket::connect]<id:"<<sock<<">Connected to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
+            std::cerr<<"[Socket] <id:"<<sock<<">Connected to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
             return true;
         }
         else
         {
-            std::cerr<<"[Socket::connect]<id:"<<sock<<">Unable to connect"<<std::endl;
+            std::cerr<<"[Socket] <id:"<<sock<<">Unable to connect"<<std::endl;
             return false;
         }
     }
@@ -154,7 +154,7 @@ void Socket::accept(Socket& client)
         perror("accept()");
         throw SocketExeption("Invalid socket get");
     }
-    std::cerr<<"[Socket::accept]<id:"<<sock<<">New connexion accepted <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
+    std::cerr<<"[Socket] <id:"<<sock<<">New connexion accepted <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
 };
 
 bool Socket::shutdown(Socket::Down mode)

@@ -92,7 +92,7 @@ namespace ntw
                 if(i>0 and selector.size() < min_per_selector)
                 {
                     //\todo
-                    std::cerr<<"[TODO] killer le selector, et redistribuer les sockets"<<std::endl;
+                    std::cerr<<"[Socket TODO] killer le selector, et redistribuer les sockets"<<std::endl;
                 }
             }
             ++i;

@@ -61,8 +61,6 @@ namespace ntw
                 ntw::SelectManager new_connexion_recv; ///< manager for nex connextion
                 ntw::BalancingSelector request_recv; ///< socket managaer for request (TCP)
 
-                //ntw::BalancingSelector broadcast_sender; ///< manager for broadcast
-
                 /**
                  * \brief callback for new client
                  */
@@ -72,11 +70,6 @@ namespace ntw
                  * \brief callback of a request of a connected client
                  */
                 static void onRequestRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock);
-
-                /**
-                 * \brief callback on datat receive on broadcast
-                 */
-                //static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, void* data,ntw::SocketSerialized& sock);
 
                 /**
                  * \brief remove a client

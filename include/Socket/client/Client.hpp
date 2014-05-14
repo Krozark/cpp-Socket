@@ -83,10 +83,6 @@ namespace ntw
                 SocketSerialized request_sock; ///< internal socket for communication
             private:
 
-                //SocketSerialized new_broadcast_sock; ///< internal socket for broadcast listener
-                //SocketSerialized broadcast_recv_sock; ///< internal Soket for broadcast reciver
-                //SelectManager broadcast_recv; ///< manage the broadcast
-                //static void onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock); ///< callback of the broadcast
         };
     }
 }

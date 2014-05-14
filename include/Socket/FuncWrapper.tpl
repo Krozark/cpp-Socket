@@ -46,7 +46,7 @@ namespace ntw
             }
             else
             {
-                std::cerr<<"Recive Status different of \"ntw::Status::ok\""<<std::endl;
+                std::cerr<<"[Socket] Recive Status different of \"ntw::Status::ok\""<<std::endl;
             }
         }
         return ret;

@@ -45,11 +45,11 @@ namespace ntw
 
             if(std::string(msg) == std::string(NTW_WELCOM_MSG) and code == Status::ok)
             {
-                std::cerr<<"verifyIsConnected <"<<code<<":"<<msg<<">"<<std::endl;
+                std::cerr<<"[Socket] verifyIsConnected <"<<code<<":"<<msg<<">"<<std::endl;
             }
             else
             {
-                std::cerr<<"verifyIsConnected <"<<code<<":"<<msg<<">"<<std::endl;
+                std::cerr<<"[Socket] verifyIsConnected <"<<code<<":"<<msg<<">"<<std::endl;
             }
             sock.clear();
         }
@@ -70,7 +70,7 @@ namespace ntw
             }
             else
             {
-                std::cerr<<"Recive Status different of \"ntw::Status::ok\""<<std::endl;
+                std::cerr<<"[Socket] Recive Status different of \"ntw::Status::ok\""<<std::endl;
             }
         }
         return;
