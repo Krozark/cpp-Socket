@@ -135,6 +135,12 @@ Serializer& Serializer::operator<<(const int i)
     return *this;
 };
 
+Serializer& Serializer::operator<<(const unsigned int i)
+{
+    push(i);
+    return *this;
+};
+
 Serializer& Serializer::operator<<(const float f)
 {
     push(f);
