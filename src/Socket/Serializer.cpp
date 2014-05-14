@@ -135,12 +135,6 @@ Serializer& Serializer::operator<<(const int i)
     return *this;
 };
 
-Serializer& Serializer::operator<<(const unsigned int i)
-{
-    push(i);
-    return *this;
-};
-
 Serializer& Serializer::operator<<(const float f)
 {
     push(f);
@@ -171,6 +165,26 @@ Serializer& Serializer::operator<<(const char* const c)
 Serializer& Serializer::operator<<(const std::string& str)
 {
     return (*this<<str.c_str());
+}
+Serializer& Serializer::operator<<(const uint8_t l)
+{
+    push(l);
+    return *this;
+} 
+Serializer& Serializer::operator<<(const uint16_t l)
+{
+    push(l);
+    return *this;
+}
+/*Serializer& Serializer::operator<<(const uint32_t l)
+{
+    push(l);
+    return *this;
+}*/
+Serializer& Serializer::operator<<(const uint64_t l)
+{
+    push(l);
+    return *this;
 }
 
 /*Serializer& Serializer::operator<<(const std::fstream& datas)
@@ -259,6 +273,27 @@ Serializer& Serializer::operator>>(std::string& str)
 
     return *this;
 };
+
+Serializer& Serializer::operator>>(const uint8_t l)
+{
+    pop(l);
+    return *this;
+} 
+Serializer& Serializer::operator>>(const uint16_t l)
+{
+    pop(l);
+    return *this;
+}
+/*Serializer& Serializer::operator>>(const uint32_t l)
+{
+    pop(l);
+    return *this;
+}*/
+Serializer& Serializer::operator>>(const uint64_t l)
+{
+    pop(l);
+    return *this;
+}
 
 
 

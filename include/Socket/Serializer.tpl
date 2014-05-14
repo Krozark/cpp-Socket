@@ -62,6 +62,10 @@ namespace ntw
         return *this;
     }
 
+    template <typename T> struct Serializer::Size<const T>{
+        enum {value = Serializer::Size<T>::value};
+    };
+
     template <> struct Serializer::Size<bool> {
         enum {value = 1};
     };
@@ -106,14 +110,14 @@ namespace ntw
     void Serializer::convert(const T& value,char* buffer)
     {
         const char *d = reinterpret_cast<const char*>(&value);
-        int cursor = 0;
 
         #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
         for(int i = 0; i< Serializer::Size<T>::value; ++i)
-            buffer[cursor++] = d[i];
+            buffer[i] = d[i];
         #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        for(int i = Serializer::Size<T>::value -1; i>=0; --i)
-            buffer[cursor++] = d[i];
+        int cursor = 0;
+        for(int i = Serializer::Size<T>::value -1; i>=0; --i,++cursor)
+            buffer[cursor] = d[i];
         #else
         #error "byte orden not suported (PDP endian)"
         #endif
@@ -123,14 +127,14 @@ namespace ntw
     void Serializer::convert(const char* buffer,T& res)
     {
         char *d = reinterpret_cast<char*>(&res);
-        int cursor = 0;
 
         #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
         for(int i = 0; i<Serializer::Size<T>::value; ++i)
-            d[i]= buffer[cursor++];
+            d[i]= buffer[i];
         #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-        for(int i =Serializer::Size<T>::value-1;i>=0;--i)
-            d[i]= buffer[cursor++];
+        int cursor = 0;
+        for(int i =Serializer::Size<T>::value-1;i>=0;--i,++cursor)
+            d[i]= buffer[cursor];
         #else
         #error "byte orden not suported (PDP endian)"
         #endif
@@ -153,7 +157,7 @@ namespace ntw
         while(_buffer_size < _cursor_end + Serializer::Size<T>::value)
             resize(_buffer_size*2);
 
-        const char *d = reinterpret_cast<const char*>(&a);
+        const char *d = (const char*)(&a);
 
         #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
         for(int i = 0; i< Serializer::Size<T>::value; ++i)
@@ -172,7 +176,7 @@ namespace ntw
     {
         if(_cursor_begin +Serializer::Size<T>::value <= _cursor_end)
         {
-            char *d = reinterpret_cast<char*>(&a);
+            char *d = (char*)(&a);
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             for(int i = 0; i<Serializer::Size<T>::value; ++i)
                 d[i]= _buffer[_cursor_begin++];

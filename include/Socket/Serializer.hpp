@@ -117,6 +117,10 @@ class Serializer
         Serializer& operator<<(const char* const c);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
         Serializer& operator<<(const std::string& str);///< Oveload operator to stor data. \0 is the end of data. 1 oct | 8 bit []
         
+        Serializer& operator<<(const uint8_t l);///< Oveload operator to stor data. 1 oct
+        Serializer& operator<<(const uint16_t l);///< Oveload operator to stor data. 2 oct
+        //Serializer& operator<<(const uint32_t l);///< Oveload operator to stor data. 4 oct
+        Serializer& operator<<(const uint64_t l);///< Oveload operator to stor data. 8 oct
         //containers
         template<typename T,size_t N> Serializer& operator<<(const std::array<T,N>& containers);///< Overload operator to store a array of T
         template<typename T> Serializer& operator<<(const std::vector<T>& container);///< Overload operator to store a vector of T
@@ -144,6 +148,11 @@ class Serializer
         //containers
         template<typename T> Serializer& operator>>(std::vector<T>& container);///< Overload operator to store a vector of T
         template<typename T> Serializer& operator>>(std::list<T>& container);///< Overload operator to store a list of T
+
+        Serializer& operator>>(const uint8_t l);///< Oveload operator to stor data. 1 oct
+        Serializer& operator>>(const uint16_t l);///< Oveload operator to stor data. 2 oct
+        //Serializer& operator>>(const uint32_t l);///< Oveload operator to stor data. 4 oct
+        Serializer& operator>>(const uint64_t l);///< Oveload operator to stor data. 8 oct
 
 
         //debug
