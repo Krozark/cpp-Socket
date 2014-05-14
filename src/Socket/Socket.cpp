@@ -69,7 +69,7 @@ bool Socket::connect()
         }
         else
         {
-            std::cerr<<"[Socket] <id:"<<sock<<">Unable to connect"<<std::endl;
+            //std::cerr<<"[Socket] <id:"<<sock<<">Unable to connect"<<std::endl;
             return false;
         }
     }
