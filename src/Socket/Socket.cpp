@@ -34,7 +34,7 @@ Socket::Socket(bool need_conn) : sock(INVALID_SOCKET), need_connect(need_conn),p
 
 Socket::~Socket()
 {
-    shutdown();
+    //shutdown();
     _close();
 };
 
