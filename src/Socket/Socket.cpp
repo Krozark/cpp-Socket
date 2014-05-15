@@ -152,7 +152,7 @@ void Socket::accept(Socket& client)
     if (client.sock == INVALID_SOCKET)
     {
         perror("accept()");
-        throw SocketExeption("Invalid socket get");
+        throw SocketExeption("Invalid socket on accept");
     }
     std::cerr<<"[Socket] <id:"<<sock<<">New connexion accepted <id:"<<client.sock<<"> from "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
 };

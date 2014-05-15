@@ -16,13 +16,10 @@ namespace ntw
         int Client::connect(const std::string& host,int port)
         {   
             //init request sock
-            request_sock.connect(host,port);
-
-            if (ntw::FuncWrapper::cli::verifyIsConnected(request_sock) != Status::ok)
-            {
+            if(not request_sock.connect(host,port))
                 return Status::connexion;
-            }
-            return Status::ok;
+
+            return ntw::FuncWrapper::cli::verifyIsConnected(request_sock);
         }
 
         void Client::disconnect()
