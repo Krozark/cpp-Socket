@@ -74,4 +74,33 @@ int main(int argc,char* argv[])
         std::cout<<std::endl;
     }
 
+    {
+        std::cout<<"=== Serializer opertator on types ==="<<std::endl;
+        bool b = true;
+        char c = 'c';
+        short int si = 42;
+        int i = -42;
+        unsigned int ui = 12;
+        float f = 42.0;
+        double d = -42.0;
+        long int li = 12;
+        char c_ptr[] = "test c_ptr";
+        std::string str = "test str";
+
+        ntw::Serializer ser;
+        ser<<b
+            <<c
+            <<si
+            <<i
+            <<ui
+            <<f
+            <<d
+            <<li
+            <<c_ptr
+            <<str;
+
+        std::cout<<ser<<std::endl;
+
+    }
+
 }
