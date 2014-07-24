@@ -30,17 +30,18 @@ set_option(BUILD_EXAMPLES TRUE BOOL "TRUE to build the examples, FALSE to ignore
 set_option(BUILD_DOC TRUE BOOL "TRUE to generate the API documentation, FALSE to ignore it")
 
 
-#set(includepath "-I${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(DEFINES "")
 
 if(UNIX)
-	find_library(PTHREAD_LIBS pthread)
+	find_library(LIBS_PTHREAD pthread)
 	set(LIBS ${PTHREAD_LIBS})
 elseif(WIN32)
-	find_library(PTHREAD_LIBS "winpthread-1")
-	find_library(SOCKET_LIBS ws2_32)
-	#find_library(SETUP_LIBS setupapi)
-	set(LIBS ${PTHREAD_LIBS} ${SOCKET_LIBS})
+	find_library(LIBS_PTHREAD "winpthread-1")
+	find_library(LIBS_SOCKET ws2_32)
+	#find_library(LIBS_SOCKET wsock32)
+	find_library(LIBS_SETUP setupapi)
+	find_library(LIBS_KERNEL kernel32)
+	set(LIBS ${LIBS_PTHREAD} ${LIBS_SOCKET} ${LIBS_SETUP} ${LIBS_KERNEL})
 endif()
 
 set(WARNING "-Wall")
@@ -50,7 +51,7 @@ set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(LIB_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/examples)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/examples)
 
 # add the subdirectories
 add_subdirectory(src/Socket)

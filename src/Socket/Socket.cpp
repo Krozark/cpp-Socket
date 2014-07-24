@@ -84,7 +84,7 @@ bool Socket::disconnect()
     bool res = true;
 
     domain = sock_cfg.sin_family;
-    if(::getsockopt(sock, SOL_SOCKET, SO_TYPE, &type, &length )==0)
+    if(::getsockopt(sock, SOL_SOCKET, SO_TYPE, (char*)&type, &length )==0)
     {
         _close();
 
