@@ -55,12 +55,12 @@ class Serializer
         /**
          * \return The number of byts stored
          */
-        const unsigned int size()const;
+        unsigned int size()const;
 
         /**
          * \return the current buffer capacity
          */
-        const unsigned int capacity()const;
+        unsigned int capacity()const;
 
         /**
         * \brief write datas as-it

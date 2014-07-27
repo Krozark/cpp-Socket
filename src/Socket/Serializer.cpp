@@ -15,7 +15,7 @@ Serializer::~Serializer()
     /*_buffer = 0;
     _cursor_end = 0;
     _buffer_size = 0;*/
-};
+}
 
 void Serializer::clear(const unsigned int buffer_size)
 {
@@ -23,17 +23,17 @@ void Serializer::clear(const unsigned int buffer_size)
     _buffer_size = buffer_size;
     delete[] _buffer;
     _buffer = new unsigned char[buffer_size];
-};
+}
 
-const unsigned int Serializer::size()const
+unsigned int Serializer::size()const
 {
     return _cursor_end - _cursor_begin;
-};
+}
 
-const unsigned int Serializer::capacity()const
+unsigned int Serializer::capacity()const
 {
     return _buffer_size;
-};
+}
 
 
 Serializer& Serializer::write(const void* buffer,unsigned int size)
