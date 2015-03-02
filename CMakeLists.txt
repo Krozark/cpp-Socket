@@ -34,7 +34,7 @@ set(DEFINES "")
 
 if(UNIX)
 	find_library(LIBS_PTHREAD pthread)
-	set(LIBS ${PTHREAD_LIBS})
+    set(LIBS ${LIBS_PTHREAD})
 elseif(WIN32)
 	find_library(LIBS_PTHREAD "winpthread-1")
 	find_library(LIBS_SOCKET ws2_32)
@@ -45,7 +45,7 @@ elseif(WIN32)
 endif()
 
 set(WARNING "-Wall")
-set(FLAGS "-o3 -std=c++0x")
+set(FLAGS "-o3 -std=c++11")
 set(CMAKE_CXX_FLAGS "${DEFINES} ${WARNING} ${FLAGS}")
 
 
