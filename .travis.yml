@@ -14,4 +14,3 @@ script : g++ -v
         && make
         && sudo make install
         && sudo make examples
-        && sudo make uninstall
