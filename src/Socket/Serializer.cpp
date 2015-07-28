@@ -35,6 +35,16 @@ unsigned int Serializer::capacity()const
     return _buffer_size;
 }
 
+const unsigned char* Serializer::data()const
+{
+    return _buffer + _cursor_begin;
+}
+
+unsigned char* Serializer::data()
+{
+    return _buffer + _cursor_begin;
+}
+
 
 Serializer& Serializer::write(const void* buffer,unsigned int size)
 {
@@ -111,55 +121,10 @@ bool Serializer::load(const std::string& filename)
 }
 
 /********* SERIALIZE *************/
-//1 oct | 8 bit
-Serializer& Serializer::operator<<(const bool& c)
-{
-    push(c);
-    return *this;
-};
-Serializer& Serializer::operator<<(const char& c)
-{
-    push(c);
-    return *this;
-};
-//2 oct | 16 bit
-Serializer& Serializer::operator<<(const short int& s)
-{
-    push(s);
-    return *this;
-};
-//4 oct | 32 bit
-Serializer& Serializer::operator<<(const int& i)
-{
-    push(i);
-    return *this;
-};
-
-Serializer& Serializer::operator<<(const unsigned int& i)
-{
-    push(i);
-    return *this;
-};
-
-Serializer& Serializer::operator<<(const float& f)
-{
-    push(f);
-    return *this;
-};
-//8 oct | 64 bit
-Serializer& Serializer::operator<<(const double& d)
-{
-    push(d);
-    return *this;
-};
-Serializer& Serializer::operator<<(const long int& l)
-{
-    push(l);
-    return *this;
-};
 //1 oct | 8 bit []
-Serializer& Serializer::operator<<(const char* const& c)
+Serializer& Serializer::operator<<(const std::string& str)
 {
+    const char* c = str.c_str();
     const uint8_t* data = (const uint8_t*)c;
     for(int i=0;c[i];++i) //exit when \0
         push(data[i]);
@@ -168,104 +133,12 @@ Serializer& Serializer::operator<<(const char* const& c)
     return *this;
 };
 
-Serializer& Serializer::operator<<(const std::string& str)
-{
-    return (*this<<str.c_str());
-}
-Serializer& Serializer::operator<<(const uint8_t& l)
-{
-    push(l);
-    return *this;
-} 
-Serializer& Serializer::operator<<(const uint16_t& l)
-{
-    push(l);
-    return *this;
-}
-/*Serializer& Serializer::operator<<(const uint32_t l)
-{
-    push(l);
-    return *this;
-}*/
-Serializer& Serializer::operator<<(const uint64_t& l)
-{
-    push(l);
-    return *this;
-}
-
-/*Serializer& Serializer::operator<<(const std::fstream& datas)
-{
-    return *this;
-}*/
-
 /********** UNSERIALIZE ***********/
-//1 oct | 8 bit
-Serializer& Serializer::operator>>(bool& c)
+Serializer& Serializer::operator<<(char* str)
 {
-    pop(c);
-    return *this;
+    return (*this<<std::string(str));
 }
 
-Serializer& Serializer::operator>>(char& c)
-{
-    pop(c);
-    return *this;
-}
-//2 oct | 16 bit
-Serializer& Serializer::operator>>(short int& s)
-{
-    pop(s);
-    return *this;
-};
-//4 oct | 32 bit
-Serializer& Serializer::operator>>(int& i)
-{
-    pop(i);
-    return *this;
-};
-
-Serializer& Serializer::operator>>(unsigned int& i)
-{
-    pop(i);
-    return *this;
-};
-
-Serializer& Serializer::operator>>(float& f)
-{
-    pop(f);
-    return *this;
-};
-//8 oct | 64 bit
-Serializer& Serializer::operator>>(double& d)
-{
-    pop(d);
-    return *this;
-};
-Serializer& Serializer::operator>>(long int& l)
-{
-    pop(l);
-    return *this;
-};
-//1 oct | 8 bit []
-Serializer& Serializer::operator>>(char*& c)
-{
-    unsigned int size = _cursor_begin;
-    for(;size<_cursor_end && _buffer[size] != '\0';++size){}
-    size -= _cursor_begin-1;
-
-    char* data = new char[size];
-
-    for(unsigned int i=0;i<size;++i)
-        data[i] = _buffer[_cursor_begin + i];
-
-    _cursor_begin += size;
-
-    if (c)
-        delete[] c;
-    c=data;
-
-    return *this;
-};
 
 Serializer& Serializer::operator>>(std::string& str)
 {
@@ -279,29 +152,6 @@ Serializer& Serializer::operator>>(std::string& str)
 
     return *this;
 };
-
-Serializer& Serializer::operator>>(uint8_t& l)
-{
-    pop(l);
-    return *this;
-} 
-Serializer& Serializer::operator>>(uint16_t& l)
-{
-    pop(l);
-    return *this;
-}
-/*Serializer& Serializer::operator>>(const uint32_t l)
-{
-    pop(l);
-    return *this;
-}*/
-Serializer& Serializer::operator>>(uint64_t& l)
-{
-    pop(l);
-    return *this;
-}
-
-
 
 std::ostream& operator<<(std::ostream& output,const Serializer& self)
 {

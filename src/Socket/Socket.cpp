@@ -15,6 +15,19 @@ namespace ntw {
     Socket::_Initiliser_ Socket::_initiliser_;
 #endif
 
+SocketExeption::SocketExeption(std::string error) : msg(error)
+{
+}
+
+SocketExeption::~SocketExeption() throw()
+{
+}
+
+const char* SocketExeption::what() const throw()
+{
+    return msg.c_str();
+};
+
 Socket::Socket(Socket::Domain domain,Socket::Type type,int protocole) : sock(INVALID_SOCKET), need_connect(type == Socket::Type::TCP), proto(protocole)
 {
     //déclaration de la socket
@@ -162,6 +175,7 @@ bool Socket::shutdown(Socket::Down mode)
 {
     return ::shutdown(sock,mode) != -1;
 };
+
 
 std::string Socket::getIp() const
 {

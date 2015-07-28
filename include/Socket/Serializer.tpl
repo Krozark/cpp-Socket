@@ -2,6 +2,13 @@
 namespace ntw
 {
     ///////////////// append ///////////////////////////
+    template<typename T>
+    Serializer& Serializer::operator<<(const T& v)
+    {
+        push(v);
+        return *this;
+    }
+
     template<typename T,size_t N>
     Serializer& Serializer::operator<<(const std::array<T,N>& container)
     {
@@ -32,8 +39,14 @@ namespace ntw
         return *this;
     }
 
-
     //remove
+    template<typename T>
+    Serializer& Serializer::operator>>(T& v)
+    {
+        pop(v);
+        return *this;
+    }
+
     template<typename T>
     Serializer& Serializer::operator>>(std::vector<T>& container)
     {

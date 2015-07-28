@@ -39,8 +39,11 @@
 
 #include <iostream>
 
+#include <Socket/Serializer.hpp>
 
-namespace ntw {
+
+namespace ntw
+{
 
 /**
  * \brief A class to manage exception
@@ -52,12 +55,9 @@ class SocketExeption: public std::exception
          * \brief Constructor
          * \param error Message to display
          */
-        SocketExeption(std::string error) : msg(error) {};
-        ~SocketExeption() throw() {};
-        virtual const char* what() const throw()
-        {
-            return msg.c_str();
-        };
+        SocketExeption(std::string error);
+        ~SocketExeption() throw();
+        virtual const char* what() const throw();
     private:
         std::string msg; ///< the message
 };
@@ -75,17 +75,27 @@ class Socket
         /**
          * \brief Named Dommaine type. Others can be used
          */
-        enum Domain {IP=AF_INET, LOCAL=AF_UNIX};
+        enum Domain {
+            IP=AF_INET,
+            LOCAL=AF_UNIX
+        };
 
         /**
          * \brief named Type of socket. Others can be used
          */
-        enum Type {TCP=SOCK_STREAM, UDP=SOCK_DGRAM};
+        enum Type {
+            TCP=SOCK_STREAM,
+            UDP=SOCK_DGRAM
+        };
 
         /**
          * \brief Named Down mode
          */
-        enum Down {SEND=0,RECIVE=1,BOTH=2};
+        enum Down {
+            SEND=0,
+            RECIVE=1,
+            BOTH=2
+        };
 
         /**
          * \brief Constructor
@@ -173,25 +183,7 @@ class Socket
          * \param flags the flags to use
          */
         template<typename T>
-        inline int send(const T* data,const size_t size,const int flags=MSG_NOSIGNAL) const
-        {
-            int res;
-            if(need_connect)
-            {
-                res = ::send(sock,(const char*)data,size,flags);
-            }
-            else
-            {
-                res = ::sendto(sock,(const char*)data,size,flags,(SOCKADDR*)(&sock_cfg),sizeof(sock_cfg));
-            }
-
-            if(res <0)
-            {
-                perror("Send()");
-                throw SocketExeption("Sending message fail");
-            }
-            return res;
-        }
+        inline int send(const T* data,const size_t size,const int flags=MSG_NOSIGNAL) const;
 
         /**
          * \brief Send data
@@ -200,20 +192,12 @@ class Socket
          * \param flags the flags to use (use 0 by default)
          * \param other the host to send datas
          */
-
         template<typename T>
-        inline int send(const T* data,const size_t size,const int flags,const Socket& other) const
-        {
-            int res;
-            if((res = ::sendto(sock,(const char*)data,size,flags,(SOCKADDR*)(&other.sock_cfg),sizeof(other.sock_cfg))) ==  SOCKET_ERROR)
-            {
-                perror("Send()");
-                throw SocketExeption("Sending message fail");
-            }
-            return res;
-        }
+        inline int send(const T* data,const size_t size,const int flags,const Socket& other) const;
+        
 
-
+        template<typename ... Args>
+        int send(const Serializer& data,Args&& ... args) const;
 
         /**
          * \brief receive data and stor it to the buffer
@@ -222,21 +206,7 @@ class Socket
          * \param flags the flags to use
          */
         template<typename T>
-        inline int receive(T* buffer,const size_t size,const int flags=0) const
-        {
-            int res;
-            if(need_connect)
-            {
-                res = ::recv(sock,(char*)buffer,size,flags);
-            }
-            else
-            {
-                SOCKADDR_IN from = {0}; ///< configuration struct
-                socklen_t from_size=sizeof(from);
-                res = ::recvfrom(sock,(char*)buffer,size,flags,(SOCKADDR*)(&from),&from_size);
-            }
-            return res;
-        };
+        inline int receive(T* buffer,const size_t size,const int flags=0) const;
 
         /**
          * \brief receive data and store it to the buffer
@@ -246,11 +216,11 @@ class Socket
          * \param other the other socket mesg from
          */
         template<typename T>
-        inline int receive(T* buffer,const size_t size,const int flags,Socket& other) const
-        {
-            socklen_t slen=sizeof(other.sock_cfg);
-            return ::recvfrom(sock,(char*)buffer,size,flags,(SOCKADDR*)(&other.sock_cfg),&slen);
-        }
+        inline int receive(T* buffer,const size_t size,const int flags,Socket& other) const;
+
+
+        template<typename ... Args>
+        int receive(Serializer& buffer,Args&& ... args) const;
 
         /**
          * \return return the ip
@@ -308,6 +278,6 @@ class Socket
 
         void _close();
 };
-
-};
+}
+#include <Socket/Socket.tpl>
 #endif
