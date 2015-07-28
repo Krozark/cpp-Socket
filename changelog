@@ -1,0 +1,7 @@
+0.3.0
+=====
+ * add changelog file
+
+0.2.6
+=====
+ * remove Socket::init() and Socket::close() for windows shit (this is now automatic).
