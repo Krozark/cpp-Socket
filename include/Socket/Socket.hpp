@@ -272,15 +272,6 @@ class Socket
         */
         bool setReusable(bool enable=true);
 
-        /**
-        * \brief initialise the context
-        */
-        static void init();
-
-        /**
-        * \brief close the context
-        */
-        static void close();
 
 
     protected:
@@ -295,8 +286,24 @@ class Socket
         const int proto;
         
     private:
-        #if __WIN32
-        static WSADATA WSAData;
+        #if _WIN32
+
+        class _Initiliser_
+        {
+            public :
+                _Initiliser_()
+                {
+                    WSAStartup(MAKEWORD(2,0),&_WSAData);
+                }
+
+                ~_Initiliser_()
+                {
+                    WSACleanup();
+                }
+                static WSADATA _WSAData;
+        };
+
+        static _Initiliser_ _initiliser_;
         #endif
 
         void _close();

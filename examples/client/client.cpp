@@ -17,12 +17,9 @@ int main(int argc,char* argv[])
     }
 
 
-    ntw::Socket::init();
     ntw::cli::Client client;
     if(client.connect(argv[SERVER_HOST],atoi(argv[SERVER_PORT])) != ntw::Status::connexion)
         run(client);
-
-    ntw::Socket::close();
 
     return 0;
 }

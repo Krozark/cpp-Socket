@@ -10,8 +10,9 @@
 namespace ntw {
 //int Socket::max_id = 0;
 
-#if __WIN32
-WSADATA Socket::WSAData;
+#if _WIN32
+    WSADATA Socket::_Initiliser_::_WSAData;
+    Socket::_Initiliser_ Socket::_initiliser_;
 #endif
 
 Socket::Socket(Socket::Domain domain,Socket::Type type,int protocole) : sock(INVALID_SOCKET), need_connect(type == Socket::Type::TCP), proto(protocole)
@@ -184,19 +185,6 @@ bool Socket::setReusable(bool enable)
     return ::setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,(const char*)&tmp,sizeof(int)) == 0;
 }
 
-void Socket::init()
-{
-    #if __WIN32
-    WSAStartup(MAKEWORD(2,0),&Socket::WSAData);
-    #endif // __WIN32
-}
-
-void Socket::close()
-{
-     #if __WIN32
-    WSACleanup();
-    #endif // __WIN32
-}
 
 void Socket::_close()
 {
