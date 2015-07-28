@@ -36,7 +36,7 @@ namespace ntw
     template <typename ... Args>
     int Socket::send(const Serializer& data,Args&& ... args) const
     {
-        auto size = data.size();
+        uint32_t size = data.size();
         char* buffer = new char[size + 4];
 
         {
@@ -56,14 +56,9 @@ namespace ntw
             #error "byte orden not suported (PDP endian)"
             #endif
 
-            std::cout<<"send() size: "<<size<<std::endl;
-            for(int i=0;i<4;++i)
-                std::cout<<"send() buffer["<<i<<"]: "<<int(buffer[i])<<std::endl;
-
         }
 
         memcpy(buffer + 4,data.data(),size);
-
 
         int res = 0;
         try
@@ -106,16 +101,20 @@ namespace ntw
     template<typename ... Args>
     int Socket::receive(Serializer& data,Args&& ... args) const
     {
-
-        std::cout<<"receive"<<std::endl;
-
         char buffer[4];
-        int res = receive(buffer,4,std::forward<Args>(args)...);
+        int res = 0;
+        if(need_connect)
+        {
+            res = receive(buffer,4,std::forward<Args>(args)...);
+        }
+        else
+        {
+            res = receive(buffer,4,MSG_PEEK);
+        }
 
-        std::cout<<"receive: "<<res<<std::endl;
         if (res > 0)
         {
-            uint32_t size;
+            uint32_t size = 0;
             uint8_t *d = (uint8_t *)&size;
 
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
@@ -124,31 +123,42 @@ namespace ntw
             d[2] = buffer[2];
             d[3] = buffer[3];
             #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-            d[0] = d[3];
-            d[1] = d[2];
-            d[2] = d[1];
-            d[3] = d[0];
+            d[0] = buffer[3];
+            d[1] = buffer[2];
+            d[2] = buffer[1];
+            d[3] = buffer[0];
             #else
             #error "byte orden not suported (PDP endian)"
             #endif
 
-            std::cout<<"receive: "<<size<<std::endl;
-            for(int i=0;i<4;++i)
-                std::cout<<"receive() buffer["<<i<<"]: "<<int(buffer[i])<<std::endl;
-
-            char* buffer2 = new char[size];
+            char* buffer2;
 
             try
             {
-                res+= receive(buffer2,size,std::forward<Args>(args)...);
+                if(need_connect)
+                {
+                    buffer2 = new char[size];
+                    res+= receive(buffer2,size,std::forward<Args>(args)...);
+                }
+                else
+                {
+                    buffer2 = new char[size + 4];
+                    res = receive(buffer2,size + 4,std::forward<Args>(args)...);
+
+                }
             }
             catch (SocketExeption& e)
             {
                 delete[] buffer2;
                 throw e;
             }
+
+            if(need_connect)
+                data.write(buffer2,size);
+            else
+                data.write(buffer2 + 4,size);
+
             delete[] buffer2;
-            data.write(buffer2,size);
         }
 
         return res;

@@ -11,7 +11,7 @@ void client()
     std::cout<<"client()"<<std::endl;
 
     ntw::Serializer stream;
-    stream<<std::string("from client");
+    stream<<std::string("message from client");
 
     ntw::Socket sock(ntw::Socket::Domain::IP,ntw::Socket::Type::UDP,IPPROTO_UDP);
 
@@ -40,7 +40,7 @@ void server()
         from.connect(port);
 
         int nbBytes = sock.receive(stream,0,from);
-        std::cout<<"server() : recv msg  <"<<stream<<">"<<nbBytes<<" From ip: "<<from.getIp()<<std::endl;
+        std::cout<<"server() : recv msg  <"<<stream<<"> From ip: "<<from.getIp()<<std::endl;
     }
 
     std::cout<<"end server()"<<std::endl;
