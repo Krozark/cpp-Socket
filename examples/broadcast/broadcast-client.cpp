@@ -6,7 +6,10 @@ int main(int argc, char* argv[])
 {
     int port = 5001;
     if(argc < 2)
+    {
         std::cout<<"Usage is:\n"<<argv[0]<<" <msg>"<<std::endl;
+        return 1;
+    }
     ntw::SocketSerialized sock(ntw::Socket::Domain::IP,ntw::Socket::Type::UDP,IPPROTO_UDP);
 
     sock.connect("127.255.255.255",port);

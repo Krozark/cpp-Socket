@@ -55,6 +55,11 @@ namespace ntw
             #else
             #error "byte orden not suported (PDP endian)"
             #endif
+
+            std::cout<<"send() size: "<<size<<std::endl;
+            for(int i=0;i<4;++i)
+                std::cout<<"send() buffer["<<i<<"]: "<<int(buffer[i])<<std::endl;
+
         }
 
         memcpy(buffer + 4,data.data(),size);
@@ -101,11 +106,17 @@ namespace ntw
     template<typename ... Args>
     int Socket::receive(Serializer& data,Args&& ... args) const
     {
+
+        std::cout<<"receive"<<std::endl;
+
         char buffer[4];
         int res = receive(buffer,4,std::forward<Args>(args)...);
+
+        std::cout<<"receive: "<<res<<std::endl;
         if (res > 0)
         {
-            uint8_t d[4];
+            uint32_t size;
+            uint8_t *d = (uint8_t *)&size;
 
             #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             d[0] = buffer[0];
@@ -121,7 +132,9 @@ namespace ntw
             #error "byte orden not suported (PDP endian)"
             #endif
 
-            uint32_t size = *(uint32_t*)&d;
+            std::cout<<"receive: "<<size<<std::endl;
+            for(int i=0;i<4;++i)
+                std::cout<<"receive() buffer["<<i<<"]: "<<int(buffer[i])<<std::endl;
 
             char* buffer2 = new char[size];
 
