@@ -206,7 +206,7 @@ class Socket
          * \param flags the flags to use
          */
         template<typename T>
-        inline int receive(T* buffer,const size_t size,const int flags=0) const;
+        inline int receive(T* buffer,const size_t size,const int flags=MSG_WAITALL) const;
 
         /**
          * \brief receive data and store it to the buffer
